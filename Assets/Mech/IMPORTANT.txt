@@ -1,0 +1,16 @@
+Thank you for purchasing the Assault Mech. 
+
+Please use the following project settings when using the Assault Mech.
+
+Edit->Project Settings->Player->Other Settings/Rendering
+Set the Color Space to "Linear"
+
+Edit->Project Settings->Graphics->Tier Settings
+Set the Rendering Path to "Deferred"
+
+Disable the Antialiasing in the Quality Settings.
+Edit->Project Settings->Quality  in the Inspector: Rendering Anti Aliasing -> Disabled
+
+
+Cheers
+TripleBrick
