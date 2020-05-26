@@ -9765,6 +9765,12 @@ PrefabInstance:
       propertyPath: dropRate
       value: 0.79
       objectReference: {fileID: 0}
+    - target: {fileID: 9087143436424816424, guid: a186458387d654e8fa2c294cd3e57300,
+        type: 3}
+      propertyPath: lootPrefab
+      value: 
+      objectReference: {fileID: 2620131183356007192, guid: 0bb4e7bdf1aec0247854edd179ed1557,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a186458387d654e8fa2c294cd3e57300, type: 3}
 --- !u!43 &300866999
