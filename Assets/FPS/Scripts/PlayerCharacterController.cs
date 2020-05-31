@@ -244,7 +244,8 @@ public class PlayerCharacterController : MonoBehaviour
         // horizontal character rotation
         {
             // rotate the transform with the input speed around its local Y axis
-            transform.Rotate(new Vector3(0f, (m_InputHandler.GetLookInputsHorizontal() * rotationSpeed * RotationMultiplier), 0f), Space.Self);
+            transform.Rotate(new Vector3(0f, m_InputHandler.GetLookInputsHorizontal() * rotationSpeed * RotationMultiplier
+                , 0f), Space.Self);
         }
 
         // vertical camera rotation
@@ -400,7 +401,7 @@ public class PlayerCharacterController : MonoBehaviour
         {
             m_Controller.height = m_TargetCharacterHeight;
             m_Controller.center = Vector3.up * m_Controller.height * 0.5f;
-            playerCamera.transform.localPosition = Vector3.up * m_TargetCharacterHeight * cameraHeightRatio + Vector3.back * 3;
+            playerCamera.transform.localPosition = Vector3.up * m_TargetCharacterHeight * cameraHeightRatio;
             m_Actor.aimPoint.transform.localPosition = m_Controller.center;
         }
         // Update smooth height
