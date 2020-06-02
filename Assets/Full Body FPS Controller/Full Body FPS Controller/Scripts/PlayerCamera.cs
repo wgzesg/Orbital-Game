@@ -13,11 +13,6 @@ namespace EasySurvivalScripts
     public class PlayerCamera : MonoBehaviour
     {
 
-        [Header("Input Settings")]
-        public string MouseXInput;
-        public string MouseYInput;
-        public string SwitchPerspectiveInput;
-
         [Header("Common Camera Settings")]
         public float mouseSensitivity;
         public CameraPerspective cameraPerspective;
@@ -33,6 +28,8 @@ namespace EasySurvivalScripts
         public Vector3 TPS_CameraOffset;
         public Vector2 TPS_MinMaxAngles;
 
+
+        PlayerInputHandler m_InputHandler;
         Transform FPSController;
         float xClamp;
         Vector3 camMoveLoc;
@@ -43,7 +40,8 @@ namespace EasySurvivalScripts
         {
             Cursor.lockState = CursorLockMode.Locked;
             xClamp = 0;
-            FPSController = GetComponentInParent<PlayerMovement>().transform;
+            FPSController = GetComponentInParent<PlayerCharacterController>().transform;
+            m_InputHandler = GetComponentInParent<PlayerInputHandler>();
         }
 
         // Use this for initialization
@@ -86,7 +84,7 @@ namespace EasySurvivalScripts
 
         void SwitchCameraPerspectiveInput()
         {
-            if(Input.GetButtonDown(SwitchPerspectiveInput))
+                if(m_InputHandler.GetCrouchInputDown())
             {
                 if (cameraPerspective == CameraPerspective.FirstPerson)
                 {
@@ -138,8 +136,8 @@ namespace EasySurvivalScripts
 
         void RotateCamera()
         {
-            float mouseX = Input.GetAxis(MouseXInput) * (mouseSensitivity * Time.deltaTime);
-            float mouseY = Input.GetAxis(MouseYInput) * (mouseSensitivity * Time.deltaTime);
+            float mouseX = m_InputHandler.GetLookInputsHorizontal() * (mouseSensitivity * Time.deltaTime);
+            float mouseY = m_InputHandler.GetLookInputsVertical() * (mouseSensitivity * Time.deltaTime);
             Vector3 eulerRotation = transform.eulerAngles;
 
             xClamp += mouseY;
@@ -149,7 +147,7 @@ namespace EasySurvivalScripts
             else
                 xClamp = Mathf.Clamp(xClamp, TPS_MinMaxAngles.x, TPS_MinMaxAngles.y);
 
-            eulerRotation.x = -xClamp;
+            eulerRotation.x = xClamp;
             transform.eulerAngles = eulerRotation;
             FPSController.Rotate(Vector3.up * mouseX);
         }

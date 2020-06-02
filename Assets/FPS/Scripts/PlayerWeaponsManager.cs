@@ -72,6 +72,7 @@ public class PlayerWeaponsManager : MonoBehaviour
     float m_WeaponBobFactor;
     Vector3 m_LastCharacterPosition;
     Vector3 m_WeaponMainLocalPosition;
+    Animator m_Anime;
     Vector3 m_WeaponBobLocalPosition;
     Vector3 m_WeaponRecoilLocalPosition;
     Vector3 m_AccumulatedRecoil;
@@ -89,6 +90,11 @@ public class PlayerWeaponsManager : MonoBehaviour
 
         m_PlayerCharacterController = GetComponent<PlayerCharacterController>();
         DebugUtility.HandleErrorIfNullGetComponent<PlayerCharacterController, PlayerWeaponsManager>(m_PlayerCharacterController, this, gameObject);
+
+        m_Anime = GetComponent<Animator>();
+        DebugUtility.HandleErrorIfNullGetComponent<Actor, PlayerCharacterController>(m_Anime, this, gameObject);
+
+        m_Anime.SetBool("isShooting", false);
 
         SetFOV(defaultFOV);
 
@@ -121,8 +127,13 @@ public class PlayerWeaponsManager : MonoBehaviour
             // Handle accumulating recoil
             if (hasFired)
             {
+                m_Anime.SetBool("isShooting", true);
                 m_AccumulatedRecoil += Vector3.back * activeWeapon.recoilForce;
                 m_AccumulatedRecoil = Vector3.ClampMagnitude(m_AccumulatedRecoil, maxRecoilDistance);
+            }
+            else
+            {
+                m_Anime.SetBool("isShooting", true);
             }
         }
 
