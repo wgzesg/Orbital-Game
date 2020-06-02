@@ -411,22 +411,11 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
-    rigImportErrors: 
+    rigImportErrors: "Copied Avatar Rig Configuration mis-match. Transform hierarchy
+      does not match:\n\tTransform 'Bip001 Pelvis' for human bone 'Hips' not found\n"
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'BasicMotions@Sprint01' has import animation
-      warnings that might lower retargeting quality:\nNote: Activate translation
-      DOF on avatar to improve retargeting quality.\n\t'B-thigh_L' has scale animation
-      that will be discarded.\n\t'B-shin_L' has scale animation that will be discarded.\n\t'B-foot_L'
-      has scale animation that will be discarded.\n\t'B-thigh_R' has scale animation
-      that will be discarded.\n\t'B-shin_R' has scale animation that will be discarded.\n\t'B-foot_R'
-      has scale animation that will be discarded.\n\nClip 'BasicMotions@Sprint01
-      [RootMotion]' has import animation warnings that might lower retargeting quality:\nNote:
-      Activate translation DOF on avatar to improve retargeting quality.\n\t'B-thigh_L'
-      has scale animation that will be discarded.\n\t'B-shin_L' has scale animation
-      that will be discarded.\n\t'B-foot_L' has scale animation that will be discarded.\n\t'B-thigh_R'
-      has scale animation that will be discarded.\n\t'B-shin_R' has scale animation
-      that will be discarded.\n\t'B-foot_R' has scale animation that will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -3243,11 +3232,12 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 5917c0e93d180a842b61d1ebc62a195c,
+    type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 2
   additionalBone: 0
   userData: 
   assetBundleName: 
