@@ -4,6 +4,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(CharacterController), typeof(PlayerInputHandler), typeof(AudioSource))]
 public class PlayerCharacterController : MonoBehaviour
 {
+    
     [Header("References")]
     [Tooltip("Reference to the main camera used for the player")]
     public Camera playerCamera;
@@ -138,7 +139,7 @@ public class PlayerCharacterController : MonoBehaviour
         DebugUtility.HandleErrorIfNullGetComponent<Actor, PlayerCharacterController>(m_Actor, this, gameObject);
 
         m_Anime = GetComponent<Animator>();
-        DebugUtility.HandleErrorIfNullGetComponent<Actor, PlayerCharacterController>(m_Actor, this, gameObject);
+        DebugUtility.HandleErrorIfNullGetComponent<Actor, PlayerCharacterController>(m_Anime, this, gameObject);
 
         m_Anime.SetInteger("State", 0);
 
@@ -241,6 +242,7 @@ public class PlayerCharacterController : MonoBehaviour
 
     void HandleCharacterMovement()
     {
+        /*
         // horizontal character rotation
         {
             // rotate the transform with the input speed around its local Y axis
@@ -259,6 +261,7 @@ public class PlayerCharacterController : MonoBehaviour
             // apply the vertical angle as a local rotation to the camera transform along its right axis (makes it pivot up and down)
             playerCamera.transform.localEulerAngles = new Vector3(m_CameraVerticalAngle, 0, 0);
         }
+        */
 
         // character movement handling
         bool isSprinting = m_InputHandler.GetSprintInputHeld();
@@ -396,12 +399,13 @@ public class PlayerCharacterController : MonoBehaviour
 
     void UpdateCharacterHeight(bool force)
     {
+        
         // Update height instantly
         if (force)
         {
             m_Controller.height = m_TargetCharacterHeight;
             m_Controller.center = Vector3.up * m_Controller.height * 0.5f;
-            playerCamera.transform.localPosition = Vector3.up * m_TargetCharacterHeight * cameraHeightRatio;
+            //playerCamera.transform.localPosition = Vector3.up * m_TargetCharacterHeight * cameraHeightRatio;
             m_Actor.aimPoint.transform.localPosition = m_Controller.center;
         }
         // Update smooth height
@@ -410,9 +414,10 @@ public class PlayerCharacterController : MonoBehaviour
             // resize the capsule and adjust camera position
             m_Controller.height = Mathf.Lerp(m_Controller.height, m_TargetCharacterHeight, crouchingSharpness * Time.deltaTime);
             m_Controller.center = Vector3.up * m_Controller.height * 0.5f;
-            playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, Vector3.up * m_TargetCharacterHeight * cameraHeightRatio, crouchingSharpness * Time.deltaTime) + Vector3.back * 3;
+            //playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, Vector3.up * m_TargetCharacterHeight * cameraHeightRatio, crouchingSharpness * Time.deltaTime) + Vector3.back * 3;
             m_Actor.aimPoint.transform.localPosition = m_Controller.center;
         }
+        
     }
 
     // returns false if there was an obstruction
