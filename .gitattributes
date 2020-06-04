@@ -1,2 +1,5 @@
 Pistol[[:space:]]Idle.fbx filter=lfs diff=lfs merge=lfs -text
+<<<<<<< HEAD
 Ch15_nonPBR.fbx filter=lfs diff=lfs merge=lfs -text
+=======
+>>>>>>> bd9ef7bebc0c47657ea5319d3cb1580eefb19331

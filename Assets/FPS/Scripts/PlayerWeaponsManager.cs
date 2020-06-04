@@ -136,7 +136,11 @@ public class PlayerWeaponsManager : MonoBehaviour
             }
             else
             {
+<<<<<<< HEAD
                 m_Anime.SetBool("isShooting", false);
+=======
+                m_Anime.SetBool("isShooting", true);
+>>>>>>> bd9ef7bebc0c47657ea5319d3cb1580eefb19331
             }
         }
 
