@@ -27,6 +27,9 @@ public class PlayerWeaponsManager : MonoBehaviour
     public Transform aimingWeaponPosition;
     [Tooltip("Position for innactive weapons")]
     public Transform downWeaponPosition;
+    [Tooltip("Correction for pistol")]
+    public Vector3 pistolOffset;
+    public Vector3 pistolRotation;
 
     [Header("Weapon Bob")]
     [Tooltip("Frequency at which the weapon will move around in the screen when the player is in movement")]
@@ -133,7 +136,7 @@ public class PlayerWeaponsManager : MonoBehaviour
             }
             else
             {
-                m_Anime.SetBool("isShooting", true);
+                m_Anime.SetBool("isShooting", false);
             }
         }
 
@@ -181,6 +184,18 @@ public class PlayerWeaponsManager : MonoBehaviour
         UpdateWeaponBob();
         UpdateWeaponRecoil();
         UpdateWeaponSwitching();
+
+        if(activeWeaponIndex == 2)
+        {
+            m_Anime.SetLayerWeight(2, 1);
+            m_Anime.SetLayerWeight(1, 0);
+        }
+        else
+        {
+            m_Anime.SetLayerWeight(2, 0);
+            m_Anime.SetLayerWeight(1, 1);
+
+        }
 
         // Set final weapon socket position based on all the combined animation influences
         weaponParentSocket.localPosition = m_WeaponMainLocalPosition + m_WeaponBobLocalPosition + m_WeaponRecoilLocalPosition;
@@ -407,8 +422,8 @@ public class PlayerWeaponsManager : MonoBehaviour
             {
                 // spawn the weapon prefab as child of the weapon socket
                 WeaponController weaponInstance = Instantiate(weaponPrefab, weaponParentSocket);
-                weaponInstance.transform.localPosition = Vector3.zero;
-                weaponInstance.transform.localRotation = Quaternion.identity;
+                weaponInstance.transform.localPosition = (i == 2) ? pistolOffset : Vector3.zero;
+                weaponInstance.transform.localRotation = (i == 2) ? Quaternion.Euler(pistolRotation) : Quaternion.identity;
 
                 // Set owner to this gameObject so the weapon can alter projectile/damage logic accordingly
                 weaponInstance.owner = gameObject;
