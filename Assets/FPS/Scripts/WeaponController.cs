@@ -105,6 +105,7 @@ public class WeaponController : MonoBehaviour
     public float currentCharge { get; private set; }
     public Vector3 muzzleWorldVelocity { get; private set; }
     public float GetAmmoNeededToShoot() => (shootType != WeaponShootType.Charge ? 1 : ammoUsedOnStartCharge) / maxAmmo;
+    public GameObject mainCam;
 
     AudioSource m_ShootAudioSource;
 
@@ -117,6 +118,10 @@ public class WeaponController : MonoBehaviour
 
         m_ShootAudioSource = GetComponent<AudioSource>();
         DebugUtility.HandleErrorIfNullGetComponent<AudioSource, WeaponController>(m_ShootAudioSource, this, gameObject);
+        if (GetComponentInParent<PlayerCharacterController>() != null)
+            mainCam = GameObject.Find("Camera");
+        else
+            mainCam = null;
     }
 
     void Update()
@@ -337,7 +342,21 @@ public class WeaponController : MonoBehaviour
     public Vector3 GetShotDirectionWithinSpread(Transform shootTransform)
     {
         float spreadAngleRatio = bulletSpreadAngle / 180f;
-        Vector3 spreadWorldDirection = Vector3.Slerp(shootTransform.forward, UnityEngine.Random.insideUnitSphere, spreadAngleRatio);
+        Vector3 spreadWorldDirection;
+        if (mainCam)
+        {
+            if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out RaycastHit hit, 1000, -1, QueryTriggerInteraction.Ignore))
+            {
+                shootTransform.LookAt(hit.transform);
+                spreadWorldDirection = Vector3.Slerp(shootTransform.forward, UnityEngine.Random.insideUnitSphere, spreadAngleRatio);
+            }
+            else
+            {
+                spreadWorldDirection = Vector3.Slerp(mainCam.transform.forward, UnityEngine.Random.insideUnitSphere, spreadAngleRatio);
+            }
+        }
+        else
+            spreadWorldDirection = Vector3.Slerp(shootTransform.forward, UnityEngine.Random.insideUnitSphere, spreadAngleRatio);
 
         return spreadWorldDirection;
     }

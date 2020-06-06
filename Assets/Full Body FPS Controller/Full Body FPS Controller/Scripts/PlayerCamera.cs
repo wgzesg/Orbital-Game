@@ -24,6 +24,9 @@ namespace EasySurvivalScripts
         public Vector3 FPS_CameraOffset;
         public Vector2 FPS_MinMaxAngles;
 
+        [Header("Pistol Camera Settings")]
+        public Vector3 Pistol_CameraOffset;
+
         [Header("TPS Camera Settings")]
         public Vector3 TPS_CameraOffset;
         public Vector2 TPS_MinMaxAngles;
@@ -35,6 +38,8 @@ namespace EasySurvivalScripts
         Vector3 camMoveLoc;
         Transform _fpsCameraHelper;
         Transform _tpsCameraHelper;
+        PlayerWeaponsManager m_weaponManager;
+
 
         private void Awake()
         {
@@ -42,6 +47,7 @@ namespace EasySurvivalScripts
             xClamp = 0;
             FPSController = GetComponentInParent<PlayerCharacterController>().transform;
             m_InputHandler = GetComponentInParent<PlayerInputHandler>();
+            m_weaponManager = GetComponentInParent<PlayerWeaponsManager>();
         }
 
         // Use this for initialization
@@ -116,8 +122,10 @@ namespace EasySurvivalScripts
         {
             if (!CharacterAnimator)
                 return;
-
-            _fpsCameraHelper.localPosition = FPS_CameraOffset;
+            if(m_weaponManager.activeWeaponIndex == 2)
+                _fpsCameraHelper.localPosition = Pistol_CameraOffset;
+            else
+                _fpsCameraHelper.localPosition = FPS_CameraOffset;
 
             transform.position = _fpsCameraHelper.position;
 

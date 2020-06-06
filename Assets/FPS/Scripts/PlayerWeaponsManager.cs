@@ -83,6 +83,7 @@ public class PlayerWeaponsManager : MonoBehaviour
     WeaponSwitchState m_WeaponSwitchState;
     int m_WeaponSwitchNewWeaponIndex;
 
+
     private void Start()
     {
         activeWeaponIndex = -1;
@@ -136,11 +137,7 @@ public class PlayerWeaponsManager : MonoBehaviour
             }
             else
             {
-<<<<<<< HEAD
                 m_Anime.SetBool("isShooting", false);
-=======
-                m_Anime.SetBool("isShooting", true);
->>>>>>> bd9ef7bebc0c47657ea5319d3cb1580eefb19331
             }
         }
 
