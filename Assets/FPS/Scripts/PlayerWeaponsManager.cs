@@ -131,14 +131,10 @@ public class PlayerWeaponsManager : MonoBehaviour
             // Handle accumulating recoil
             if (hasFired)
             {
-                m_Anime.SetBool("isShooting", true);
                 m_AccumulatedRecoil += Vector3.back * activeWeapon.recoilForce;
                 m_AccumulatedRecoil = Vector3.ClampMagnitude(m_AccumulatedRecoil, maxRecoilDistance);
             }
-            else
-            {
-                m_Anime.SetBool("isShooting", false);
-            }
+            
         }
 
         // weapon switch handling
