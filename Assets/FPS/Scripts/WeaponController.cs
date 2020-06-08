@@ -91,11 +91,11 @@ public class WeaponController : MonoBehaviour
 
     public UnityAction onShoot;
 
-    float m_CurrentAmmo;
     float m_LastTimeShot = Mathf.NegativeInfinity;
     float m_TimeBeginCharge;
     Vector3 m_LastMuzzlePosition;
 
+    public float m_CurrentAmmo;
     public GameObject owner { get; set; }
     public GameObject sourcePrefab { get; set; }
     public bool isCharging { get; private set; }
