@@ -91,7 +91,7 @@ public class WeaponController : MonoBehaviour
 
     public UnityAction onShoot;
 
-    float m_LastTimeShot = Mathf.NegativeInfinity;
+    public float m_LastTimeShot = Mathf.NegativeInfinity;
     float m_TimeBeginCharge;
     Vector3 m_LastMuzzlePosition;
 
@@ -105,23 +105,19 @@ public class WeaponController : MonoBehaviour
     public float currentCharge { get; private set; }
     public Vector3 muzzleWorldVelocity { get; private set; }
     public float GetAmmoNeededToShoot() => (shootType != WeaponShootType.Charge ? 1 : ammoUsedOnStartCharge) / maxAmmo;
-    public GameObject mainCam;
 
     AudioSource m_ShootAudioSource;
 
     const string k_AnimAttackParameter = "Attack";
 
-    void Awake()
+    public virtual void Awake()
     {
         m_CurrentAmmo = maxAmmo;
         m_LastMuzzlePosition = weaponMuzzle.position;
 
         m_ShootAudioSource = GetComponent<AudioSource>();
         DebugUtility.HandleErrorIfNullGetComponent<AudioSource, WeaponController>(m_ShootAudioSource, this, gameObject);
-        if (GetComponentInParent<PlayerCharacterController>() != null)
-            mainCam = GameObject.Find("Camera");
-        else
-            mainCam = null;
+
     }
 
     void Update()
@@ -137,7 +133,7 @@ public class WeaponController : MonoBehaviour
         }
     }
 
-    void UpdateAmmo()
+    public virtual void UpdateAmmo()
     {
         if (m_LastTimeShot + ammoReloadDelay < Time.time && m_CurrentAmmo < maxAmmo && !isCharging)
         {
@@ -339,24 +335,12 @@ public class WeaponController : MonoBehaviour
         }
     }
 
-    public Vector3 GetShotDirectionWithinSpread(Transform shootTransform)
+    public virtual Vector3 GetShotDirectionWithinSpread(Transform shootTransform)
     {
         float spreadAngleRatio = bulletSpreadAngle / 180f;
         Vector3 spreadWorldDirection;
-        if (mainCam)
-        {
-            if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out RaycastHit hit, 1000, -1, QueryTriggerInteraction.Ignore))
-            {
-                shootTransform.LookAt(hit.transform);
-                spreadWorldDirection = Vector3.Slerp(shootTransform.forward, UnityEngine.Random.insideUnitSphere, spreadAngleRatio);
-            }
-            else
-            {
-                spreadWorldDirection = Vector3.Slerp(mainCam.transform.forward, UnityEngine.Random.insideUnitSphere, spreadAngleRatio);
-            }
-        }
-        else
-            spreadWorldDirection = Vector3.Slerp(shootTransform.forward, UnityEngine.Random.insideUnitSphere, spreadAngleRatio);
+
+        spreadWorldDirection = Vector3.Slerp(shootTransform.forward, UnityEngine.Random.insideUnitSphere, spreadAngleRatio);
 
         return spreadWorldDirection;
     }

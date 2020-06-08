@@ -153,6 +153,15 @@ public class PlayerInputHandler : MonoBehaviour
         return false;
     }
 
+    public bool GetReloadInputReleased()
+    {
+        if (CanProcessInput())
+        {
+            return Input.GetButtonUp("Reload");
+        }
+
+        return false;
+    }
     public int GetSwitchWeaponInput()
     {
         if (CanProcessInput())

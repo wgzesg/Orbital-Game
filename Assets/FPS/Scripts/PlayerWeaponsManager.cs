@@ -11,10 +11,11 @@ public class PlayerWeaponsManager : MonoBehaviour
         Down,
         PutDownPrevious,
         PutUpNew,
+        Reloading
     }
 
     [Tooltip("List of weapon the player will start with")]
-    public List<WeaponController> startingWeapons = new List<WeaponController>();
+    public List<PlayerWeaponController> startingWeapons = new List<PlayerWeaponController>();
 
     [Header("References")]
     [Tooltip("Secondary camera used to avoid seeing weapon go throw geometries")]
@@ -64,6 +65,7 @@ public class PlayerWeaponsManager : MonoBehaviour
     public bool isAiming { get; private set; }
     public bool isPointingAtEnemy { get; private set; }
     public int activeWeaponIndex { get; private set; }
+    public WeaponSwitchState m_WeaponSwitchState;
 
     public UnityAction<WeaponController> onSwitchedToWeapon;
     public UnityAction<WeaponController, int> onAddedWeapon;
@@ -80,7 +82,6 @@ public class PlayerWeaponsManager : MonoBehaviour
     Vector3 m_WeaponRecoilLocalPosition;
     Vector3 m_AccumulatedRecoil;
     float m_TimeStartedWeaponSwitch;
-    WeaponSwitchState m_WeaponSwitchState;
     int m_WeaponSwitchNewWeaponIndex;
 
 
@@ -182,16 +183,24 @@ public class PlayerWeaponsManager : MonoBehaviour
         UpdateWeaponRecoil();
         UpdateWeaponSwitching();
 
-        if(activeWeaponIndex == 2)
+        if (m_WeaponSwitchState == WeaponSwitchState.Reloading)
+        {
+            m_Anime.SetLayerWeight(2, 0);
+            m_Anime.SetLayerWeight(1, 0);
+            m_Anime.SetLayerWeight(3, 1);
+        }
+
+        else if (activeWeaponIndex == 2)
         {
             m_Anime.SetLayerWeight(2, 1);
             m_Anime.SetLayerWeight(1, 0);
+            m_Anime.SetLayerWeight(3, 0);
         }
         else
         {
             m_Anime.SetLayerWeight(2, 0);
             m_Anime.SetLayerWeight(1, 1);
-
+            m_Anime.SetLayerWeight(3, 0);
         }
 
         // Set final weapon socket position based on all the combined animation influences
