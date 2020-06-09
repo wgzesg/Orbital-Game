@@ -11,6 +11,7 @@ public class EnemyManager : MonoBehaviour
     public int numberOfEnemiesRemaining => enemies.Count;
     
     public UnityAction<EnemyController, int> onRemoveEnemy;
+    public int numberOfDeaths = 0;
 
     private void Awake()
     {
@@ -34,6 +35,7 @@ public class EnemyManager : MonoBehaviour
         if (onRemoveEnemy != null)
         {
             onRemoveEnemy.Invoke(enemyKilled, enemiesRemainingNotification);
+            numberOfDeaths += 1;
         }
 
         // removes the enemy from the list, so that we can keep track of how many are left on the map
