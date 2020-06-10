@@ -1,33 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
-public class scorekeeper : MonoBehaviour
+public class Scorekeeper : MonoBehaviour
 {
-    public int x_cood = 50;
-    public int y_cood= 50;
-    public int length = 100;
-    public int width = 75;
+
+    public TMPro.TextMeshProUGUI ScoreboardText;
 
     private EnemyManager enemyManager;
-    public int score = 0;
+    int score = 0;
 
     
     // Start is called before the first frame update
     void Start()
     {
-        enemyManager = GetComponent<EnemyManager>();
+        enemyManager = GetComponentInParent<EnemyManager>();
+        enemyManager.onRemoveEnemy += OnRemoveEnemy;
+
+        ScoreboardText.text = "Score: " + score;
+        if (GetComponent<RectTransform>())
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnRemoveEnemy(EnemyController deadEnemy, int enemyLeft)
     {
-        score = enemyManager.numberOfDeaths;
-    }
+        score += 1;
 
-    private void OnGUI()
-    {
-        GUI.Box(new Rect(x_cood, y_cood, length, width), "Score: "+score);
+        ScoreboardText.text = "Score: " + score;
 
+        if (GetComponent<RectTransform>())
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+        }
     }
 }

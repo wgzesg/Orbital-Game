@@ -5,31 +5,40 @@ using UnityEngine.UI;
 
 public class LoadHUD : MonoBehaviour
 {
-    public int x_cood = 50;
-    public int y_cood = 300;
-    public int length = 100;
-    public int width = 75;
+    public TMPro.TextMeshProUGUI ammutext;
 
     float maxLoad;
     float currentLoad;
 
     PlayerWeaponsManager m_playerWeaponsManager;
-    
+    WeaponController curr_activeWeapon;
 
     private void Start()
     {
         m_playerWeaponsManager = GameObject.FindObjectOfType<PlayerWeaponsManager>();
         DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, LoadHUD>(m_playerWeaponsManager, this);
+
+        WeaponController m = m_playerWeaponsManager.GetActiveWeapon();
+        curr_activeWeapon = m_playerWeaponsManager.GetActiveWeapon();
+
+        m_playerWeaponsManager.onSwitchedToWeapon += OnswitchWeaponHandler;
     }
 
-    private void OnGUI()
+    private void OnswitchWeaponHandler(WeaponController newpweaon)
     {
-        WeaponController curr_activeWeapon = m_playerWeaponsManager.GetActiveWeapon();
+        curr_activeWeapon = m_playerWeaponsManager.GetActiveWeapon();
+    }
+
+    void Update()
+    {
 
         maxLoad = curr_activeWeapon.maxAmmo;
         currentLoad = curr_activeWeapon.m_CurrentAmmo;
-        string content = currentLoad + " / " + maxLoad;
-        GUI.Box(new Rect(x_cood, y_cood, length, width), content);
+        ammutext.text = currentLoad + " / " + maxLoad;
+        if (GetComponent<RectTransform>())
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+        }
 
     }
 }
