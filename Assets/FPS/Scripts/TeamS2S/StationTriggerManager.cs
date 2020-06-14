@@ -24,29 +24,38 @@ public class StationTriggerManager : MonoBehaviour
     {
         
     }
-    private void OnTriggerEnter(Collider player)
+    private void OnTriggerEnter(Collider other)
     {
-        print("Station Ready to Use");
-        if(OnEnteredStation != null)
+        if (other.tag == "Player")
         {
-            OnEnteredStation(); // the station perform an animation to be activated
+            print("Station Ready to Use");
+            if (OnEnteredStation != null)
+            {
+                OnEnteredStation(); // the station perform an animation to be activated
+            }
         }
     }
-    private void OnTriggerStay(Collider player)
+    private void OnTriggerStay(Collider other)
     {
-        print("What do you want for Today");
-        if (OnStayedStation != null)
+        if (other.tag == "Player")
         {
-            OnStayedStation(); // the station show a hint, asking player to press 'E' to open the UI
+            print("What do you want for Today");
+            if (OnStayedStation != null)
+            {
+                OnStayedStation(); // the station show a hint, asking player to press 'E' to open the UI
+            }
         }
     }
 
-    private void OnTriggerExit(Collider player)
+    private void OnTriggerExit(Collider other)
     {
-        print("GoodBye, Have a Nice Day");
-        if(OnExitedStation != null)
+        if (other.tag == "Player")
         {
-            OnExitedStation(); // the UI closed, and station perform animation to be deactivated.
+            print("GoodBye, Have a Nice Day");
+            if (OnExitedStation != null)
+            {
+                OnExitedStation(); // the UI closed, and station perform animation to be deactivated.
+            }
         }
     }
 }
