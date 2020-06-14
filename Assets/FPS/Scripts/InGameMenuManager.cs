@@ -52,17 +52,7 @@ public class InGameMenuManager : MonoBehaviour
 
     private void Update()
     {
-        // Lock cursor when clicking outside of menu
-        if (!menuRoot.activeSelf && Input.GetMouseButtonDown(0))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
+
 
         if (Input.GetButtonDown(GameConstants.k_ButtonNamePauseMenu)
             || (menuRoot.activeSelf && Input.GetButtonDown(GameConstants.k_ButtonNameCancel)))
