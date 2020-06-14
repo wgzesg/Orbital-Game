@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InGameMenuManager : MonoBehaviour
+public class SupplyStationMenuManager : MonoBehaviour
 {
     [Tooltip("Root GameObject of the menu used to toggle its activation")]
     public GameObject menuRoot;
@@ -64,7 +64,7 @@ public class InGameMenuManager : MonoBehaviour
             Cursor.visible = true;
         }
 
-        if (Input.GetButtonDown(GameConstants.k_ButtonNamePauseMenu)
+        if (Input.GetButtonDown("Interaction")
             || (menuRoot.activeSelf && Input.GetButtonDown(GameConstants.k_ButtonNameCancel)))
         {
             if (controlImage.activeSelf)
