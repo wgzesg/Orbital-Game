@@ -6,58 +6,24 @@ public class SupplyStationMenuManager : MonoBehaviour
 {
     [Tooltip("Root GameObject of the menu used to toggle its activation")]
     public GameObject menuRoot;
-    [Tooltip("Master volume when menu is open")]
-    [Range(0.001f, 1f)]
-    public float volumeWhenMenuOpen = 0.5f;
-    [Tooltip("Slider component for look sensitivity")]
-    public Slider lookSensitivitySlider;
-    [Tooltip("Toggle component for shadows")]
-    public Toggle shadowsToggle;
-    [Tooltip("Toggle component for invincibility")]
-    public Toggle invincibilityToggle;
-    [Tooltip("Toggle component for framerate display")]
-    public Toggle framerateToggle;
+    
     [Tooltip("GameObject for the controls")]
     public GameObject controlImage;
 
     PlayerInputHandler m_PlayerInputsHandler;
-    Health m_PlayerHealth;
-    FramerateCounter m_FramerateCounter;
 
     void Start()
     {
         m_PlayerInputsHandler = FindObjectOfType<PlayerInputHandler>();
         DebugUtility.HandleErrorIfNullFindObject<PlayerInputHandler, InGameMenuManager>(m_PlayerInputsHandler, this);
 
-        m_PlayerHealth = m_PlayerInputsHandler.GetComponent<Health>();
-        DebugUtility.HandleErrorIfNullGetComponent<Health, InGameMenuManager>(m_PlayerHealth, this, gameObject);
-
-        m_FramerateCounter = FindObjectOfType<FramerateCounter>();
-        DebugUtility.HandleErrorIfNullFindObject<FramerateCounter, InGameMenuManager>(m_FramerateCounter, this);
 
         menuRoot.SetActive(false);
-
-        lookSensitivitySlider.value = m_PlayerInputsHandler.lookSensitivity;
-        lookSensitivitySlider.onValueChanged.AddListener(OnMouseSensitivityChanged);
-
-        shadowsToggle.isOn = QualitySettings.shadows != ShadowQuality.Disable;
-        shadowsToggle.onValueChanged.AddListener(OnShadowsChanged);
-
-        invincibilityToggle.isOn = m_PlayerHealth.invincible;
-        invincibilityToggle.onValueChanged.AddListener(OnInvincibilityChanged);
-
-        framerateToggle.isOn = m_FramerateCounter.uiText.gameObject.activeSelf;
-        framerateToggle.onValueChanged.AddListener(OnFramerateCounterChanged);
     }
 
     private void Update()
     {
-        // Lock cursor when clicking outside of menu
-        if (!menuRoot.activeSelf && Input.GetMouseButtonDown(0))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
+
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
@@ -67,13 +33,8 @@ public class SupplyStationMenuManager : MonoBehaviour
         if (Input.GetButtonDown("Interaction")
             || (menuRoot.activeSelf && Input.GetButtonDown(GameConstants.k_ButtonNameCancel)))
         {
-            if (controlImage.activeSelf)
-            {
-                controlImage.SetActive(false);
-                return;
-            }
 
-            SetPauseMenuActivation(!menuRoot.activeSelf);
+            SetShopMenuActivation(!menuRoot.activeSelf);
 
         }
 
@@ -82,17 +43,16 @@ public class SupplyStationMenuManager : MonoBehaviour
             if (EventSystem.current.currentSelectedGameObject == null)
             {
                 EventSystem.current.SetSelectedGameObject(null);
-                lookSensitivitySlider.Select();
             }
         }
     }
 
-    public void ClosePauseMenu()
+    public void CloseShopMenu()
     {
-        SetPauseMenuActivation(false);
+        SetShopMenuActivation(false);
     }
 
-    void SetPauseMenuActivation(bool active)
+    void SetShopMenuActivation(bool active)
     {
         menuRoot.SetActive(active);
 
@@ -101,7 +61,6 @@ public class SupplyStationMenuManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Time.timeScale = 0f;
-            AudioUtility.SetMasterVolume(volumeWhenMenuOpen);
 
             EventSystem.current.SetSelectedGameObject(null);
         }
@@ -115,25 +74,13 @@ public class SupplyStationMenuManager : MonoBehaviour
 
     }
 
-    void OnMouseSensitivityChanged(float newValue)
+    public void OnButtonClicked(shopItemscript item)
     {
-        m_PlayerInputsHandler.lookSensitivity = newValue;
+        Debug.Log("The one selected is " + item.itemName);
     }
 
-    void OnShadowsChanged(bool newValue)
-    {
-        QualitySettings.shadows = newValue ? ShadowQuality.All : ShadowQuality.Disable;
-    }
 
-    void OnInvincibilityChanged(bool newValue)
-    {
-        m_PlayerHealth.invincible = newValue;
-    }
 
-    void OnFramerateCounterChanged(bool newValue)
-    {
-        m_FramerateCounter.uiText.gameObject.SetActive(newValue);
-    }
 
     public void OnShowControlButtonClicked(bool show)
     {
