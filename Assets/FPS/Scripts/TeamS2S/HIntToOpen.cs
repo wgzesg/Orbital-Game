@@ -1,38 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HIntToOpen : MonoBehaviour
 {
     public GameObject textline;
+    private StationTriggerManager station;
     // Start is called before the first frame update
     void Start()
     {
+        station = GetComponent<StationTriggerManager>();
         textline.SetActive(false);
+        station.OnEnteredStation += showHintText;
+        station.OnExitedStation += HideHintText;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    private void OnEnable()
-    {
-        StationTriggerManager.OnStayedStation += showHintText;
-        StationTriggerManager.OnExitedStation += HideHintText;
-    }
-    private void OnDisable()
-    {
-        StationTriggerManager.OnStayedStation -= showHintText;
-        StationTriggerManager.OnExitedStation -= HideHintText;
-    }
-    
+
     void showHintText()
     {
         textline.SetActive(true);
+        Debug.Log("it is set to active");
     }
     void HideHintText()
     {
         textline.SetActive(false);
+        Debug.Log("it is set to not active");
     }
 }

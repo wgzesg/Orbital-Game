@@ -1,18 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StationTriggerManager : MonoBehaviour
 {
-    public delegate void EnterStationAction();
-    public static event EnterStationAction OnEnteredStation;
+    public UnityAction OnEnteredStation;
 
     public delegate void StayStationAction();
     public static event StayStationAction OnStayedStation;
 
-    public delegate void ExitStationAction();
-    public static event ExitStationAction OnExitedStation;
+    public UnityAction OnExitedStation;
     
+<<<<<<< HEAD
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +25,9 @@ public class StationTriggerManager : MonoBehaviour
         
     }
     private void OnTriggerEnter(Collider player)
+=======
+    private void OnTriggerEnter(Collider other)
+>>>>>>> zesongs
     {
         print("Station Ready to Use");
         if(OnEnteredStation != null)
