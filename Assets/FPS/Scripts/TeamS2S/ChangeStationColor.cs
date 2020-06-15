@@ -5,10 +5,14 @@ using UnityEngine;
 public class ChangeStationColor : MonoBehaviour
 {
     Renderer rend;
+    StationTriggerManager station;
     // Start is called before the first frame update
     void Start()
     {
         rend = GetComponent<Renderer>();
+        station = GetComponentInChildren<StationTriggerManager>();
+        station.OnEnteredStation += TurnRed;
+        station.OnExitedStation += TurnBlack;
     }
 
     // Update is called once per frame
@@ -16,16 +20,7 @@ public class ChangeStationColor : MonoBehaviour
     {
         
     }
-    private void OnEnable()
-    {
-        StationTriggerManager.OnEnteredStation += TurnRed;
-        StationTriggerManager.OnExitedStation += TurnBlack;
-    }
-    private void OnDisable()
-    {
-        StationTriggerManager.OnEnteredStation -= TurnRed;
-        StationTriggerManager.OnExitedStation -= TurnBlack;
-    }
+
     void TurnRed()
     {
         //GetComponent<Renderer>().material.color = Color.red;

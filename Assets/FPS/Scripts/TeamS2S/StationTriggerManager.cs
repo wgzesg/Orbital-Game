@@ -1,29 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StationTriggerManager : MonoBehaviour
 {
-    public delegate void EnterStationAction();
-    public static event EnterStationAction OnEnteredStation;
+    public UnityAction OnEnteredStation;
 
     public delegate void StayStationAction();
     public static event StayStationAction OnStayedStation;
 
-    public delegate void ExitStationAction();
-    public static event ExitStationAction OnExitedStation;
+    public UnityAction OnExitedStation;
     
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
