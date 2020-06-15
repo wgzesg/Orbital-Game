@@ -17,11 +17,9 @@ public class HIntToOpen : MonoBehaviour
     void showHintText()
     {
         textline.SetActive(true);
-        Debug.Log("it is set to active");
     }
     void HideHintText()
     {
         textline.SetActive(false);
-        Debug.Log("it is set to not active");
     }
 }

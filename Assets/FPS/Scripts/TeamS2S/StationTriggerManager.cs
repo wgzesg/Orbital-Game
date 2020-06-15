@@ -20,7 +20,6 @@ public class StationTriggerManager : MonoBehaviour
         if (other.tag == "Player")
         {
             print("Station Ready to Use");
-            checkGButton = true;
             if (OnEnteredStation != null)
             {
                 OnEnteredStation(); // the station perform an animation to be activated
@@ -44,7 +43,6 @@ public class StationTriggerManager : MonoBehaviour
         if (other.tag == "Player")
         {
             print("GoodBye, Have a Nice Day");
-            checkGButton = false;
             if (OnExitedStation != null)
             {
                 OnExitedStation(); // the UI closed, and station perform animation to be deactivated.

@@ -11,13 +11,17 @@ public class SupplyStationMenuManager : MonoBehaviour
     public GameObject controlImage;
 
     PlayerInputHandler m_PlayerInputsHandler;
+    StationTriggerManager m_stationTriggerManager;
+    bool isIn = false;
 
     void Start()
     {
         m_PlayerInputsHandler = FindObjectOfType<PlayerInputHandler>();
         DebugUtility.HandleErrorIfNullFindObject<PlayerInputHandler, InGameMenuManager>(m_PlayerInputsHandler, this);
 
-
+        m_stationTriggerManager = FindObjectOfType<StationTriggerManager>();
+        m_stationTriggerManager.OnEnteredStation += OnEnter;
+        m_stationTriggerManager.OnExitedStation += OnExit;
         menuRoot.SetActive(false);
     }
 
@@ -30,7 +34,7 @@ public class SupplyStationMenuManager : MonoBehaviour
             Cursor.visible = true;
         }
 
-        if (Input.GetButtonDown("Interaction")
+        if (Input.GetButtonDown("Interaction") && isIn
             || (menuRoot.activeSelf && Input.GetButtonDown(GameConstants.k_ButtonNameCancel)))
         {
 
@@ -80,7 +84,15 @@ public class SupplyStationMenuManager : MonoBehaviour
     }
 
 
+    void OnEnter()
+    {
+        isIn = true;
+    }
 
+    void OnExit()
+    {
+        isIn = false;
+    }
 
     public void OnShowControlButtonClicked(bool show)
     {
