@@ -7,27 +7,12 @@ public class StationTriggerManager : MonoBehaviour
 {
     public UnityAction OnEnteredStation;
 
-    public delegate void StayStationAction();
-    public static event StayStationAction OnStayedStation;
+    public UnityAction OnStayedStation;
 
     public UnityAction OnExitedStation;
-    
-<<<<<<< HEAD
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    private void OnTriggerEnter(Collider player)
-=======
     private void OnTriggerEnter(Collider other)
->>>>>>> zesongs
+
     {
         print("Station Ready to Use");
         if(OnEnteredStation != null)
