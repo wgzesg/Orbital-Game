@@ -115,8 +115,6 @@ public class EnemyController : MonoBehaviour
     WeaponController[] m_Weapons;
     NavigationModule m_NavigationModule;
 
-    GameObject _dropLootTarget;
-
     void Start()
     {
         m_EnemyManager = FindObjectOfType<EnemyManager>();
@@ -138,11 +136,6 @@ public class EnemyController : MonoBehaviour
 
         m_GameFlowManager = FindObjectOfType<GameFlowManager>();
         DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, EnemyController>(m_GameFlowManager, this);
-
-        _dropLootTarget = GameObject.FindGameObjectWithTag("Player");
-
-
-        
 
         // Subscribe to damage & death actions
         m_Health.onDie += OnDie;
@@ -357,7 +350,6 @@ public class EnemyController : MonoBehaviour
 
     void OnDie()
     {
-        
         // spawn a particle system when dying
         var vfx = Instantiate(deathVFX, deathVFXSpawnPoint.position, Quaternion.identity);
         Destroy(vfx, 5f);
@@ -366,12 +358,9 @@ public class EnemyController : MonoBehaviour
         m_EnemyManager.UnregisterEnemy(this);
 
         // loot an object
-        for (int i = 0; i < m_Health.maxHealth / 50; i++) {
-            if (TryDropItem())
-            {
-                var go = Instantiate(lootPrefab, transform.position + new Vector3(0, Random.Range(0,2)), Quaternion.identity);
-                go.GetComponent<LootFollowTarget>().Target = _dropLootTarget.transform;
-            }
+        if (TryDropItem())
+        {
+            Instantiate(lootPrefab, transform.position, Quaternion.identity);
         }
 
         // this will call the OnDestroy function
