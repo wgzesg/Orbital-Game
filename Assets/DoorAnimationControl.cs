@@ -9,21 +9,14 @@ public class DoorAnimationControl : MonoBehaviour
     void Start()
     {
         door_animator = GetComponentInParent<Animator>();
-        Debug.Log("Found animator");
     }
 
     
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("There is a collision");
         if(collision.GetComponents<Actor>() != null)
         {
-            Debug.Log("valid collision");
             door_animator.SetBool("character_nearby", true);
-        }
-        else
-        {
-            Debug.Log("invalid collision");
         }
     }
 
