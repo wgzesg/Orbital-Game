@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class SupplyStationMenuManager : MonoBehaviour
 {
     [Tooltip("Root GameObject of the menu used to toggle its activation")]
     public GameObject menuRoot;
-    
-    [Tooltip("GameObject for the controls")]
-    public GameObject controlImage;
+
+    public TMPro.TextMeshProUGUI gearCountDisplay;
 
     PlayerInputHandler m_PlayerInputsHandler;
     StationTriggerManager m_stationTriggerManager;
+    Inventory m_inventory;
     bool isIn = false;
 
     void Start()
@@ -20,6 +19,9 @@ public class SupplyStationMenuManager : MonoBehaviour
         DebugUtility.HandleErrorIfNullFindObject<PlayerInputHandler, InGameMenuManager>(m_PlayerInputsHandler, this);
 
         m_stationTriggerManager = FindObjectOfType<StationTriggerManager>();
+        m_inventory = FindObjectOfType<Inventory>();
+        m_inventory.onUpdateGearCount += onChangeGearCount;
+
         m_stationTriggerManager.OnEnteredStation += OnEnter;
         m_stationTriggerManager.OnExitedStation += OnExit;
         menuRoot.SetActive(false);
@@ -65,6 +67,7 @@ public class SupplyStationMenuManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Time.timeScale = 0f;
+            gearCountDisplay.text = "Gears: " + m_inventory.gearCount;
 
             EventSystem.current.SetSelectedGameObject(null);
         }
@@ -78,8 +81,6 @@ public class SupplyStationMenuManager : MonoBehaviour
 
     }
 
-
-
     void OnEnter()
     {
         isIn = true;
@@ -90,8 +91,9 @@ public class SupplyStationMenuManager : MonoBehaviour
         isIn = false;
     }
 
-    public void OnShowControlButtonClicked(bool show)
+    public void onChangeGearCount(int newGearCount)
     {
-        controlImage.SetActive(show);
+        gearCountDisplay.text = "Gears: " + newGearCount;
     }
+
 }

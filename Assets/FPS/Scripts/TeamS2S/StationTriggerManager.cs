@@ -19,7 +19,6 @@ public class StationTriggerManager : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            print("Station Ready to Use");
             if (OnEnteredStation != null)
             {
                 OnEnteredStation(); // the station perform an animation to be activated
@@ -30,7 +29,6 @@ public class StationTriggerManager : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            print("What do you want for Today");
             if (OnStayedStation != null)
             {
                 OnStayedStation(); // the station show a hint, asking player to press 'E' to open the UI
@@ -42,7 +40,6 @@ public class StationTriggerManager : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            print("GoodBye, Have a Nice Day");
             if (OnExitedStation != null)
             {
                 OnExitedStation(); // the UI closed, and station perform animation to be deactivated.

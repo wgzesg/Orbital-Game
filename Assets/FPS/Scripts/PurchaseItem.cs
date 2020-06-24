@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine.Events;
 using UnityEngine;
 
 public class PurchaseItem : MonoBehaviour
@@ -7,16 +6,16 @@ public class PurchaseItem : MonoBehaviour
     public shopItemscript thePurchasedItem;
     public WeaponPickup gunDropPrefab;
     public Transform dropPoint;
-
+    
     Inventory m_inventory;
-
     PlayerWeaponsManager m_weaponManager;
+    SupplyStationMenuManager m_supplyStationMenuManager;
 
     private void Start()
     {
         m_weaponManager = FindObjectOfType<PlayerWeaponsManager>();
         m_inventory = FindObjectOfType<Inventory>();
-
+        m_supplyStationMenuManager = GetComponentInParent<SupplyStationMenuManager>();
     }
 
 
@@ -45,6 +44,8 @@ public class PurchaseItem : MonoBehaviour
         else
         {
             GameObject.Instantiate(gunDropPrefab, dropPoint);
+            m_inventory.gearCount -= item.itemPrice;
+            m_inventory.onUpdateGearCount.Invoke(m_inventory.gearCount);
         }
 
     }

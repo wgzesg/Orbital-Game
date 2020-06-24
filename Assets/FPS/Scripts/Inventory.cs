@@ -1,19 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class Inventory : MonoBehaviour
 {
-    public int gearCount;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int gearCount = 0;
+    public UnityAction<int> onUpdateGearCount;
 
-    // Update is called once per frame
-    void Update()
+
+    public void onPickUp()
     {
-        
+        gearCount ++;
+        if (onUpdateGearCount != null)
+            onUpdateGearCount.Invoke(gearCount);
     }
 }
