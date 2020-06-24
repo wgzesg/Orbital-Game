@@ -22,12 +22,15 @@ public class JetpackCounter : MonoBehaviour
 
     void Update()
     {
-        mainCanvasGroup.gameObject.SetActive(m_Jetpack.isJetpackUnlocked);
-
-        if (m_Jetpack.isJetpackUnlocked)
+        if (m_Jetpack != null)
         {
-            jetpackFillImage.fillAmount = m_Jetpack.currentFillRatio;
-            fillBarColorChange.UpdateVisual(m_Jetpack.currentFillRatio);
+            mainCanvasGroup.gameObject.SetActive(m_Jetpack.isJetpackUnlocked);
+
+            if (m_Jetpack.isJetpackUnlocked)
+            {
+                jetpackFillImage.fillAmount = m_Jetpack.currentFillRatio;
+                fillBarColorChange.UpdateVisual(m_Jetpack.currentFillRatio);
+            }
         }
     }
 }

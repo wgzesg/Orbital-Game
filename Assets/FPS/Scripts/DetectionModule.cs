@@ -53,35 +53,43 @@ public class DetectionModule : MonoBehaviour
             if (otherActor.affiliation != actor.affiliation)
             {
                 float sqrDistance = (otherActor.transform.position - detectionSourcePoint.position).sqrMagnitude;
-                if (sqrDistance < sqrDetectionRange && sqrDistance < closestSqrDistance)
-                {
-                    // Check for obstructions
-                    RaycastHit[] hits = Physics.RaycastAll(detectionSourcePoint.position, (otherActor.aimPoint.position - detectionSourcePoint.position).normalized, detectionRange, -1, QueryTriggerInteraction.Ignore);
-                    RaycastHit closestValidHit = new RaycastHit();
-                    closestValidHit.distance = Mathf.Infinity;
-                    bool foundValidHit = false;
-                    foreach (var hit in hits)
-                    {
-                        if (!selfColliders.Contains(hit.collider) && hit.distance < closestValidHit.distance)
-                        {
-                            closestValidHit = hit;
-                            foundValidHit = true;
-                        }
-                    }
 
-                    if (foundValidHit)
-                    {
-                        Actor hitActor = closestValidHit.collider.GetComponentInParent<Actor>();
-                        if (hitActor == otherActor)
-                        {
-                            isSeeingTarget = true;
-                            closestSqrDistance = sqrDistance;
+                isSeeingTarget = true;
+                closestSqrDistance = sqrDistance;
 
-                            m_TimeLastSeenTarget = Time.time;
-                            knownDetectedTarget = otherActor.aimPoint.gameObject;
-                        }
-                    }
-                }
+                m_TimeLastSeenTarget = Time.time;
+                knownDetectedTarget = otherActor.aimPoint.gameObject;
+
+                //float sqrDistance = (otherActor.transform.position - detectionSourcePoint.position).sqrMagnitude;
+                //if (sqrDistance < sqrDetectionRange && sqrDistance < closestSqrDistance)
+                //{
+                //    // Check for obstructions
+                //    RaycastHit[] hits = Physics.RaycastAll(detectionSourcePoint.position, (otherActor.aimPoint.position - detectionSourcePoint.position).normalized, detectionRange, -1, QueryTriggerInteraction.Ignore);
+                //    RaycastHit closestValidHit = new RaycastHit();
+                //    closestValidHit.distance = Mathf.Infinity;
+                //    bool foundValidHit = false;
+                //    foreach (var hit in hits)
+                //    {
+                //        if (!selfColliders.Contains(hit.collider) && hit.distance < closestValidHit.distance)
+                //        {
+                //            closestValidHit = hit;
+                //            foundValidHit = true;
+                //        }
+                //    }
+
+                //    if (foundValidHit)
+                //    {
+                //        Actor hitActor = closestValidHit.collider.GetComponentInParent<Actor>();
+                //        if (hitActor == otherActor)
+                //        {
+                //            isSeeingTarget = true;
+                //            closestSqrDistance = sqrDistance;
+
+                //            m_TimeLastSeenTarget = Time.time;
+                //            knownDetectedTarget = otherActor.aimPoint.gameObject;
+                //        }
+                //    }
+                //}
             }
         }
 

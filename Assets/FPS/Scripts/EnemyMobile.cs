@@ -128,9 +128,11 @@ public class EnemyMobile : MonoBehaviour
 
     void OnDetectedTarget()
     {
+
         if (aiState == AIState.Patrol)
         {
             aiState = AIState.Follow;
+
         }
         
         for (int i = 0; i < onDetectVFX.Length; i++)

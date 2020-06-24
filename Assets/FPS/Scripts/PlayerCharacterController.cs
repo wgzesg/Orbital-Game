@@ -118,7 +118,7 @@ public class PlayerCharacterController : MonoBehaviour
     float m_TargetCharacterHeight;
 
     const float k_JumpGroundingPreventionTime = 0.2f;
-    const float k_GroundCheckDistanceInAir = 0.07f;
+    const float k_GroundCheckDistanceInAir = 0.11f;
 
     void Start()
     {
