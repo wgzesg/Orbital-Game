@@ -78,10 +78,6 @@ public class SupplyStationMenuManager : MonoBehaviour
 
     }
 
-    public void OnButtonClicked(shopItemscript item)
-    {
-        Debug.Log("The one selected is " + item.itemName);
-    }
 
 
     void OnEnter()
