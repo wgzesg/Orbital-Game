@@ -115,6 +115,8 @@ public class EnemyController : MonoBehaviour
     WeaponController[] m_Weapons;
     NavigationModule m_NavigationModule;
 
+    GameObject m_TargetPlayer;
+
     void Start()
     {
         m_EnemyManager = FindObjectOfType<EnemyManager>();
@@ -136,6 +138,8 @@ public class EnemyController : MonoBehaviour
 
         m_GameFlowManager = FindObjectOfType<GameFlowManager>();
         DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, EnemyController>(m_GameFlowManager, this);
+
+        m_TargetPlayer = GameObject.FindGameObjectWithTag("Player");
 
         // Subscribe to damage & death actions
         m_Health.onDie += OnDie;
@@ -358,9 +362,13 @@ public class EnemyController : MonoBehaviour
         m_EnemyManager.UnregisterEnemy(this);
 
         // loot an object
-        if (TryDropItem())
+        for (int i = 0; i < m_Health.maxHealth/50; i++)
         {
-            Instantiate(lootPrefab, transform.position, Quaternion.identity);
+            if (TryDropItem())
+            {
+                var go = Instantiate(lootPrefab, transform.position + new Vector3(Random.Range(0,2),0), Quaternion.identity);
+                go.GetComponent<GearFollowPlayer>().Target = m_TargetPlayer.transform;
+            }
         }
 
         // this will call the OnDestroy function
