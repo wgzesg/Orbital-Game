@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName ="New shop item")]
 public class shopItemscript : ScriptableObject
 {
     public string itemName;
-    public int itemPrice;
+    public int level;
+    public int[] itemPrice;
     public Sprite itemImage;
+
 }

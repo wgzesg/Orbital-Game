@@ -469,7 +469,8 @@ public class PlayerWeaponsManager : MonoBehaviour
         for (int i = 0; i < m_WeaponSlots.Length; i++)
         {
             // when weapon found, remove it
-            if(m_WeaponSlots[i] == weaponInstance)
+            Debug.Log(weaponInstance.weaponName + " is tyring to be removed.");
+            if (m_WeaponSlots[i] == weaponInstance)
             {
                 m_WeaponSlots[i] = null;
 
@@ -477,6 +478,7 @@ public class PlayerWeaponsManager : MonoBehaviour
                 {
                     onRemovedWeapon.Invoke(weaponInstance, i);
                 }
+                
 
                 Destroy(weaponInstance.gameObject);
 

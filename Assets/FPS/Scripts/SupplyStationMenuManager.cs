@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 public class SupplyStationMenuManager : MonoBehaviour
 {
     [Tooltip("Root GameObject of the menu used to toggle its activation")]
-    public GameObject menuRoot;
+    public CanvasGroup menuRoot;
 
     public TMPro.TextMeshProUGUI gearCountDisplay;
 
@@ -24,7 +24,7 @@ public class SupplyStationMenuManager : MonoBehaviour
 
         m_stationTriggerManager.OnEnteredStation += OnEnter;
         m_stationTriggerManager.OnExitedStation += OnExit;
-        menuRoot.SetActive(false);
+        menuRoot.alpha = 0;
     }
 
     private void Update()
@@ -37,10 +37,10 @@ public class SupplyStationMenuManager : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Interaction") && isIn
-            || (menuRoot.activeSelf && Input.GetButtonDown(GameConstants.k_ButtonNameCancel)))
+            || (menuRoot.alpha == 0 && Input.GetButtonDown(GameConstants.k_ButtonNameCancel)))
         {
 
-            SetShopMenuActivation(!menuRoot.activeSelf);
+            SetShopMenuActivation(1);
 
         }
 
@@ -55,18 +55,17 @@ public class SupplyStationMenuManager : MonoBehaviour
 
     public void CloseShopMenu()
     {
-        SetShopMenuActivation(false);
+        SetShopMenuActivation(0f);
     }
 
-    void SetShopMenuActivation(bool active)
+    void SetShopMenuActivation(float alphaValue)
     {
-        menuRoot.SetActive(active);
+        menuRoot.alpha = alphaValue;
 
-        if (menuRoot.activeSelf)
+        if (menuRoot.alpha == 1)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            Time.timeScale = 0f;
             gearCountDisplay.text = "Gears: " + m_inventory.gearCount;
 
             EventSystem.current.SetSelectedGameObject(null);
@@ -75,7 +74,6 @@ public class SupplyStationMenuManager : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            Time.timeScale = 1f;
             AudioUtility.SetMasterVolume(1);
         }
 
