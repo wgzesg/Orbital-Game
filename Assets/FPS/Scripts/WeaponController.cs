@@ -65,7 +65,10 @@ public class WeaponController : MonoBehaviour
     [Tooltip("Delay after the last shot before starting to reload")]
     public float ammoReloadDelay = 2f;
     [Tooltip("Maximum amount of ammo in the gun")]
+    public float maxAmmoPerLoad = 8;
+    [Tooltip("Maximum amount of ammo can carry")]
     public float maxAmmo = 8;
+
 
     [Header("Charging parameters (charging weapons only)")]
     [Tooltip("Trigger a shot when maximum charge is reached")]
@@ -96,6 +99,7 @@ public class WeaponController : MonoBehaviour
     Vector3 m_LastMuzzlePosition;
 
     public float m_CurrentAmmo;
+    public float m_CurrentAmmoCarried;
     public GameObject owner { get; set; }
     public GameObject sourcePrefab { get; set; }
     public bool isCharging { get; private set; }
@@ -112,7 +116,9 @@ public class WeaponController : MonoBehaviour
 
     public virtual void Awake()
     {
-        m_CurrentAmmo = maxAmmo;
+        m_CurrentAmmo = maxAmmoPerLoad;
+        m_CurrentAmmoCarried = maxAmmo;
+
         m_LastMuzzlePosition = weaponMuzzle.position;
 
         m_ShootAudioSource = GetComponent<AudioSource>();

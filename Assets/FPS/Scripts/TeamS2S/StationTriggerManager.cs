@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,20 +17,14 @@ public class StationTriggerManager : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            if (OnEnteredStation != null)
-            {
-                OnEnteredStation(); // the station perform an animation to be activated
-            }
+            OnEnteredStation?.Invoke(); // the station perform an animation to be activated
         }
     }
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player")
         {
-            if (OnStayedStation != null)
-            {
-                OnStayedStation(); // the station show a hint, asking player to press 'E' to open the UI
-            }
+            OnStayedStation?.Invoke(); // the station show a hint, asking player to press 'G' to open the UI
         }
     }
 
@@ -40,10 +32,7 @@ public class StationTriggerManager : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            if (OnExitedStation != null)
-            {
-                OnExitedStation(); // the UI closed, and station perform animation to be deactivated.
-            }
+            OnExitedStation?.Invoke(); // the UI closed, and station perform animation to be deactivated.
         }
     }
 }

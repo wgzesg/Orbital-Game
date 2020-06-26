@@ -17,16 +17,18 @@ public class PurchaseItem : MonoBehaviour
     ItemDisplay m_itemDisplay;
     TMPro.TextMeshProUGUI buttonText;
 
-    private void Start()
+    private void Awake()
     {
         m_weaponManager = FindObjectOfType<PlayerWeaponsManager>();
+        m_weaponManager.onAddedWeapon += onAddWeaponHandler;
+    }
+    private void Start()
+    {
         m_inventory = FindObjectOfType<Inventory>();
         m_itemDisplay = GetComponent<ItemDisplay>();
         buttonText = purchaseKey.GetComponentInChildren<TMPro.TextMeshProUGUI>();
 
         countDown.gameObject.SetActive(false);
-
-        m_weaponManager.onAddedWeapon += onAddWeaponHandler;
 
     }
 

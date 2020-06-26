@@ -70,8 +70,8 @@ public class PlayerWeaponsManager : MonoBehaviour
     public UnityAction<WeaponController> onSwitchedToWeapon;
     public UnityAction<WeaponController, int> onAddedWeapon;
     public UnityAction<WeaponController, int> onRemovedWeapon;
+    public WeaponController[] m_WeaponSlots = new WeaponController[9]; // 9 available weapon slots
 
-    WeaponController[] m_WeaponSlots = new WeaponController[9]; // 9 available weapon slots
     PlayerInputHandler m_InputHandler;
     PlayerCharacterController m_PlayerCharacterController;
     float m_WeaponBobFactor;
@@ -435,6 +435,7 @@ public class PlayerWeaponsManager : MonoBehaviour
                 weaponInstance.owner = gameObject;
                 weaponInstance.sourcePrefab = weaponPrefab.gameObject;
                 weaponInstance.ShowWeapon(false);
+                weaponInstance.m_CurrentAmmo = weaponInstance.maxAmmoPerLoad;
 
                 // Assign the first person layer to the weapon
                 int layerIndex = Mathf.RoundToInt(Mathf.Log(FPSWeaponLayer.value, 2)); // This function converts a layermask to a layer index
@@ -444,7 +445,7 @@ public class PlayerWeaponsManager : MonoBehaviour
                 }
 
                 m_WeaponSlots[i] = weaponInstance;
-
+                
                 if(onAddedWeapon != null)
                 {
                     onAddedWeapon.Invoke(weaponInstance, i);
@@ -543,4 +544,5 @@ public class PlayerWeaponsManager : MonoBehaviour
             newWeapon.ShowWeapon(true);
         }
     }
+
 }

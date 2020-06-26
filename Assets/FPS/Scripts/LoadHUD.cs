@@ -32,7 +32,7 @@ public class LoadHUD : MonoBehaviour
     void Update()
     {
 
-        maxLoad = curr_activeWeapon.maxAmmo;
+        maxLoad = curr_activeWeapon.m_CurrentAmmoCarried;
         currentLoad = curr_activeWeapon.m_CurrentAmmo;
         ammutext.text = currentLoad + " / " + maxLoad;
         if (GetComponent<RectTransform>())

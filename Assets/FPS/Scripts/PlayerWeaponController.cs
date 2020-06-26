@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerWeaponController : WeaponController
@@ -37,7 +36,15 @@ public class PlayerWeaponController : WeaponController
         m_weaponManager.m_WeaponSwitchState = PlayerWeaponsManager.WeaponSwitchState.Reloading;
 
         yield return new WaitForSeconds(3.3f);
-        base.m_CurrentAmmo = base.maxAmmo;
+        if(base.m_CurrentAmmoCarried > base.maxAmmoPerLoad){
+            base.m_CurrentAmmo = base.maxAmmoPerLoad;
+            base.m_CurrentAmmoCarried -= base.maxAmmoPerLoad;
+        }
+        else
+        {
+            base.m_CurrentAmmo = base.m_CurrentAmmoCarried;
+            base.m_CurrentAmmoCarried = 0;
+        }
 
         m_weaponManager.m_WeaponSwitchState = PlayerWeaponsManager.WeaponSwitchState.Up;
     }
