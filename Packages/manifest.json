@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.unity.2d.spriteshape": "3.0.12",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.connect.share": "1.2.0-preview.1",
     "com.unity.ide.rider": "1.1.4",

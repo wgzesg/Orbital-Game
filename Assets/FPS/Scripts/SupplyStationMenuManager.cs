@@ -25,19 +25,14 @@ public class SupplyStationMenuManager : MonoBehaviour
         m_stationTriggerManager.OnEnteredStation += OnEnter;
         m_stationTriggerManager.OnExitedStation += OnExit;
         menuRoot.alpha = 0;
+        menuRoot.interactable = false;
+        menuRoot.blocksRaycasts = false;
     }
 
     private void Update()
     {
 
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-
-        if (Input.GetButtonDown("Interaction") && isIn
-            || (menuRoot.alpha == 0 && Input.GetButtonDown(GameConstants.k_ButtonNameCancel)))
+        if (Input.GetButtonDown("Interaction") && isIn)
         {
 
             SetShopMenuActivation(1);
@@ -61,7 +56,8 @@ public class SupplyStationMenuManager : MonoBehaviour
     void SetShopMenuActivation(float alphaValue)
     {
         menuRoot.alpha = alphaValue;
-
+        menuRoot.interactable = alphaValue == 1;
+        menuRoot.blocksRaycasts = alphaValue == 1;
         if (menuRoot.alpha == 1)
         {
             Cursor.lockState = CursorLockMode.None;
@@ -74,7 +70,6 @@ public class SupplyStationMenuManager : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            AudioUtility.SetMasterVolume(1);
         }
 
     }

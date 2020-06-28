@@ -38,7 +38,8 @@ public class HIntToOpen : MonoBehaviour
     private void OnExitHandler()
     {
         canvasRoot.SetActive(false);
-        StopCoroutine(refilling);
+        if(refilling != null)
+            StopCoroutine(refilling);
     }
 
     private IEnumerator RefillCoroutine()
