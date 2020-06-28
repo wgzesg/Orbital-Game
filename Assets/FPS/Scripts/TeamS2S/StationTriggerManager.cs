@@ -17,14 +17,14 @@ public class StationTriggerManager : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            OnEnteredStation?.Invoke(); // the station perform an animation to be activated
+            OnEnteredStation.Invoke(); // the station perform an animation to be activated
         }
     }
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player")
         {
-            OnStayedStation?.Invoke(); // the station show a hint, asking player to press 'G' to open the UI
+            OnStayedStation.Invoke(); // the station show a hint, asking player to press 'G' to open the UI
         }
     }
 
@@ -32,7 +32,7 @@ public class StationTriggerManager : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            OnExitedStation?.Invoke(); // the UI closed, and station perform animation to be deactivated.
+            OnExitedStation.Invoke(); // the UI closed, and station perform animation to be deactivated.
         }
     }
 }
