@@ -9,6 +9,7 @@ public class ObjectiveKillEnemies : MonoBehaviour
     public int killsToCompleteObjective = 5;
     [Tooltip("Start sending notification about remaining enemies when this amount of enemies is left")]
     public int notificationEnemiesRemainingThreshold = 3;
+    public int numberOfWaves = 3;
 
     EnemyManager m_EnemyManager;
     Objective m_Objective;

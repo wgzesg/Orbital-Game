@@ -4,7 +4,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(CharacterController), typeof(PlayerInputHandler), typeof(AudioSource))]
 public class PlayerCharacterController : MonoBehaviour
 {
-    
+
     [Header("References")]
     [Tooltip("Reference to the main camera used for the player")]
     public Camera playerCamera;
@@ -25,7 +25,7 @@ public class PlayerCharacterController : MonoBehaviour
     [Tooltip("Sharpness for the movement when grounded, a low value will make the player accelerate and decelerate slowly, a high value will do the opposite")]
     public float movementSharpnessOnGround = 15;
     [Tooltip("Max movement speed when crouching")]
-    [Range(0,1)]
+    [Range(0, 1)]
     public float maxSpeedCrouchedRatio = 0.5f;
     [Tooltip("Max movement speed when not grounded")]
     public float maxSpeedInAir = 10f;
@@ -102,7 +102,7 @@ public class PlayerCharacterController : MonoBehaviour
             return 1f;
         }
     }
-        
+
     Health m_Health;
     PlayerInputHandler m_InputHandler;
     CharacterController m_Controller;
@@ -155,7 +155,7 @@ public class PlayerCharacterController : MonoBehaviour
     void Update()
     {
         // check for Y kill
-        if(!isDead && transform.position.y < killHeight)
+        if (!isDead && transform.position.y < killHeight)
         {
             m_Health.Kill();
         }
@@ -270,7 +270,7 @@ public class PlayerCharacterController : MonoBehaviour
                 // smoothly interpolate between our current velocity and the target velocity based on acceleration speed
                 characterVelocity = Vector3.Lerp(characterVelocity, targetVelocity, movementSharpnessOnGround * Time.deltaTime);
 
-                if(characterVelocity.magnitude > 0.5)
+                if (characterVelocity.magnitude > 0.5)
                 {
                     if (localspaceMoveInput.z < 0f)
                         m_Anime.SetInteger("State", 4);  // reverse runninge
@@ -281,7 +281,7 @@ public class PlayerCharacterController : MonoBehaviour
                 }
                 else
                     m_Anime.SetInteger("State", 0);      // idle
-                
+
 
                 // jumping
                 if (isGrounded && m_InputHandler.GetJumpInputDown())
@@ -379,14 +379,14 @@ public class PlayerCharacterController : MonoBehaviour
 
     void UpdateCharacterHeight(bool force)
     {
-        
+
         // Update height instantly
         if (force)
         {
             m_Controller.height = m_TargetCharacterHeight;
             m_Controller.center = Vector3.up * m_Controller.height * 0.5f;
             //playerCamera.transform.localPosition = Vector3.up * m_TargetCharacterHeight * cameraHeightRatio;
-            
+
         }
         // Update smooth height
         else if (m_Controller.height != m_TargetCharacterHeight)
@@ -395,9 +395,9 @@ public class PlayerCharacterController : MonoBehaviour
             m_Controller.height = Mathf.Lerp(m_Controller.height, m_TargetCharacterHeight, crouchingSharpness * Time.deltaTime);
             m_Controller.center = Vector3.up * m_Controller.height * 0.5f;
             //playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, Vector3.up * m_TargetCharacterHeight * cameraHeightRatio, crouchingSharpness * Time.deltaTime) + Vector3.back * 3;
-            
+
         }
-        
+
     }
 
     // returns false if there was an obstruction
