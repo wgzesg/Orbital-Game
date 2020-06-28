@@ -47,7 +47,6 @@ public class StorytellingManager : MonoBehaviour
                 Cursor.visible = true;
 
                 EventSystem.current.SetSelectedGameObject(null);
-                Debug.Log("cursor is locked");
                 return true;
             }
         }
@@ -56,14 +55,12 @@ public class StorytellingManager : MonoBehaviour
 
     public void onYesClickHandler()
     {
-        Debug.Log("yes responded");
         displayNext();
         feedinDialogue("tutorial");
     }
 
     public void onNoClickHandler()
     {
-        Debug.Log("no responded");
         displayNext();
     }
 
@@ -71,7 +68,6 @@ public class StorytellingManager : MonoBehaviour
     {
         if(currentDialogIndex < currentActiveDialog.conversation.Length)
         {
-            Debug.Log("This is called once");
             message.text = currentActiveDialog.conversation[currentDialogIndex];
             currentDialogIndex++;
         }
@@ -93,6 +89,13 @@ public class StorytellingManager : MonoBehaviour
                 yesKey.gameObject.SetActive(false);
                 noKey.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "Continue";
                 feedinDialogue("background");
+            }
+            else if(currentDialogueName == "background")
+            {
+                if(onStartGame != null)
+                {
+                    onStartGame.Invoke();
+                }
             }
                     
         }

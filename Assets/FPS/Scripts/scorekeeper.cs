@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class Scorekeeper : MonoBehaviour
+public class scorekeeper : MonoBehaviour
 {
 
     public TMPro.TextMeshProUGUI ScoreboardText;
@@ -32,7 +32,7 @@ public class Scorekeeper : MonoBehaviour
 
     void OnRemoveEnemy(EnemyController deadEnemy, int enemyLeft)   // edit such that the score will multiply
     {
-        score += 1;
+        scoreMultiplier();
 
         ScoreboardText.text = "Score: " + score;
 
