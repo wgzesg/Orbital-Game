@@ -48,6 +48,7 @@ public class scorekeeper : MonoBehaviour
         checkPointTime = Time.time;
         if(checkPointTime - startTime <= criticalDuration)
         {
+            killedNum++;
             if(killedNum >= criticalKilledNum)
             {
                 if (multiplierIndex < multiplierIndexLimit)
@@ -60,7 +61,7 @@ public class scorekeeper : MonoBehaviour
         }
         else
         {
-            killedNum = 0;
+            killedNum = 1;
             multiplierIndex = 1;
         }
         startTime = Time.time;
