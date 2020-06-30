@@ -17,7 +17,6 @@ public class ProjectileBase : MonoBehaviour
         initialPosition = transform.position;
         initialDirection = transform.forward;
         inheritedMuzzleVelocity = controller.muzzleWorldVelocity;
-        initialCharge = controller.currentCharge;
 
         if (onShoot != null)
         {

@@ -4,8 +4,7 @@ using UnityEngine.Events;
 public enum WeaponShootType
 {
     Manual,
-    Automatic,
-    Charge,
+    Automatic
 }
 
 [System.Serializable]
@@ -50,9 +49,6 @@ public class WeaponController : MonoBehaviour
     public float bulletSpreadAngle = 0f;
     [Tooltip("Amount of bullets per shot")]
     public int bulletsPerShot = 1;
-    [Tooltip("Force that will push back the weapon after each shot")]
-    [Range(0f, 2f)]
-    public float recoilForce = 1;
     [Tooltip("Ratio of the default FOV that this weapon applies while aiming")]
     [Range(0f, 1f)]
     public float aimZoomRatio = 1f;
@@ -69,17 +65,6 @@ public class WeaponController : MonoBehaviour
     [Tooltip("Maximum amount of ammo can carry")]
     public float maxAmmo = 8;
 
-
-    [Header("Charging parameters (charging weapons only)")]
-    [Tooltip("Trigger a shot when maximum charge is reached")]
-    public bool automaticReleaseOnCharged;
-    [Tooltip("Duration to reach maximum charge")]
-    public float maxChargeDuration = 2f;
-    [Tooltip("Initial ammo used when starting to charge")]
-    public float ammoUsedOnStartCharge = 1f;
-    [Tooltip("Additional ammo used when charge reaches its maximum")]
-    public float ammoUsageRateWhileCharging = 1f;
-
     [Header("Audio & Visual")]
     [Tooltip("Optional weapon animator for OnShoot animations")]
     public Animator weaponAnimator;
@@ -95,20 +80,20 @@ public class WeaponController : MonoBehaviour
     public UnityAction onShoot;
 
     public float m_LastTimeShot = Mathf.NegativeInfinity;
-    float m_TimeBeginCharge;
     Vector3 m_LastMuzzlePosition;
 
     public float m_CurrentAmmo;
     public float m_CurrentAmmoCarried;
     public GameObject owner { get; set; }
     public GameObject sourcePrefab { get; set; }
-    public bool isCharging { get; private set; }
     public float currentAmmoRatio { get; private set; }
     public bool isWeaponActive { get; private set; }
     public bool isCooling { get; private set; }
-    public float currentCharge { get; private set; }
     public Vector3 muzzleWorldVelocity { get; private set; }
-    public float GetAmmoNeededToShoot() => (shootType != WeaponShootType.Charge ? 1 : ammoUsedOnStartCharge) / maxAmmo;
+
+    private const int V = 1;
+
+    public float GetAmmoNeededToShoot() => V / maxAmmo;
 
     AudioSource m_ShootAudioSource;
 
@@ -130,8 +115,6 @@ public class WeaponController : MonoBehaviour
     {
         UpdateAmmo();
 
-        UpdateCharge();
-
         if (Time.deltaTime > 0)
         {
             muzzleWorldVelocity = (weaponMuzzle.position - m_LastMuzzlePosition) / Time.deltaTime;
@@ -141,7 +124,7 @@ public class WeaponController : MonoBehaviour
 
     public virtual void UpdateAmmo()
     {
-        if (m_LastTimeShot + ammoReloadDelay < Time.time && m_CurrentAmmo < maxAmmo && !isCharging)
+        if (m_LastTimeShot + ammoReloadDelay < Time.time && m_CurrentAmmo < maxAmmo)
         {
             // reloads weapon over time
             m_CurrentAmmo += ammoReloadRate * Time.deltaTime;
@@ -163,41 +146,6 @@ public class WeaponController : MonoBehaviour
         else
         {
             currentAmmoRatio = m_CurrentAmmo / maxAmmo;
-        }
-    }
-
-    void UpdateCharge()
-    {
-        if (isCharging)
-        {
-            if (currentCharge < 1f)
-            {
-                float chargeLeft = 1f - currentCharge;
-
-                // Calculate how much charge ratio to add this frame
-                float chargeAdded = 0f;
-                if (maxChargeDuration <= 0f)
-                {
-                    chargeAdded = chargeLeft;
-                }
-                else
-                {
-                    chargeAdded = (1f / maxChargeDuration) * Time.deltaTime;
-                }
-
-                chargeAdded = Mathf.Clamp(chargeAdded, 0f, chargeLeft);
-
-                // See if we can actually add this charge
-                float ammoThisChargeWouldRequire = chargeAdded * ammoUsageRateWhileCharging;
-                if (ammoThisChargeWouldRequire <= m_CurrentAmmo)
-                {
-                    // Use ammo based on charge added
-                    UseAmmo(ammoThisChargeWouldRequire);
-
-                    // set current charge ratio
-                    currentCharge = Mathf.Clamp01(currentCharge + chargeAdded);
-                }
-            }
         }
     }
 
@@ -237,18 +185,6 @@ public class WeaponController : MonoBehaviour
                 }
                 return false;
 
-            case WeaponShootType.Charge:
-                if (inputHeld)
-                {
-                    TryBeginCharge();
-                }
-                // Check if we released charge or if the weapon shoot autmatically when it's fully charged
-                if (inputUp || (automaticReleaseOnCharged && currentCharge >= 1f))
-                {
-                    return TryReleaseCharge();
-                }
-                return false;
-
             default:
                 return false;
         }
@@ -265,35 +201,6 @@ public class WeaponController : MonoBehaviour
             return true;
         }
 
-        return false;
-    }
-
-    bool TryBeginCharge()
-    {
-        if (!isCharging 
-            && m_CurrentAmmo >= ammoUsedOnStartCharge 
-            && m_LastTimeShot + delayBetweenShots < Time.time)
-        {
-            UseAmmo(ammoUsedOnStartCharge); 
-            isCharging = true;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    bool TryReleaseCharge()
-    {
-        if (isCharging)
-        {
-            HandleShoot();
-
-            currentCharge = 0f;
-            isCharging = false;
-
-            return true;
-        }
         return false;
     }
 

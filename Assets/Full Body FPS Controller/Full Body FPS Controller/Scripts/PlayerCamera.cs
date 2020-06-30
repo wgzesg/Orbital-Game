@@ -122,7 +122,7 @@ namespace EasySurvivalScripts
         {
             if (!CharacterAnimator)
                 return;
-            if(m_weaponManager.activeWeaponIndex == 2)
+            if(m_weaponManager.GetActiveWeapon().weaponName == "Pistol")
                 _fpsCameraHelper.localPosition = Pistol_CameraOffset;
             else
                 _fpsCameraHelper.localPosition = FPS_CameraOffset;

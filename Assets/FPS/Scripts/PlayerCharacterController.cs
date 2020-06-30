@@ -39,17 +39,12 @@ public class PlayerCharacterController : MonoBehaviour
     [Header("Rotation")]
     [Tooltip("Rotation speed for moving the camera")]
     public float rotationSpeed = 200f;
-    [Range(0.1f, 1f)]
-    [Tooltip("Rotation speed multiplier when aiming")]
-    public float aimingRotationMultiplier = 0.4f;
 
     [Header("Jump")]
     [Tooltip("Force applied upward when jumping")]
     public float jumpForce = 9f;
 
     [Header("Stance")]
-    [Tooltip("Ratio (0-1) of the character height where the camera will be at")]
-    public float cameraHeightRatio = 0.9f;
     [Tooltip("Height of character when standing")]
     public float capsuleHeightStanding = 1.8f;
     [Tooltip("Height of character when crouching")]
@@ -90,18 +85,7 @@ public class PlayerCharacterController : MonoBehaviour
     public bool hasJumpedThisFrame { get; private set; }
     public bool isDead { get; private set; }
     public bool isCrouching { get; private set; }
-    public float RotationMultiplier
-    {
-        get
-        {
-            if (m_WeaponsManager.isAiming)
-            {
-                return aimingRotationMultiplier;
-            }
-
-            return 1f;
-        }
-    }
+    public float RotationMultiplier => 1f;
 
     Health m_Health;
     PlayerInputHandler m_InputHandler;
@@ -110,10 +94,8 @@ public class PlayerCharacterController : MonoBehaviour
     Actor m_Actor;
     Animator m_Anime;
     Vector3 m_GroundNormal;
-    Vector3 m_CharacterVelocity;
     Vector3 m_LatestImpactSpeed;
     float m_LastTimeJumped = 0f;
-    float m_CameraVerticalAngle = 0f;
     float m_footstepDistanceCounter;
     float m_TargetCharacterHeight;
 
@@ -270,6 +252,8 @@ public class PlayerCharacterController : MonoBehaviour
                 // smoothly interpolate between our current velocity and the target velocity based on acceleration speed
                 characterVelocity = Vector3.Lerp(characterVelocity, targetVelocity, movementSharpnessOnGround * Time.deltaTime);
 
+
+                // handle player animation
                 if (characterVelocity.magnitude > 0.5)
                 {
                     if (localspaceMoveInput.z < 0f)
@@ -385,7 +369,6 @@ public class PlayerCharacterController : MonoBehaviour
         {
             m_Controller.height = m_TargetCharacterHeight;
             m_Controller.center = Vector3.up * m_Controller.height * 0.5f;
-            //playerCamera.transform.localPosition = Vector3.up * m_TargetCharacterHeight * cameraHeightRatio;
 
         }
         // Update smooth height
@@ -394,7 +377,6 @@ public class PlayerCharacterController : MonoBehaviour
             // resize the capsule and adjust camera position
             m_Controller.height = Mathf.Lerp(m_Controller.height, m_TargetCharacterHeight, crouchingSharpness * Time.deltaTime);
             m_Controller.center = Vector3.up * m_Controller.height * 0.5f;
-            //playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, Vector3.up * m_TargetCharacterHeight * cameraHeightRatio, crouchingSharpness * Time.deltaTime) + Vector3.back * 3;
 
         }
 
