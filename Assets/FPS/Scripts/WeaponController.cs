@@ -26,6 +26,7 @@ public class WeaponController : MonoBehaviour
     public string weaponName;
     [Tooltip("The image that will be displayed in the UI for this weapon")]
     public Sprite weaponIcon;
+    public int currentLevel = 0;
 
     [Tooltip("Default data for the crosshair")]
     public CrosshairData crosshairDataDefault;

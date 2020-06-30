@@ -89,7 +89,7 @@ public class PurchaseItem : MonoBehaviour
         countDown.gameObject.SetActive(false);
 
 
-        GameObject.Instantiate(gunDropPrefab, dropPoint);
+        WeaponPickup newWeapon = GameObject.Instantiate(gunDropPrefab, dropPoint);
         item.level++;
         if(item.level < 4)
         {
@@ -97,7 +97,7 @@ public class PurchaseItem : MonoBehaviour
         }
         else
         {
-            Debug.Log("That's the highest level.");
+            purchaseKey.interactable = false;
         }
     }
 

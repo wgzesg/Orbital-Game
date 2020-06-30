@@ -105,9 +105,11 @@ public class PlayerWeaponsManager : MonoBehaviour
         if ( activeWeapon == null &&
             (m_WeaponSwitchState == WeaponSwitchState.Up || m_WeaponSwitchState == WeaponSwitchState.Down))
         {
+            Debug.Log("entering switch weapon function");
             int switchWeaponInput = m_InputHandler.GetSwitchWeaponInput();
             if (switchWeaponInput != 0)
             {
+                Debug.Log("there is a switching event");
                 bool switchUp = switchWeaponInput > 0;
                 SwitchWeapon(switchUp);
             }
@@ -116,6 +118,7 @@ public class PlayerWeaponsManager : MonoBehaviour
                 switchWeaponInput = m_InputHandler.GetSelectWeaponInput();
                 if (switchWeaponInput != 0)
                 {
+                    Debug.Log("there is a switching event");
                     if (GetWeaponAtSlotIndex(switchWeaponInput - 1) != null)
                         SwitchToWeaponIndex(switchWeaponInput - 1);
                 }
@@ -142,25 +145,7 @@ public class PlayerWeaponsManager : MonoBehaviour
     {
         UpdateWeaponSwitching();
 
-        if (m_WeaponSwitchState == WeaponSwitchState.Reloading)
-        {
-            m_Anime.SetLayerWeight(2, 0);
-            m_Anime.SetLayerWeight(1, 0);
-            m_Anime.SetLayerWeight(3, 1);
-        }
-
-        else if (GetActiveWeapon().weaponName == "Pistol")
-        {
-            m_Anime.SetLayerWeight(2, 1);
-            m_Anime.SetLayerWeight(1, 0);
-            m_Anime.SetLayerWeight(3, 0);
-        }
-        else
-        {
-            m_Anime.SetLayerWeight(2, 0);
-            m_Anime.SetLayerWeight(1, 1);
-            m_Anime.SetLayerWeight(3, 0);
-        }
+        UpdateAnimation();
 
         // Set final weapon socket position based on all the combined animation influences
         weaponParentSocket.localPosition = m_WeaponMainLocalPosition;
@@ -240,6 +225,26 @@ public class PlayerWeaponsManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    void UpdateAnimation()
+    {
+        m_Anime.SetLayerWeight(2, 0);
+        m_Anime.SetLayerWeight(1, 0);
+        m_Anime.SetLayerWeight(3, 0);
+        if (m_WeaponSwitchState == WeaponSwitchState.Reloading)
+        {
+            m_Anime.SetLayerWeight(3, 1);
+        }
+
+        else if (GetActiveWeapon().weaponName == "Pistol")
+        {
+            m_Anime.SetLayerWeight(2, 1);
+        }
+        else
+        {
+            m_Anime.SetLayerWeight(1, 1);
+        }
     }
 
     // Updates the animated transition of switching weapons

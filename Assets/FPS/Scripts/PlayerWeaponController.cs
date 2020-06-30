@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerWeaponController : WeaponController
 {
     PlayerInputHandler m_InputHandler;
-    Animator m_Anime;
     GameObject mainCam;
     PlayerWeaponsManager m_weaponManager;
 
@@ -12,8 +11,6 @@ public class PlayerWeaponController : WeaponController
     {
         base.Awake();
         m_InputHandler = GetComponentInParent<PlayerInputHandler>();
-
-        m_Anime = GetComponentInParent<Animator>();
 
         m_weaponManager = GetComponentInParent<PlayerWeaponsManager>();
 

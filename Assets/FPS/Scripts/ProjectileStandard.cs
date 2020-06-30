@@ -36,7 +36,7 @@ public class ProjectileStandard : MonoBehaviour
 
     [Header("Damage")]
     [Tooltip("Damage of the projectile")]
-    public float damage = 40f;
+    public float[] damage;
     [Tooltip("Area of damage. Keep empty if you don<t want area damage")]
     public DamageArea areaOfDamage;
 
@@ -202,12 +202,13 @@ public class ProjectileStandard : MonoBehaviour
     }
 
     void OnHit(Vector3 point, Vector3 normal, Collider collider)
-    { 
+    {
+        float dmg = damage[m_ProjectileBase.shotWeaponLevel];
         // damage
         if (areaOfDamage)
         {
             // area damage
-            areaOfDamage.InflictDamageInArea(damage, point, hittableLayers, k_TriggerInteraction, m_ProjectileBase.owner);
+            areaOfDamage.InflictDamageInArea(dmg, point, hittableLayers, k_TriggerInteraction, m_ProjectileBase.owner);
         }
         else
         {
@@ -215,7 +216,7 @@ public class ProjectileStandard : MonoBehaviour
             Damageable damageable = collider.GetComponent<Damageable>();
             if (damageable)
             {
-                damageable.InflictDamage(damage, false, m_ProjectileBase.owner);
+                damageable.InflictDamage(dmg, false, m_ProjectileBase.owner);
             }
         }
 

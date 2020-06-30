@@ -11,9 +11,11 @@ public class ProjectileBase : MonoBehaviour
 
     public UnityAction onShoot;
 
+    public int shotWeaponLevel;
     public void Shoot(WeaponController controller)
     {
         owner = controller.owner;
+        shotWeaponLevel = controller.currentLevel;
         initialPosition = transform.position;
         initialDirection = transform.forward;
         inheritedMuzzleVelocity = controller.muzzleWorldVelocity;
