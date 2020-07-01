@@ -328,8 +328,8 @@ public class PlayerWeaponsManager : MonoBehaviour
             {
                 // spawn the weapon prefab as child of the weapon socket
                 WeaponController weaponInstance = Instantiate(weaponPrefab, weaponParentSocket);
-                weaponInstance.transform.localPosition = (i == 2) ? pistolOffset : Vector3.zero;
-                weaponInstance.transform.localRotation = (i == 2) ? Quaternion.Euler(pistolRotation) : Quaternion.identity;
+                weaponInstance.transform.localPosition = (weaponInstance.weaponName == "Pistol") ? pistolOffset : Vector3.zero;
+                weaponInstance.transform.localRotation = (weaponInstance.weaponName == "Pistol") ? Quaternion.Euler(pistolRotation) : Quaternion.identity;
 
                 // Set owner to this gameObject so the weapon can alter projectile/damage logic accordingly
                 weaponInstance.owner = gameObject;
