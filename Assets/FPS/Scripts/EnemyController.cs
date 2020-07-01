@@ -68,6 +68,7 @@ public class EnemyController : MonoBehaviour
     [Header("Loot")]
     [Tooltip("The object this enemy can drop when dying")]
     public GameObject lootPrefab;
+    public GameObject lootPrefabsub;
     [Tooltip("The chance the object has to drop")]
     [Range(0, 1)]
     public float dropRate = 1f;
@@ -361,6 +362,12 @@ public class EnemyController : MonoBehaviour
         // tells the game flow manager to handle the enemy destuction
         m_EnemyManager.UnregisterEnemy(this);
 
+        //loot itemsub
+        if (TryDropItemSub())
+        {
+            Instantiate(lootPrefabsub, transform.position, Quaternion.identity);
+        }
+
         // loot an object
         for (int i = 0; i < m_Health.maxHealth/50; i++)
         {
@@ -439,7 +446,21 @@ public class EnemyController : MonoBehaviour
         else
             return (Random.value <= dropRate);
     }
-
+    public bool TryDropItemSub()
+    {
+        if(dropRate == 0||lootPrefabsub == null)
+        {
+            return false;
+        }
+        else if(dropRate == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return (Random.value <= dropRate);
+        }
+    }
     void FindAndInitializeAllWeapons()
     {
         // Check if we already found and initialized the weapons
