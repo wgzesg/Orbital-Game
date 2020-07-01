@@ -49,16 +49,16 @@ public class PurchaseItem : MonoBehaviour
             m_weaponManager.RemoveWeapon(existingWeapon);
             StartCoroutine(Upgrading(item));
 
-            item.level++;
             purchaseKey.interactable = false;
             buttonText.text = "Upgrade";
             m_itemDisplay.onUpdatePrice();
         }
         else // If it is first purchase
         {
-            GameObject.Instantiate(gunDropPrefab, dropPoint);
+            WeaponPickup newWeapon = GameObject.Instantiate(gunDropPrefab, dropPoint);
             m_inventory.gearCount -= item.itemPrice[item.level];
             m_inventory.onUpdateGearCount.Invoke(m_inventory.gearCount);
+
             item.level++;
             purchaseKey.interactable = false;
             buttonText.text = "Upgrade";
@@ -90,6 +90,7 @@ public class PurchaseItem : MonoBehaviour
 
 
         WeaponPickup newWeapon = GameObject.Instantiate(gunDropPrefab, dropPoint);
+
         item.level++;
         if(item.level < 4)
         {

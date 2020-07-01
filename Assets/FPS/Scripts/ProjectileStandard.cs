@@ -204,6 +204,7 @@ public class ProjectileStandard : MonoBehaviour
     void OnHit(Vector3 point, Vector3 normal, Collider collider)
     {
         float dmg = damage[m_ProjectileBase.shotWeaponLevel];
+        Debug.Log("the level of weapon is " + m_ProjectileBase.shotWeaponLevel);
         // damage
         if (areaOfDamage)
         {

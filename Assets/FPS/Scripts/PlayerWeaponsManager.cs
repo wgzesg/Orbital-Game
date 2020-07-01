@@ -102,14 +102,12 @@ public class PlayerWeaponsManager : MonoBehaviour
         }
 
         // weapon switch handling
-        if ( activeWeapon == null &&
+        if ( activeWeapon != null &&
             (m_WeaponSwitchState == WeaponSwitchState.Up || m_WeaponSwitchState == WeaponSwitchState.Down))
         {
-            Debug.Log("entering switch weapon function");
             int switchWeaponInput = m_InputHandler.GetSwitchWeaponInput();
             if (switchWeaponInput != 0)
             {
-                Debug.Log("there is a switching event");
                 bool switchUp = switchWeaponInput > 0;
                 SwitchWeapon(switchUp);
             }
@@ -118,7 +116,6 @@ public class PlayerWeaponsManager : MonoBehaviour
                 switchWeaponInput = m_InputHandler.GetSelectWeaponInput();
                 if (switchWeaponInput != 0)
                 {
-                    Debug.Log("there is a switching event");
                     if (GetWeaponAtSlotIndex(switchWeaponInput - 1) != null)
                         SwitchToWeaponIndex(switchWeaponInput - 1);
                 }
@@ -129,9 +126,9 @@ public class PlayerWeaponsManager : MonoBehaviour
         isPointingAtEnemy = false;
         if (activeWeapon)
         {
-            if(Physics.Raycast(weaponCamera.transform.position, weaponCamera.transform.forward, out RaycastHit hit, 1000, -1, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(weaponCamera.transform.position, weaponCamera.transform.forward, out RaycastHit hit, 1000, -1, QueryTriggerInteraction.Ignore))
             {
-                if(hit.collider.GetComponentInParent<EnemyController>())
+                if (hit.collider.GetComponentInParent<EnemyController>())
                 {
                     isPointingAtEnemy = true;
                 }
@@ -236,7 +233,10 @@ public class PlayerWeaponsManager : MonoBehaviour
         {
             m_Anime.SetLayerWeight(3, 1);
         }
-
+        else if(GetActiveWeapon() == null)
+        {
+            return;
+        }
         else if (GetActiveWeapon().weaponName == "Pistol")
         {
             m_Anime.SetLayerWeight(2, 1);

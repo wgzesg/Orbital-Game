@@ -111,6 +111,10 @@ public class WeaponController : MonoBehaviour
         DebugUtility.HandleErrorIfNullGetComponent<AudioSource, WeaponController>(m_ShootAudioSource, this, gameObject);
 
     }
+    public virtual void Start()
+    {
+
+    }
 
     void Update()
     {

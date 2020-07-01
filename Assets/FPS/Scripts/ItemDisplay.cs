@@ -10,7 +10,6 @@ public class ItemDisplay : MonoBehaviour
     public TMPro.TextMeshProUGUI price;
     public Image itemSprite;
 
-    private PurchaseItem m_purchaseItem;
     // Start is called before the first frame update
     void Start()
     {

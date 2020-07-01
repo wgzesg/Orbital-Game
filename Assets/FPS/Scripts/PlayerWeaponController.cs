@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerWeaponController : WeaponController
 {
+    public shopItemscript weaponData;
     PlayerInputHandler m_InputHandler;
     GameObject mainCam;
     PlayerWeaponsManager m_weaponManager;
@@ -18,13 +19,20 @@ public class PlayerWeaponController : WeaponController
             mainCam = GameObject.Find("Camera");
 
     }
+    public override void Start()
+    {
+        currentLevel = weaponData.level - 1;
+        if (currentLevel < 0)
+            currentLevel = 0;
+    }
 
     public override void UpdateAmmo()
     {
-        if (m_InputHandler.GetReloadInputReleased())
+        if (!m_InputHandler.GetReloadInputReleased())
         {
-            StartCoroutine(loadingCoroutine());
+            return;
         }
+        StartCoroutine(loadingCoroutine());
 
     }
 
@@ -33,14 +41,15 @@ public class PlayerWeaponController : WeaponController
         m_weaponManager.m_WeaponSwitchState = PlayerWeaponsManager.WeaponSwitchState.Reloading;
 
         yield return new WaitForSeconds(3.3f);
-        if(base.m_CurrentAmmoCarried > base.maxAmmoPerLoad){
-            base.m_CurrentAmmo = base.maxAmmoPerLoad;
-            base.m_CurrentAmmoCarried -= base.maxAmmoPerLoad;
+        if(m_CurrentAmmoCarried > maxAmmoPerLoad)
+        {
+            m_CurrentAmmo = maxAmmoPerLoad;
+            m_CurrentAmmoCarried -= maxAmmoPerLoad;
         }
         else
         {
-            base.m_CurrentAmmo = base.m_CurrentAmmoCarried;
-            base.m_CurrentAmmoCarried = 0;
+            m_CurrentAmmo = m_CurrentAmmoCarried;
+            m_CurrentAmmoCarried = 0;
         }
 
         m_weaponManager.m_WeaponSwitchState = PlayerWeaponsManager.WeaponSwitchState.Up;
