@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.AI;
 
 public class Damageable : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class Damageable : MonoBehaviour
     public float sensibilityToSelfdamage = 0.5f;
     public Material botMaterial;
     public GameObject botRoot;
+    public NavMeshAgent agent;
+    public Color slowColor;
+
+
     public Health health { get; private set; }
 
     private Material slowMaterial;
@@ -28,10 +33,11 @@ public class Damageable : MonoBehaviour
         if (botMaterial)
         {
             slowMaterial = new Material(botMaterial);
-            slowMaterial.color = Color.blue;
+            slowMaterial.color = slowColor;
             children = new List<Renderer>(botRoot.GetComponentsInChildren<Renderer>());
             _ = children.RemoveAll(WrongMat);
         }
+        agent = GetComponentInParent<NavMeshAgent>();
 
     }
 
@@ -73,8 +79,9 @@ public class Damageable : MonoBehaviour
         {
             rend.material = slowMaterial;
         }
+        agent.speed /= 2;
 
-        if(UnderEffect != null)
+        if (UnderEffect != null)
         {
             Debug.Log("it is stopped");
             StopCoroutine(UnderEffect);
@@ -89,6 +96,7 @@ public class Damageable : MonoBehaviour
         {
             rend.material = botMaterial;
         }
+        agent.speed *= 2;
 
     }
 }
