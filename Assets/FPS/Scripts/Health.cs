@@ -21,6 +21,8 @@ public class Health : MonoBehaviour
 
     bool m_IsDead;
 
+    public GameObject FloatingTextPrefab; // to reference floating text created by S2S
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -44,6 +46,11 @@ public class Health : MonoBehaviour
     {
         if (invincible)
             return;
+        // trigger floating health
+        if (FloatingTextPrefab && damage > 0)
+        {
+            ShowFloatingText(damage);
+        }
 
         float healthBefore = currentHealth;
         currentHealth -= damage;
@@ -57,6 +64,13 @@ public class Health : MonoBehaviour
         }
 
         HandleDeath();
+    }
+
+
+    void ShowFloatingText(float damage)
+    {
+        var go = Instantiate(FloatingTextPrefab, transform.transform.position, Quaternion.identity, transform);
+        go.GetComponent<TextMesh>().text = damage.ToString();
     }
 
     public void Kill()

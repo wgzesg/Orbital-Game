@@ -14,7 +14,7 @@ public class DoorAnimationV2 : MonoBehaviour
     {
         if (collision.tag == "Player" ||collision.tag == "Enemy")
         {
-            Debug.Log("I am open now");
+            
             door_animator.SetBool("character_nearby", true);
         }
     }
