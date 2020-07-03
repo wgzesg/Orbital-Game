@@ -1,16 +1,23 @@
 ﻿using UnityEngine;
+using System.Linq;
+using System;
+using Random = UnityEngine.Random;
+using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class Spawn : MonoBehaviour
 {
-    public GameObject enemy;
     public Transform[] spawnPoints;
-
+    public levelData levelDataFile;
+    public UnityAction<int, int> onSpawn;
 
     private ObjectiveKillEnemies killObjective;
     private int numOfwaves = 0;
     private int targetWaves;
     EnemyManager m_enemyManager;
     StorytellingManager m_story;
+
+
     void Start()
     {
         m_enemyManager = GetComponent<EnemyManager>();
@@ -20,32 +27,41 @@ public class Spawn : MonoBehaviour
         m_story.onStartGame += onStartGameSpawn;
 
         killObjective = FindObjectOfType<ObjectiveKillEnemies>();
-        targetWaves = killObjective.numberOfWaves;
+        targetWaves = killObjective.targetWaves;
 
     }
 
     private void onStartGameSpawn()
     {
-        for(int i = 0; i< 10; i++)
-        {
-            Vector3 randomVector = new Vector3(Random.Range(5, -5), 0, Random.Range(5, -5));
-            Instantiate(enemy, spawnPoints[0].position + randomVector, Quaternion.identity);
-        }
-        numOfwaves++;
+        SpwanNewWave();
     }
 
     private void removeEnemyHandler(EnemyController diedOne, int enemyleft)
     {
-        if(enemyleft <= 3 && numOfwaves < targetWaves)
+        if (enemyleft == 0)
         {
-            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-            for(int i = 0; i < 10; i++)
-            {
-                Vector3 randomVector = new Vector3(Random.Range(5, -5), 0, Random.Range(5, -5));
-                Instantiate(enemy, spawnPoint.position + randomVector, Quaternion.identity);
-            }
-            numOfwaves++;
+            SpwanNewWave();
         }
+    }
+
+    private void SpwanNewWave()
+    {
+        List<Transform> spawnPointList = spawnPoints.OrderBy(x => Guid.NewGuid()).Take(levelDataFile.levelsystem[numOfwaves].numberOfSpots).ToList();
+        GameObject[] enemyForms = levelDataFile.levelsystem[numOfwaves].enemyForm;
+        int numPerPoint = levelDataFile.levelsystem[numOfwaves].numToSpawnAtEachPoint;
+        foreach (Transform spawnpoint in spawnPointList)
+        {
+            for (int i = 0; i < numPerPoint; i++){
+                Vector3 randomVector = new Vector3(Random.Range(5, -5), 0, Random.Range(5, -5));
+                Instantiate(enemyForms[Random.Range(0, enemyForms.Length)], spawnpoint.position + randomVector, Quaternion.identity);
+            }
+        }
+        int totalDeployed = levelDataFile.levelsystem[numOfwaves].numberOfSpots * levelDataFile.levelsystem[numOfwaves].numToSpawnAtEachPoint;
+        if (onSpawn != null)
+        {
+            onSpawn.Invoke(numOfwaves, totalDeployed);
+        }
+        numOfwaves++;
     }
 
 

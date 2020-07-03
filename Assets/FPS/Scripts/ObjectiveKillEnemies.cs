@@ -3,16 +3,15 @@
 [RequireComponent(typeof(Objective))]
 public class ObjectiveKillEnemies : MonoBehaviour
 {
-    [Tooltip("Chose whether you need to kill every enemies or only a minimum amount")]
-    public bool mustKillAllEnemies = true;
-    [Tooltip("If MustKillAllEnemies is false, this is the amount of enemy kills required")]
-    public int killsToCompleteObjective = 5;
     [Tooltip("Start sending notification about remaining enemies when this amount of enemies is left")]
     public int notificationEnemiesRemainingThreshold = 3;
-    public int numberOfWaves = 3;
+    public int notificationWavesRemainingThreshold = 3;
+    public int targetWaves = 1;
 
+    private int defeatedWaves;
     EnemyManager m_EnemyManager;
     Objective m_Objective;
+    Spawn m_spawnManager;
     int m_KillTotal;
 
     void Start()
@@ -24,13 +23,14 @@ public class ObjectiveKillEnemies : MonoBehaviour
         DebugUtility.HandleErrorIfNullFindObject<EnemyManager, ObjectiveKillEnemies>(m_EnemyManager, this);
         m_EnemyManager.onRemoveEnemy += OnKillEnemy;
 
-        if (mustKillAllEnemies)
-            killsToCompleteObjective = m_EnemyManager.numberOfEnemiesTotal;
+        m_spawnManager = FindObjectOfType<Spawn>();
+        DebugUtility.HandleErrorIfNullFindObject<Spawn, ObjectiveKillEnemies>(m_spawnManager, this);
+        m_spawnManager.onSpawn += OnSpawnHandler;
         
 
         // set a title and description specific for this type of objective, if it hasn't one
         if (string.IsNullOrEmpty(m_Objective.title))
-            m_Objective.title = "Eliminate " + (mustKillAllEnemies ? "all the" : killsToCompleteObjective.ToString()) + " enemies";
+            m_Objective.title = "Eliminate all the enemies";
 
         if (string.IsNullOrEmpty(m_Objective.description))
             m_Objective.description = GetUpdatedCounterAmount();
@@ -38,41 +38,36 @@ public class ObjectiveKillEnemies : MonoBehaviour
 
     void OnKillEnemy(EnemyController enemy, int remaining)
     {
-        if (m_Objective.isCompleted)
-            return;
-
-        if (mustKillAllEnemies)
-            killsToCompleteObjective = m_EnemyManager.numberOfEnemiesTotal;
-
         m_KillTotal = m_EnemyManager.numberOfEnemiesTotal - remaining;
-        int targetRemaning = mustKillAllEnemies ? remaining : killsToCompleteObjective - m_KillTotal;
+        int targetRemaning = remaining;
 
-        // update the objective text according to how many enemies remain to kill
-        if (targetRemaning == 0)
+        // create a notification text if needed, if it stays empty, the notification will not be created
+        string notificationText = notificationEnemiesRemainingThreshold >= targetRemaning ? targetRemaning + " enemies to kill left" : string.Empty;
+        m_Objective.UpdateObjective(string.Empty, GetUpdatedCounterAmount(), notificationText);
+    }
+
+
+    void OnSpawnHandler(int wavesDefeated, int totalDeployed)
+    {
+        m_KillTotal = m_EnemyManager.numberOfEnemiesTotal - totalDeployed;
+        int targetRemaning = totalDeployed;
+        int remainingWaves = targetWaves - wavesDefeated;
+        defeatedWaves = wavesDefeated;
+        if (defeatedWaves == targetWaves)
         {
             m_Objective.CompleteObjective(string.Empty, GetUpdatedCounterAmount(), "Objective complete : " + m_Objective.title);
         }
         else
         {
-
-            if (targetRemaning == 1)
-            {
-                string notificationText = notificationEnemiesRemainingThreshold >= targetRemaning ? "One enemy left" : string.Empty;
-                m_Objective.UpdateObjective(string.Empty, GetUpdatedCounterAmount(), notificationText);
-            }
-            else if (targetRemaning > 1)
-            {
-                // create a notification text if needed, if it stays empty, the notification will not be created
-                string notificationText = notificationEnemiesRemainingThreshold >= targetRemaning ? targetRemaning + " enemies to kill left" : string.Empty;
-
-                m_Objective.UpdateObjective(string.Empty, GetUpdatedCounterAmount(), notificationText);
-            }
+            string notificationText = notificationWavesRemainingThreshold >= remainingWaves ? remainingWaves + " waves of enemeis to kill left" : string.Empty;
+            m_Objective.UpdateObjective(string.Empty, GetUpdatedCounterAmount(), notificationText);
         }
+
     }
 
     string GetUpdatedCounterAmount()
     {
-        return m_KillTotal + " / " + killsToCompleteObjective;
+        return defeatedWaves + " / " + targetWaves;
     }
 
 }

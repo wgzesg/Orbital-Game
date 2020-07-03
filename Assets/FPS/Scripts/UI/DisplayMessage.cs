@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class DisplayMessage : MonoBehaviour
 {
@@ -10,33 +11,25 @@ public class DisplayMessage : MonoBehaviour
     [Tooltip("Delay before displaying the message")]
     public float delayBeforeShowing;
 
-    float m_InitTime = float.NegativeInfinity;
-    bool m_WasDisplayed;
     DisplayMessageManager m_DisplayMessageManager;
 
     void Start()
     {
-        m_InitTime = Time.time;
         m_DisplayMessageManager = FindObjectOfType<DisplayMessageManager>();
         DebugUtility.HandleErrorIfNullFindObject<DisplayMessageManager, DisplayMessage>(m_DisplayMessageManager, this);
+
+        StartCoroutine(DisplayFunction());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator DisplayFunction()
     {
-        if (m_WasDisplayed)
-            return;
+        yield return new WaitForSeconds(delayBeforeShowing);
 
-        if (Time.time - m_InitTime > delayBeforeShowing)
+        var messageInstance = Instantiate(messagePrefab, m_DisplayMessageManager.DisplayMessageRect);
+        var notification = messageInstance.GetComponent<NotificationToast>();
+        if (notification)
         {
-            var messageInstance = Instantiate(messagePrefab, m_DisplayMessageManager.DisplayMessageRect);
-            var notification = messageInstance.GetComponent<NotificationToast>();
-            if (notification)
-            {
-                notification.Initialize(message);
-            }
-
-            m_WasDisplayed = true;
+            notification.Initialize(message);
         }
     }
 }

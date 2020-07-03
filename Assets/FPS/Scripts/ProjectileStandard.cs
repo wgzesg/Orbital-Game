@@ -193,12 +193,7 @@ public class ProjectileStandard : MonoBehaviour
         }
 
         // ignore hits with specific ignored colliders (self colliders, by default)
-        if (m_IgnoredColliders != null && m_IgnoredColliders.Contains(hit.collider))
-        {
-            return false;
-        }
-
-        return true;
+        return m_IgnoredColliders == null || !m_IgnoredColliders.Contains(hit.collider);
     }
 
     void OnHit(Vector3 point, Vector3 normal, Collider collider)
@@ -242,7 +237,7 @@ public class ProjectileStandard : MonoBehaviour
         // Self Destruct
         Destroy(this.gameObject);
     }
-
+   
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = radiusColor;
