@@ -212,7 +212,7 @@ public class ProjectileStandard : MonoBehaviour
             if (damageable)
             {
                 damageable.InflictDamage(dmg, false, m_ProjectileBase.owner);
-                if(m_ProjectileBase.shotWeaponLevel >= 3)
+                if(m_ProjectileBase.shotWeaponLevel >= 2)
                     damageable.InflictEffect(m_ProjectileBase.owner);
 
             }

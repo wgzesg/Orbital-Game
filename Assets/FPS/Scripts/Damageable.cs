@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.AI;
+using System.Linq;
 
 public class Damageable : MonoBehaviour
 {
@@ -10,16 +11,17 @@ public class Damageable : MonoBehaviour
     [Range(0, 1)]
     [Tooltip("Multiplier to apply to self damage")]
     public float sensibilityToSelfdamage = 0.5f;
-    public Material botMaterial;
+    public Material[] botMaterial;
     public GameObject botRoot;
-    public NavMeshAgent agent;
     public Color slowColor;
 
 
     public Health health { get; private set; }
 
+    private NavMeshAgent agent;
     private Material slowMaterial;
     private List<Renderer> children;
+    private List<Material> OrignalChildren = new List<Material>();
     private Coroutine UnderEffect;
 
     void Awake()
@@ -30,12 +32,13 @@ public class Damageable : MonoBehaviour
         {
             health = GetComponentInParent<Health>();
         }
-        if (botMaterial)
+        if (botMaterial.Length != 0)
         {
-            slowMaterial = new Material(botMaterial);
+            slowMaterial = new Material(botMaterial[0]);
             slowMaterial.color = slowColor;
             children = new List<Renderer>(botRoot.GetComponentsInChildren<Renderer>());
             _ = children.RemoveAll(WrongMat);
+            children.ForEach(rend => OrignalChildren.Add(rend.material));
         }
         agent = GetComponentInParent<NavMeshAgent>();
 
@@ -43,7 +46,7 @@ public class Damageable : MonoBehaviour
 
     private bool WrongMat(Renderer rend)
     {
-        return rend.sharedMaterial != botMaterial;
+        return !botMaterial.Contains(rend.sharedMaterial);
     }
 
     public void InflictDamage(float damage, bool isExplosionDamage, GameObject damageSource)
@@ -77,13 +80,13 @@ public class Damageable : MonoBehaviour
         }
         foreach (Renderer rend in children)
         {
+            Debug.Log("setting color to " + slowMaterial);
             rend.material = slowMaterial;
         }
         agent.speed /= 2;
 
         if (UnderEffect != null)
         {
-            Debug.Log("it is stopped");
             StopCoroutine(UnderEffect);
         }
         UnderEffect = StartCoroutine(ChangeBack());
@@ -92,9 +95,10 @@ public class Damageable : MonoBehaviour
     IEnumerator ChangeBack()
     {
         yield return new WaitForSeconds(5f);
-        foreach (Renderer rend in children)
+        for(int i = 0; i < children.Count; i ++)
         {
-            rend.material = botMaterial;
+            Debug.Log("set back to " + OrignalChildren[i]);
+            children[i].material = OrignalChildren[i];
         }
         agent.speed *= 2;
 
