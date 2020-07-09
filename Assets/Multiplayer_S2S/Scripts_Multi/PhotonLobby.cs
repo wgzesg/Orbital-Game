@@ -55,6 +55,8 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("we are now in a room");
+        
+
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)

@@ -15,10 +15,13 @@ public class EnemyManager : MonoBehaviour
 
     private void Awake()
     {
+        enemies = new List<EnemyController>();
+    }
+
+    private void Start()
+    {
         m_PlayerController = FindObjectOfType<PlayerCharacterController>();
         DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, EnemyManager>(m_PlayerController, this);
-
-        enemies = new List<EnemyController>();
     }
 
     public void RegisterEnemy(EnemyController enemy)

@@ -8,7 +8,7 @@ public class NotificationHUDManager : MonoBehaviour
     public GameObject notificationPrefab;
 
 
-    void Awake()
+    void Start()
     {
         PlayerWeaponsManager playerWeaponsManager = FindObjectOfType<PlayerWeaponsManager>();
         DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, NotificationHUDManager>(playerWeaponsManager, this);

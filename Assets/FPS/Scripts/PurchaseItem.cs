@@ -19,11 +19,11 @@ public class PurchaseItem : MonoBehaviour
 
     private void Awake()
     {
-        m_weaponManager = FindObjectOfType<PlayerWeaponsManager>();
-        m_weaponManager.onAddedWeapon += onAddWeaponHandler;
     }
     private void Start()
     {
+        m_weaponManager = FindObjectOfType<PlayerWeaponsManager>();
+        m_weaponManager.onAddedWeapon += onAddWeaponHandler;
         m_inventory = FindObjectOfType<Inventory>();
         m_itemDisplay = GetComponent<ItemDisplay>();
         buttonText = purchaseKey.GetComponentInChildren<TMPro.TextMeshProUGUI>();

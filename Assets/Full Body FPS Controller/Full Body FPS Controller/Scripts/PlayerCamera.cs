@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace EasySurvivalScripts
 {
@@ -35,7 +33,6 @@ namespace EasySurvivalScripts
         PlayerInputHandler m_InputHandler;
         Transform FPSController;
         float xClamp;
-        Vector3 camMoveLoc;
         Transform _fpsCameraHelper;
         Transform _tpsCameraHelper;
         PlayerWeaponsManager m_weaponManager;

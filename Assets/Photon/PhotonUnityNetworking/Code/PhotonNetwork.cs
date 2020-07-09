@@ -3151,6 +3151,11 @@ namespace Photon.Pun
                 }
             }
         }
-        #endif
+
+        public static void Instantiate(string v, Transform transform)
+        {
+            throw new NotImplementedException();
+        }
+#endif
     }
 }

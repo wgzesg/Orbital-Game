@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(CharacterController), typeof(PlayerInputHandler), typeof(AudioSource))]
@@ -102,7 +103,7 @@ public class PlayerCharacterController : MonoBehaviour
     const float k_JumpGroundingPreventionTime = 0.2f;
     const float k_GroundCheckDistanceInAir = 0.11f;
 
-    void Start()
+    public virtual void Start()
     {
         // fetch components on the same gameObject
         m_Controller = GetComponent<CharacterController>();
@@ -134,7 +135,7 @@ public class PlayerCharacterController : MonoBehaviour
         UpdateCharacterHeight(true);
     }
 
-    void Update()
+    public virtual void Update()
     {
         // check for Y kill
         if (!isDead && transform.position.y < killHeight)
