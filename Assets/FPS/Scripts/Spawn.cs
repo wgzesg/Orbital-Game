@@ -11,9 +11,9 @@ public class Spawn : MonoBehaviour
     public levelData levelDataFile;
     public UnityAction<int, int> onSpawn;
 
-    private ObjectiveKillEnemies killObjective;
-    private int numOfwaves = 0;
-    private int targetWaves;
+    public ObjectiveKillEnemies killObjective;
+    public int numOfwaves = 0;
+    public int targetWaves;
     EnemyManager m_enemyManager;
     StorytellingManager m_story;
 
@@ -31,12 +31,12 @@ public class Spawn : MonoBehaviour
 
     }
 
-    private void onStartGameSpawn()
+    public virtual void onStartGameSpawn()
     {
         SpwanNewWave();
     }
 
-    private void removeEnemyHandler(EnemyController diedOne, int enemyleft)
+    public virtual void removeEnemyHandler(EnemyController diedOne, int enemyleft)
     {
         if (enemyleft == 0)
         {
@@ -44,7 +44,7 @@ public class Spawn : MonoBehaviour
         }
     }
 
-    private void SpwanNewWave()
+    public virtual void SpwanNewWave()
     {
         List<Transform> spawnPointList = spawnPoints.OrderBy(x => Guid.NewGuid()).Take(levelDataFile.levelsystem[numOfwaves].numberOfSpots).ToList();
         GameObject[] enemyForms = levelDataFile.levelsystem[numOfwaves].enemyForm;

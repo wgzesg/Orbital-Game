@@ -57,7 +57,7 @@ public class PlayerWeaponsManager : MonoBehaviour
     int m_WeaponSwitchNewWeaponIndex;
 
 
-    private void Start()
+    public virtual void Start()
     {
         activeWeaponIndex = -1;
         m_WeaponSwitchState = WeaponSwitchState.Down;
@@ -85,7 +85,7 @@ public class PlayerWeaponsManager : MonoBehaviour
         SwitchWeapon(true);
     }
 
-    private void Update()
+    public virtual void Update()
     {
         // shoot handling
         WeaponController activeWeapon = GetActiveWeapon();
@@ -138,7 +138,7 @@ public class PlayerWeaponsManager : MonoBehaviour
 
 
     // Update various animated features in LateUpdate because it needs to override the animated arm position
-    private void LateUpdate()
+    public void LateUpdate()
     {
         UpdateWeaponSwitching();
 
@@ -224,7 +224,7 @@ public class PlayerWeaponsManager : MonoBehaviour
         return false;
     }
 
-    void UpdateAnimation()
+    public void UpdateAnimation()
     {
         m_Anime.SetLayerWeight(2, 0);
         m_Anime.SetLayerWeight(1, 0);
@@ -248,7 +248,7 @@ public class PlayerWeaponsManager : MonoBehaviour
     }
 
     // Updates the animated transition of switching weapons
-    void UpdateWeaponSwitching()
+    public void UpdateWeaponSwitching()
     {
         // Calculate the time ratio (0 to 1) since weapon switch was triggered
         float switchingTimeFactor = 0f;

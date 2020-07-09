@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Photon.Pun;
 using UnityEngine;
 
 public class PlayerWeaponController : WeaponController
@@ -7,6 +8,7 @@ public class PlayerWeaponController : WeaponController
     PlayerInputHandler m_InputHandler;
     GameObject mainCam;
     PlayerWeaponsManager m_weaponManager;
+    PhotonView PV;
 
     public override void Awake()
     {
@@ -14,6 +16,9 @@ public class PlayerWeaponController : WeaponController
         m_InputHandler = GetComponentInParent<PlayerInputHandler>();
 
         m_weaponManager = GetComponentInParent<PlayerWeaponsManager>();
+
+        if(GetComponentInParent<PhotonView>() != null)
+            PV = GetComponentInParent<PhotonView>();
 
         if (GetComponentInParent<PlayerCharacterController>() != null)
             mainCam = GameObject.Find("Camera");
@@ -32,7 +37,8 @@ public class PlayerWeaponController : WeaponController
         {
             return;
         }
-        StartCoroutine(loadingCoroutine());
+        if(PV == null ||(PV.IsMine))
+            StartCoroutine(loadingCoroutine());
 
     }
 
