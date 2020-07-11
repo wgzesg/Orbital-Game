@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 public enum WeaponShootType
@@ -62,7 +63,7 @@ public class WeaponController : MonoBehaviour
     [Tooltip("Delay after the last shot before starting to reload")]
     public float ammoReloadDelay = 2f;
     [Tooltip("Maximum amount of ammo in the gun")]
-    public float maxAmmoPerLoad = 8;
+    public int maxAmmoPerLoad = 8;
     [Tooltip("Maximum amount of ammo can carry")]
     public float maxAmmo = 8;
 
@@ -100,6 +101,8 @@ public class WeaponController : MonoBehaviour
 
     const string k_AnimAttackParameter = "Attack";
 
+    Queue<ProjectileBase> bulletPool;
+
     public virtual void Awake()
     {
         m_CurrentAmmo = maxAmmoPerLoad;
@@ -113,6 +116,13 @@ public class WeaponController : MonoBehaviour
     }
     public virtual void Start()
     {
+        bulletPool = new Queue<ProjectileBase>();
+        for(int i = 0; i < maxAmmoPerLoad; i++)
+        {
+            ProjectileBase bullet = Instantiate(projectilePrefab);
+            bullet.gameObject.SetActive(false);
+            bulletPool.Enqueue(bullet);
+        }
 
     }
 
@@ -215,7 +225,7 @@ public class WeaponController : MonoBehaviour
         for (int i = 0; i < bulletsPerShot; i++)
         {
             Vector3 shotDirection = GetShotDirectionWithinSpread(weaponMuzzle);
-            ProjectileBase newProjectile = Instantiate(projectilePrefab, weaponMuzzle.position, Quaternion.LookRotation(shotDirection));
+            ProjectileBase newProjectile = spawnBullet(weaponMuzzle.position, Quaternion.LookRotation(shotDirection));
             newProjectile.Shoot(this);
         }
 
@@ -232,13 +242,13 @@ public class WeaponController : MonoBehaviour
             Destroy(muzzleFlashInstance, 2f);
         }
 
-        m_LastTimeShot = Time.time;
-
         // play shoot SFX
         if (shootSFX)
         {
             m_ShootAudioSource.PlayOneShot(shootSFX);
         }
+
+        m_LastTimeShot = Time.time;
 
         // Trigger attack animation if there is any
         if (weaponAnimator)
@@ -262,4 +272,18 @@ public class WeaponController : MonoBehaviour
 
         return spreadWorldDirection;
     }
+
+
+    public ProjectileBase spawnBullet(Vector3 location, Quaternion rotation) {
+        ProjectileBase bullet = bulletPool.Dequeue();
+        bullet.gameObject.SetActive(true);
+        bullet.transform.position = location;
+        bullet.transform.rotation = rotation;
+
+        bulletPool.Enqueue(bullet);
+
+        return bullet;
+
+    }
+
 }

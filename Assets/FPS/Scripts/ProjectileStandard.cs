@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 [RequireComponent(typeof(ProjectileBase))]
@@ -62,9 +64,15 @@ public class ProjectileStandard : MonoBehaviour
 
         m_ProjectileBase.onShoot += OnShoot;
 
-        Destroy(gameObject, maxLifeTime);
+        StartCoroutine(AutoDisable());
     }
 
+    IEnumerator AutoDisable()
+    {
+        yield return new WaitForSeconds(maxLifeTime);
+        gameObject.SetActive(false);
+
+    }
     void OnShoot()
     {
         m_ShootTime = Time.time;
@@ -208,12 +216,15 @@ public class ProjectileStandard : MonoBehaviour
         else
         {
             // point damage
-            Damageable damageable = collider.GetComponent<Damageable>();
+            Damageable damageable = collider.GetComponentInParent<Damageable>();
             if (damageable)
             {
-                damageable.InflictDamage(dmg, false, m_ProjectileBase.owner);
-                if(m_ProjectileBase.shotWeaponLevel >= 2)
-                    damageable.InflictEffect(m_ProjectileBase.owner);
+                Debug.Log("About to send to " + RpcTarget.All);
+                damageable.PV.RPC("RPC_InflictDamage", RpcTarget.All, dmg, false, m_ProjectileBase.owner.GetComponent<PhotonView>().ViewID);
+                Debug.Log("It is called just now");
+
+                if(m_ProjectileBase.shotWeaponLevel >= 2) // inflict effect if the weapon is of higher level
+                    damageable.PV.RPC("RPC_InflictEffect", RpcTarget.All, m_ProjectileBase.owner.tag);
 
             }
         }
@@ -235,7 +246,7 @@ public class ProjectileStandard : MonoBehaviour
         }
 
         // Self Destruct
-        Destroy(this.gameObject);
+        gameObject.SetActive(false);
     }
    
     private void OnDrawGizmosSelected()

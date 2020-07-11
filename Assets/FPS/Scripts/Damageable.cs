@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.AI;
 using System.Linq;
+using Photon.Pun;
 
 public class Damageable : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class Damageable : MonoBehaviour
     private List<Renderer> children;
     private List<Material> OrignalChildren = new List<Material>();
     private Coroutine UnderEffect;
+    public PhotonView PV;
 
     void Awake()
     {
@@ -41,6 +43,7 @@ public class Damageable : MonoBehaviour
             children.ForEach(rend => OrignalChildren.Add(rend.material));
         }
         agent = GetComponentInParent<NavMeshAgent>();
+        PV = GetComponent<PhotonView>();
 
     }
 
@@ -49,9 +52,34 @@ public class Damageable : MonoBehaviour
         return !botMaterial.Contains(rend.sharedMaterial);
     }
 
-    public void InflictDamage(float damage, bool isExplosionDamage, GameObject damageSource)
+    [PunRPC]
+    public void RPC_InflictDamage(float damage, bool isExplosionDamage, int damageSourceID)
     {
         if(health)
+        {
+            var totalDamage = damage;
+
+            // skip the crit multiplier if it's from an explosion
+            if (!isExplosionDamage)
+            {
+                totalDamage *= damageMultiplier;
+            }
+
+            GameObject damageSource = PhotonView.Find(damageSourceID).gameObject;
+            // potentially reduce damages if inflicted by self
+            if (health.gameObject == damageSource)
+            {
+                totalDamage *= sensibilityToSelfdamage;
+            }
+
+            // apply the damages
+            health.TakeDamage(totalDamage, damageSource);
+        }
+    }
+
+    public void InflictDamage(float damage, bool isExplosionDamage, GameObject damageSource)
+    {
+        if (health)
         {
             var totalDamage = damage;
 
@@ -72,9 +100,10 @@ public class Damageable : MonoBehaviour
         }
     }
 
-    public void InflictEffect(GameObject damageSource)
+    [PunRPC]
+    public void RPC_InflictEffect(string damageSource)
     {
-        if (botRoot == null || damageSource.tag != "Player")
+        if (botRoot == null || damageSource != "Player")
         {
             return;
         }

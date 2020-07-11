@@ -26,6 +26,7 @@ public class PlayerWeaponController : WeaponController
     }
     public override void Start()
     {
+        base.Start();
         currentLevel = weaponData.level - 1;
         if (currentLevel < 0)
             currentLevel = 0;
