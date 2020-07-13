@@ -3,9 +3,7 @@ using UnityEngine.Events;
 
 public class GearScript : MonoBehaviour
 {
-    private Inventory playerInventory;
     UnityAction onPickUp;
-
 
     private void OnTriggerEnter(Collider other)
     {
