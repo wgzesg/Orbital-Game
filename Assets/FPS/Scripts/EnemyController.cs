@@ -116,8 +116,6 @@ public class EnemyController : MonoBehaviour
     WeaponController[] m_Weapons;
     NavigationModule m_NavigationModule;
 
-    GameObject m_TargetPlayer;
-
     void Start()
     {
         m_EnemyManager = FindObjectOfType<EnemyManager>();
@@ -139,8 +137,6 @@ public class EnemyController : MonoBehaviour
 
         m_GameFlowManager = FindObjectOfType<GameFlowManager>();
         DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, EnemyController>(m_GameFlowManager, this);
-
-        m_TargetPlayer = GameObject.FindGameObjectWithTag("Player");
 
         // Subscribe to damage & death actions
         m_Health.onDie += OnDie;
@@ -353,7 +349,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    void OnDie()
+    void OnDie(GameObject damageSource)
     {
         // spawn a particle system when dying
         var vfx = Instantiate(deathVFX, deathVFXSpawnPoint.position, Quaternion.identity);
@@ -374,7 +370,7 @@ public class EnemyController : MonoBehaviour
             if (TryDropItem())
             {
                 var go = Instantiate(lootPrefab, transform.position + new Vector3(Random.Range(0,2),0), Quaternion.identity);
-                go.GetComponent<GearFollowPlayer>().Target = m_TargetPlayer.transform;
+                go.GetComponent<GearFollowPlayer>().Target = damageSource.transform;
             }
         }
 

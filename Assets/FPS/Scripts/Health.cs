@@ -10,7 +10,7 @@ public class Health : MonoBehaviour
 
     public UnityAction<float, GameObject> onDamaged;
     public UnityAction<float> onHealed;
-    public UnityAction onDie;
+    public UnityAction<GameObject> onDie;
 
     public float currentHealth { get; set; }
     public bool invincible { get; set; }
@@ -86,7 +86,7 @@ public class Health : MonoBehaviour
         HandleDeath();
     }
 
-    private void HandleDeath()
+    private void HandleDeath(GameObject damageSource)
     {
         if (m_IsDead)
             return;
@@ -97,7 +97,7 @@ public class Health : MonoBehaviour
             if (onDie != null)
             {
                 m_IsDead = true;
-                onDie.Invoke();
+                onDie.Invoke(damageSource);
             }
         }
     }
