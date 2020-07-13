@@ -19,7 +19,7 @@ public class Destructable : MonoBehaviour
         // TODO: damage reaction
     }
 
-    void OnDie()
+    void OnDie(GameObject damageSource)
     {
         // this will call the OnDestroy function
         Destroy(gameObject);

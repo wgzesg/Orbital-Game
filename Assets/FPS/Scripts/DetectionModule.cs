@@ -55,10 +55,12 @@ public class DetectionModule : MonoBehaviour
                 float sqrDistance = (otherActor.transform.position - detectionSourcePoint.position).sqrMagnitude;
 
                 isSeeingTarget = true;
-                closestSqrDistance = sqrDistance;
-
-                m_TimeLastSeenTarget = Time.time;
-                knownDetectedTarget = otherActor.aimPoint.gameObject;
+                if (sqrDistance < closestSqrDistance)
+                {
+                    closestSqrDistance = sqrDistance;
+                    m_TimeLastSeenTarget = Time.time;
+                    knownDetectedTarget = otherActor.aimPoint.gameObject;
+                }
 
                 //float sqrDistance = (otherActor.transform.position - detectionSourcePoint.position).sqrMagnitude;
                 //if (sqrDistance < sqrDetectionRange && sqrDistance < closestSqrDistance)

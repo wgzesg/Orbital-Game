@@ -180,7 +180,7 @@ public class PlayerCharacterController : MonoBehaviour
         HandleCharacterMovement();
     }
 
-    void OnDie()
+    void OnDie(GameObject damageSource)
     {
         isDead = true;
 

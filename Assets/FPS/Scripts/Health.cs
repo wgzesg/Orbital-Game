@@ -63,7 +63,7 @@ public class Health : MonoBehaviour
             onDamaged.Invoke(trueDamageAmount, damageSource);
         }
 
-        HandleDeath();
+        HandleDeath(damageSource);
     }
 
 
@@ -83,7 +83,7 @@ public class Health : MonoBehaviour
             onDamaged.Invoke(maxHealth, null);
         }
 
-        HandleDeath();
+        HandleDeath(null);
     }
 
     private void HandleDeath(GameObject damageSource)

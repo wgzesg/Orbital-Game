@@ -358,6 +358,19 @@ public class EnemyController : MonoBehaviour
         // tells the game flow manager to handle the enemy destuction
         m_EnemyManager.UnregisterEnemy(this);
 
+
+        DropLootHandler(damageSource);
+
+        // this will call the OnDestroy function
+        Destroy(gameObject, deathDuration);
+    }
+
+    public void DropLootHandler(GameObject damageSource)
+    {
+        // if it is self destroyed due to fall, nothing drops
+        if (damageSource == null)
+            return;
+
         //loot itemsub
         if (TryDropItemSub())
         {
@@ -365,17 +378,14 @@ public class EnemyController : MonoBehaviour
         }
 
         // loot an object
-        for (int i = 0; i < m_Health.maxHealth/50; i++)
+        for (int i = 0; i < m_Health.maxHealth / 50; i++)
         {
             if (TryDropItem())
             {
-                var go = Instantiate(lootPrefab, transform.position + new Vector3(Random.Range(0,2),0), Quaternion.identity);
+                var go = Instantiate(lootPrefab, transform.position + new Vector3(Random.Range(0, 2), 0), Quaternion.identity);
                 go.GetComponent<GearFollowPlayer>().Target = damageSource.transform;
             }
         }
-
-        // this will call the OnDestroy function
-        Destroy(gameObject, deathDuration);
     }
 
     private void OnDrawGizmosSelected()
