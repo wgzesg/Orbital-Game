@@ -6,15 +6,14 @@ public class inventoryHUD : MonoBehaviour
 
     private Inventory playerInventory;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        inventoryDisplay.text = "Gears: " + 0;
         playerInventory = FindObjectOfType<Inventory>();
         playerInventory.onUpdateGearCount += OnChangedGearCount;
     }
 
     void OnChangedGearCount(int newCount)
     {
-        inventoryDisplay.text = "Gears: " + newCount;
+        inventoryDisplay.text = "Gears: " + playerInventory.gearCount;
     }
 }

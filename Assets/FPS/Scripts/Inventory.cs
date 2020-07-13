@@ -9,6 +9,7 @@ public class Inventory : MonoBehaviour
 
     public void onPickUp()
     {
+        Debug.Log("I picked up item");
         gearCount ++;
         if (onUpdateGearCount != null)
             onUpdateGearCount.Invoke(gearCount);
