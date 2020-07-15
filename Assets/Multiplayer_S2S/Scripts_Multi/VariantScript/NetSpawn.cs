@@ -12,7 +12,6 @@ public class NetSpawn : Spawn
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("master spawned enemy");
             base.onStartGameSpawn();
         }
         

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameFlowManager : MonoBehaviour
@@ -25,14 +26,30 @@ public class GameFlowManager : MonoBehaviour
     [Tooltip("This string has to be the name of the scene you want to load when losing")]
     public string loseSceneName = "LoseScene";
 
+    private bool GameProgressMonitor;
 
-    public bool gameIsEnding { get; private set; }
+    public bool gameIsEnding
+    {
+        get { return GameProgressMonitor; }
+        set
+        {
+            if (value == GameProgressMonitor)
+                return;
+
+            GameProgressMonitor = value;
+            if (GameProgressMonitor)
+            {
+                Debug.Log("The setter is working");
+                StartCoroutine(fading());
+            }
+        }
+    }
 
     PlayerCharacterController m_Player;
     NotificationHUDManager m_NotificationHUDManager;
     ObjectiveManager m_ObjectiveManager;
     float m_TimeLoadEndGameScene;
-    string m_SceneToLoad;
+    string m_SceneToLoad = "WinScene";
     
     void Start()
     {
@@ -41,35 +58,37 @@ public class GameFlowManager : MonoBehaviour
 
         m_ObjectiveManager = FindObjectOfType<ObjectiveManager>();
 		DebugUtility.HandleErrorIfNullFindObject<ObjectiveManager, GameFlowManager>(m_ObjectiveManager, this);
+        m_ObjectiveManager.OnAllCompleted += OnAllcompletedHandler;
+
+        PlayerManager.PMinstance.OnAllDied += OnAllDiedHandler;
 
         AudioUtility.SetMasterVolume(1);
     }
 
-    void Update()
+    IEnumerator fading()
     {
-        if (gameIsEnding)
+        while(Time.time <= m_TimeLoadEndGameScene)
         {
             float timeRatio = 1 - (m_TimeLoadEndGameScene - Time.time) / endSceneLoadDelay;
             endGameFadeCanvasGroup.alpha = timeRatio;
 
             AudioUtility.SetMasterVolume(1 - timeRatio);
-
-            // See if it's time to load the end scene (after the delay)
-            if (Time.time >= m_TimeLoadEndGameScene)
-            {
-                SceneManager.LoadScene(m_SceneToLoad);
-                gameIsEnding = false;
-            }
+            yield return new WaitForEndOfFrame();
         }
-        else
-        {
-            if (m_ObjectiveManager.AreAllObjectivesCompleted())
-                EndGame(true);
 
-            // Test if player died
-            if (m_Player.isDead)
-                EndGame(false);
-        }
+        Debug.Log("About to load " + m_SceneToLoad);
+        SceneManager.LoadScene(m_SceneToLoad);
+        gameIsEnding = false;
+    }
+
+    public void OnAllcompletedHandler()
+    {
+        EndGame(true);
+    }
+
+    public void OnAllDiedHandler()
+    {
+        EndGame(false);
     }
 
     void EndGame(bool win)
@@ -77,12 +96,12 @@ public class GameFlowManager : MonoBehaviour
         // unlocks the cursor before leaving the scene, to be able to click buttons
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
+        Debug.Log("Endgame is run");
         // Remember that we need to load the appropriate end scene after a delay
-        gameIsEnding = true;
         endGameFadeCanvasGroup.gameObject.SetActive(true);
         if (win)
         {
+            Debug.Log("The win part of EndGame is run");
             m_SceneToLoad = winSceneName;
             m_TimeLoadEndGameScene = Time.time + endSceneLoadDelay + delayBeforeFadeToBlack;
 
@@ -103,8 +122,11 @@ public class GameFlowManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("The lose part of EndGame is run");
             m_SceneToLoad = loseSceneName;
             m_TimeLoadEndGameScene = Time.time + endSceneLoadDelay;
         }
+
+        gameIsEnding = true;
     }
 }

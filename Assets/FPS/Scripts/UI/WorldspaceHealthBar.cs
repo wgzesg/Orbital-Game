@@ -12,14 +12,14 @@ public class WorldspaceHealthBar : MonoBehaviour
     [Tooltip("Whether the health bar is visible when at full health or not")]
     public bool hideFullHealthBar = true;
 
-    Camera main;
+    public Camera main;
 
-    private void Start()
+    public virtual void Start()
     {
         main = FindObjectOfType<Camera>();
     }
 
-    void Update()
+    public virtual void Update()
     {
         // update health bar value
         healthBarImage.fillAmount = health.currentHealth / health.maxHealth;

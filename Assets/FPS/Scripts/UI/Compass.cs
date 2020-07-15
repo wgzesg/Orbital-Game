@@ -13,25 +13,26 @@ public class Compass : MonoBehaviour
 
     public GameObject MarkerDirectionPrefab;
 
-    Transform m_PlayerTransform;
-    Dictionary<Transform, CompassMarker> m_ElementsDictionnary = new Dictionary<Transform, CompassMarker>();
+    public Transform m_PlayerTransform;
+    public Dictionary<Transform, CompassMarker> m_ElementsDictionnary = new Dictionary<Transform, CompassMarker>();
 
     float m_WidthMultiplier;
     float m_heightOffset;
 
-    void Awake()
+    public void Awake()
     {
         m_WidthMultiplier = compasRect.rect.width / visibilityAngle;
         m_heightOffset = -compasRect.rect.height / 2;
     }
-    private void Start()
+
+    public virtual void Start()
     {
         PlayerCharacterController playerCharacterController = FindObjectOfType<PlayerCharacterController>();
         DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, Compass>(playerCharacterController, this);
         m_PlayerTransform = playerCharacterController.transform;
     }
 
-    void Update()
+    public void Update()
     {
         // this is all very WIP, and needs to be reworked
         foreach (var element in m_ElementsDictionnary)

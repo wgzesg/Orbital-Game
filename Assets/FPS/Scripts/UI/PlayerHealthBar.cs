@@ -1,27 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHealthBar : MonoBehaviour
 {
     [Tooltip("Image component dispplaying current health")]
     public Image healthFillImage;
+    private PlayerAvatar PA;
 
     Health m_PlayerHealth;
 
     private void Start()
     {
-        PlayerCharacterController playerCharacterController = GameObject.FindObjectOfType<PlayerCharacterController>();
-        DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, PlayerHealthBar>(playerCharacterController, this);
+        PA = PlayerManager.PMinstance.findLocalPlayerAvatar();
 
-        m_PlayerHealth = playerCharacterController.GetComponent<Health>();
-        DebugUtility.HandleErrorIfNullGetComponent<Health, PlayerHealthBar>(m_PlayerHealth, this, playerCharacterController.gameObject);
+        PA.PlayerSpawned += OnPlayerSpawnHandler;
+        PA.PlayerDied += OnPlayerDiedHandler;
+        m_PlayerHealth = PA.playerAvatar.GetComponent<Health>();
+    }
+
+    public void OnPlayerSpawnHandler()
+    {
+        m_PlayerHealth = PA.playerAvatar.GetComponent<Health>();
+    }
+
+    public void OnPlayerDiedHandler()
+    {
+        m_PlayerHealth = null;
     }
 
     void Update()
     {
-        // update health bar value
-        healthFillImage.fillAmount = m_PlayerHealth.currentHealth / m_PlayerHealth.maxHealth;
+        if(m_PlayerHealth != null)
+        {
+            healthFillImage.fillAmount = m_PlayerHealth.currentHealth / m_PlayerHealth.maxHealth;
+        }
     }
 }

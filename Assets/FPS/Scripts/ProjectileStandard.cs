@@ -219,6 +219,8 @@ public class ProjectileStandard : MonoBehaviour
             Damageable damageable = collider.GetComponentInParent<Damageable>();
             if (damageable)
             {
+                if (collider.GetComponentInParent<Actor>().affiliation == m_ProjectileBase.owner.GetComponentInParent<Actor>().affiliation)
+                    dmg = 0;
                 damageable.PV.RPC("RPC_InflictDamage", RpcTarget.All, dmg, false, m_ProjectileBase.owner.GetComponent<PhotonView>().ViewID);
 
                 if(m_ProjectileBase.shotWeaponLevel >= 2) // inflict effect if the weapon is of higher level

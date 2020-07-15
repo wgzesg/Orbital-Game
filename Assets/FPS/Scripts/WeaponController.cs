@@ -126,6 +126,13 @@ public class WeaponController : MonoBehaviour
 
     }
 
+    public void OnDestroy()
+    {
+        foreach(ProjectileBase bullet in bulletPool)
+        {
+            Destroy(bullet.gameObject);
+        }
+    }
     void Update()
     {
         UpdateAmmo();

@@ -25,7 +25,9 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("health is set");
         currentHealth = maxHealth;
+        m_IsDead = false;
     }
 
     public void Heal(float healAmount)

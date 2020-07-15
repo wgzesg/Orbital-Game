@@ -43,12 +43,16 @@ namespace EasySurvivalScripts
             Cursor.lockState = CursorLockMode.Locked;
             xClamp = 0;
             FPSController = GetComponentInParent<PlayerCharacterController>().transform;
+            DebugUtility.HandleErrorIfNullGetComponent<PlayerCharacterController, PlayerCamera>(FPSController, this, gameObject);
+
             m_InputHandler = GetComponentInParent<PlayerInputHandler>();
+            DebugUtility.HandleErrorIfNullGetComponent<PlayerInputHandler, PlayerCamera>(m_InputHandler, this, gameObject);
+
             m_weaponManager = GetComponentInParent<PlayerWeaponsManager>();
+            DebugUtility.HandleErrorIfNullGetComponent<PlayerWeaponsManager, PlayerCamera>(m_weaponManager, this, gameObject);
         }
 
-        // Use this for initialization
-        void Start()
+        private void Start()
         {
             if (CharacterAnimator)
             {
