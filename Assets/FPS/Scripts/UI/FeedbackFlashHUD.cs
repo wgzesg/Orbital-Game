@@ -35,10 +35,10 @@ public class FeedbackFlashHUD : MonoBehaviour
 
     bool m_FlashActive;
     float m_LastTimeFlashStarted = Mathf.NegativeInfinity;
-    Health m_PlayerHealth;
-    GameFlowManager m_GameFlowManager;
+    public Health m_PlayerHealth;
+    public GameFlowManager m_GameFlowManager;
 
-    void Start()
+    public virtual void Start()
     {
         // Subscribe to player damage events
         PlayerCharacterController playerCharacterController = FindObjectOfType<PlayerCharacterController>();
@@ -54,8 +54,13 @@ public class FeedbackFlashHUD : MonoBehaviour
         m_PlayerHealth.onHealed += OnHealed;
     }
 
-    private void Update()
+    public virtual void Update()
     {
+        if(m_PlayerHealth == null)
+        {
+            Debug.Log("I lost player health alr");
+            return;
+        }
         if (m_PlayerHealth.isCritical())
         {
             vignetteCanvasGroup.gameObject.SetActive(true);
@@ -89,7 +94,7 @@ public class FeedbackFlashHUD : MonoBehaviour
         }
     }
 
-    void ResetFlash()
+    public void ResetFlash()
     {
         m_LastTimeFlashStarted = Time.time;
         m_FlashActive = true;
@@ -97,13 +102,13 @@ public class FeedbackFlashHUD : MonoBehaviour
         flashCanvasGroup.gameObject.SetActive(true);
     }
 
-    void OnTakeDamage(float dmg, GameObject damageSource)
+    public void OnTakeDamage(float dmg, GameObject damageSource)
     {
         ResetFlash();
         flashImage.color = damageFlashColor;
     }
 
-    void OnHealed(float amount)
+    public void OnHealed(float amount)
     {
         ResetFlash();
         flashImage.color = healFlashColor;

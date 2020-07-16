@@ -35,17 +35,14 @@ public class PlayerAvatar : MonoBehaviour
 
     public void SpwanPlayer()
     {
-        if (PV.IsMine)
-        {
-            playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, Quaternion.identity, 0);
-            isAlive = true;
-            Health playerHealth = playerAvatar.GetComponent<Health>();
-            playerHealth.onDie += OnDieHandler;
+        playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, Quaternion.identity, 0);
+        isAlive = true;
+        Health playerHealth = playerAvatar.GetComponent<Health>();
+        playerHealth.onDie += OnDieHandler;
 
-            if (PV.IsMine && PlayerSpawned != null)
-            {
-                PlayerSpawned.Invoke();
-            }
+        if (PV.IsMine && PlayerSpawned != null)
+        {
+            PlayerSpawned.Invoke();
         }
     }
 }

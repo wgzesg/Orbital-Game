@@ -81,6 +81,7 @@ public class PlayerManager : MonoBehaviour
     IEnumerator ReviveCoroutine(GameObject player)
     {
         yield return new WaitForSeconds(reviveTime);
+
         player.GetComponent<PlayerAvatar>().SpwanPlayer();
     }
 }
