@@ -42,7 +42,7 @@ public class PlayerAvatar : MonoBehaviour
     public void RPC_SpawnPlayer()
     {
         deathCam.gameObject.SetActive(false);
-        playerAvatar = Instantiate(playerBodyAvatar, GameSetup.GS.playerBirthPlace[0].position, Quaternion.identity);
+        playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, Quaternion.identity);
         isAlive = true;
         Health playerHealth = playerAvatar.GetComponent<Health>();
         playerHealth.onDie += OnDieHandler;
