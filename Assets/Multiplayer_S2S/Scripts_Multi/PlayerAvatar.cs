@@ -22,7 +22,6 @@ public class PlayerAvatar : MonoBehaviour
         if (PV.IsMine)
         {
             SpwanPlayer();
-            PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.All, PV.ViewID);
         }
     }
 
@@ -52,6 +51,8 @@ public class PlayerAvatar : MonoBehaviour
         isAlive = true;
         Health playerHealth = playerAvatar.GetComponent<Health>();
         playerHealth.onDie += OnDieHandler;
+        PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.AllBuffered, PV.ViewID);
+        Debug.Log("I spawned player");
 
         if (PV.IsMine && PlayerSpawned != null)
         {
