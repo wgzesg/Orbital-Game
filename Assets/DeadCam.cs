@@ -9,7 +9,7 @@ public class DeadCam : MonoBehaviour
 
     private Vector3 targetPosition;
 
-    void OnEnabled()
+    void OnEnable()
     {
         GameObject anotherPlayer = PlayerManager.PMinstance.findLivingPlayer().playerAvatar;
         follow = anotherPlayer.transform;
