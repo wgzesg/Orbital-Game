@@ -11,19 +11,20 @@ public class DeadCam : MonoBehaviour
 
     void OnEnable()
     {
+        Debug.Log("The length of PLayer list is " + PlayerManager.PMinstance.playerList.Count);
+        Debug.Log("another player is " + PlayerManager.PMinstance.FindAnotherPlayer().playerAvatar);
         GameObject anotherPlayer = PlayerManager.PMinstance.FindAnotherPlayer().playerAvatar;
-        Debug.Log("another player is " + anotherPlayer);
         follow = anotherPlayer.transform;
     }
-
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        follow = null;
     }
 
     private void LateUpdate()
     {
+        if (follow == null)
+            return;
         targetPosition = follow.position + Vector3.up * distanceUp - Vector3.back * distanceAway;
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * smooth);
         transform.LookAt(follow);

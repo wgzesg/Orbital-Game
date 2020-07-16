@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager PMinstance;
-    private List<PlayerAvatar> playerList;
+    public List<PlayerAvatar> playerList;
 
     public int reviveTime = 3;
 

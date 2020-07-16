@@ -33,8 +33,8 @@ public class PlayerAvatar : MonoBehaviour
         {
             PhotonNetwork.Destroy(playerAvatar);
             PlayerManager.PMinstance.OnDiedHandler(PV.ViewID);
+            deathCam.gameObject.SetActive(true);
         }
-        deathCam.gameObject.SetActive(true);
     }
 
     [PunRPC]
@@ -47,7 +47,6 @@ public class PlayerAvatar : MonoBehaviour
 
     public void SpwanPlayer()
     {
-        Debug.Log("Spawn is called once here");
         deathCam.gameObject.SetActive(false);
         playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, Quaternion.identity, 0);
         isAlive = true;
