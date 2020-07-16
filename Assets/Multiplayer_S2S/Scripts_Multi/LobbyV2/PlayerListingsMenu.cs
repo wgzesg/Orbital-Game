@@ -70,7 +70,7 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
         }
     }
 
-    public void OnClick_StartGame()
+    /*public void OnClick_StartGame()
     {
         if (PhotonNetwork.IsMasterClient)
         {
@@ -78,6 +78,6 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
             PhotonNetwork.CurrentRoom.IsVisible = false;  //no longer listed in the lobby.
             PhotonNetwork.LoadLevel(1);
         }
-    }
+    }*/
 
 }

@@ -9,7 +9,7 @@ public class GameSettings : ScriptableObject
     private string _gameVersion = "0.0.0";
     public string GameVersion { get { return _gameVersion; } }
     [SerializeField]
-    private string _nickName = "Punfish";
+    private string _nickName = "Human";
     public string NickName
     {
         get
