@@ -22,7 +22,7 @@ public class PlayerAvatar : MonoBehaviour
         if (PV.IsMine)
         {
             SpwanPlayer();
-            PlayerManager.PMinstance.RegisterPlayers(PV.ViewID);
+            PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.All, PV.ViewID);
         }
     }
 

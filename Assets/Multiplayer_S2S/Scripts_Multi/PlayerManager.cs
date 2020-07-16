@@ -8,6 +8,7 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager PMinstance;
     public List<PlayerAvatar> playerList;
+    public PhotonView PV;
 
     public int reviveTime = 3;
 
@@ -15,7 +16,9 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        if(PMinstance == null)
+        PV = GetComponent<PhotonView>();
+
+        if (PMinstance == null)
         {
             PMinstance = this;
             DontDestroyOnLoad(this);
@@ -57,7 +60,8 @@ public class PlayerManager : MonoBehaviour
         return null;
     }
 
-    public void RegisterPlayers(int PVID)
+    [PunRPC]
+    public void RPC_RegisterPlayers(int PVID)
     {
         Debug.Log("I registered a new player");
         GameObject newPlayer = PhotonView.Find(PVID).gameObject;
