@@ -12,7 +12,7 @@ public class DeadCam : MonoBehaviour
     void OnEnable()
     {
         Debug.Log("The length of PLayer list is " + PlayerManager.PMinstance.playerList.Count);
-        Debug.Log("another player is " + PlayerManager.PMinstance.FindAnotherPlayer().playerAvatar);
+        Debug.Log("another player is " + PlayerManager.PMinstance.FindAnotherPlayer());
         GameObject anotherPlayer = PlayerManager.PMinstance.FindAnotherPlayer().playerAvatar;
         follow = anotherPlayer.transform;
     }

@@ -52,7 +52,7 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("Looking for another player!!!");
             if (!p.PV.IsMine)
             {
-                Debug.Log("Found another player!!!");
+                Debug.Log("Found another player which is " + p);
                 return p;
             }
         }
@@ -115,6 +115,6 @@ public class PlayerManager : MonoBehaviour
     {
         yield return new WaitForSeconds(reviveTime);
 
-        player.GetComponent<PlayerAvatar>().SpwanPlayer();
+        player.GetComponent<PlayerAvatar>().PV.RPC("RPC_SpwanPlayer", RpcTarget.All);
     }
 }
