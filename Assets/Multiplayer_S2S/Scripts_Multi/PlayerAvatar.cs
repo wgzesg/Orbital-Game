@@ -23,7 +23,7 @@ public class PlayerAvatar : MonoBehaviour
         {
             deathCam.gameObject.SetActive(false);
             PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.AllBuffered, PV.ViewID);
-            PV.RPC("RPC_SpwanPlayer", RpcTarget.All);
+            PV.RPC("RPC_SpawnPlayer", RpcTarget.All);
         }
     }
 
@@ -38,7 +38,7 @@ public class PlayerAvatar : MonoBehaviour
         }
     }
 
-    public void RPC_SpwanPlayer()
+    public void RPC_SpawnPlayer()
     {
         deathCam.gameObject.SetActive(false);
         playerAvatar = Instantiate(playerBodyAvatar, GameSetup.GS.playerBirthPlace[0].position, Quaternion.identity);

@@ -115,6 +115,6 @@ public class PlayerManager : MonoBehaviour
     {
         yield return new WaitForSeconds(reviveTime);
 
-        player.GetComponent<PlayerAvatar>().PV.RPC("RPC_SpwanPlayer", RpcTarget.All);
+        player.GetComponent<PlayerAvatar>().PV.RPC("RPC_SpawnPlayer", RpcTarget.All);
     }
 }
