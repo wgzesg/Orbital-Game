@@ -17,11 +17,11 @@ public class PlayerAvatar : MonoBehaviour
 
     private void Awake()
     {
-        deathCam.gameObject.SetActive(false);
-        PV = GetComponent<PhotonView>();
-        PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.AllBuffered, PV.ViewID);
         if (PV.IsMine)
         {
+            deathCam.gameObject.SetActive(false);
+            PV = GetComponent<PhotonView>();
+            PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.AllBuffered, PV.ViewID);
             SpwanPlayer();
         }
     }

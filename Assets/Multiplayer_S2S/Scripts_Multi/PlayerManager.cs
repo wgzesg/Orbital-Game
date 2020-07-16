@@ -65,6 +65,7 @@ public class PlayerManager : MonoBehaviour
     {
         Debug.Log("I registered a new player");
         GameObject newPlayer = PhotonView.Find(PVID).gameObject;
+        Debug.Log("I registered a new player " + newPlayer);
         playerList.Add(newPlayer.GetComponent<PlayerAvatar>());
     }
 
