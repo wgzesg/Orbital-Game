@@ -11,7 +11,8 @@ public class DeadCam : MonoBehaviour
 
     void OnEnable()
     {
-        GameObject anotherPlayer = PlayerManager.PMinstance.findLivingPlayer().playerAvatar;
+        GameObject anotherPlayer = PlayerManager.PMinstance.FindAnotherPlayer().playerAvatar;
+        Debug.Log("another player is " + anotherPlayer);
         follow = anotherPlayer.transform;
     }
 

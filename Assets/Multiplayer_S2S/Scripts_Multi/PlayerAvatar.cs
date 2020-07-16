@@ -18,13 +18,21 @@ public class PlayerAvatar : MonoBehaviour
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
-        SpwanPlayer();
-        PlayerManager.PMinstance.RegisterPlayers(PV.ViewID);
+        if (PV.IsMine)
+        {
+            SpwanPlayer();
+            PlayerManager.PMinstance.RegisterPlayers(PV.ViewID);
+        }
     }
 
     public void OnDieHandler(GameObject damagesource)
     {
-        PV.RPC("deathHandlerRPC", RpcTarget.All);
+        isAlive = false;
+        if (PV.IsMine)
+        {
+            PhotonNetwork.Destroy(playerAvatar);
+            PlayerManager.PMinstance.OnDiedHandler(PV.ViewID);
+        }
         deathCam.enabled = true;
     }
 

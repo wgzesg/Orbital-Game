@@ -42,12 +42,12 @@ public class PlayerManager : MonoBehaviour
         return null;
     }
 
-    public PlayerAvatar findLivingPlayer()
+    public PlayerAvatar FindAnotherPlayer()
     {
         foreach (PlayerAvatar p in playerList)
         {
             Debug.Log("Looking!!!");
-            if (p.isAlive)
+            if (!p.PV.IsMine)
             {
                 Debug.Log("Found!!!");
                 return p;
