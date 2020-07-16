@@ -42,6 +42,21 @@ public class PlayerManager : MonoBehaviour
         return null;
     }
 
+    public PlayerAvatar findLivingPlayer()
+    {
+        foreach (PlayerAvatar p in playerList)
+        {
+            Debug.Log("Looking!!!");
+            if (p.isAlive)
+            {
+                Debug.Log("Found!!!");
+                return p;
+            }
+        }
+        Debug.Log("No mine!!!");
+        return null;
+    }
+
     public void RegisterPlayers(int PVID)
     {
         Debug.Log("I registered a new player");

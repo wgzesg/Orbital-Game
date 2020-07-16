@@ -8,21 +8,24 @@ public class PlayerAvatar : MonoBehaviour
     public PhotonView PV;
     public GameObject playerAvatar;
     public bool isAlive;
+    public Camera deathCam;
 
     public UnityAction PlayerSpawned;
     public UnityAction PlayerDied;
+
+
 
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
         SpwanPlayer();
-
         PlayerManager.PMinstance.RegisterPlayers(PV.ViewID);
     }
 
     public void OnDieHandler(GameObject damagesource)
     {
         PV.RPC("deathHandlerRPC", RpcTarget.All);
+        deathCam.enabled = true;
     }
 
     [PunRPC]
@@ -35,6 +38,7 @@ public class PlayerAvatar : MonoBehaviour
 
     public void SpwanPlayer()
     {
+        deathCam.enabled = false;
         playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, Quaternion.identity, 0);
         isAlive = true;
         Health playerHealth = playerAvatar.GetComponent<Health>();
