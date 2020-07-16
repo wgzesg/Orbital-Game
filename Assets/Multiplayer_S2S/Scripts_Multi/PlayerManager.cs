@@ -49,14 +49,14 @@ public class PlayerManager : MonoBehaviour
     {
         foreach (PlayerAvatar p in playerList)
         {
-            Debug.Log("Looking!!!");
+            Debug.Log("Looking for another player!!!");
             if (!p.PV.IsMine)
             {
-                Debug.Log("Found!!!");
+                Debug.Log("Found another player!!!");
                 return p;
             }
         }
-        Debug.Log("No mine!!!");
+        Debug.Log("No another player!!!");
         return null;
     }
 
@@ -66,6 +66,19 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("I registered a new player");
         GameObject newPlayer = PhotonView.Find(PVID).gameObject;
         playerList.Add(newPlayer.GetComponent<PlayerAvatar>());
+    }
+
+    [PunRPC]
+    public void RPC_Deregister(int PVID)
+    {
+        Debug.Log("I dereg an player");
+        foreach(PlayerAvatar p in playerList)
+        {
+            if(p.PV.ViewID == PVID)
+            {
+                playerList.Remove(p);
+            }
+        }
     }
 
     public void OnDiedHandler(int deadPlayer)

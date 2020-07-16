@@ -19,6 +19,7 @@ public class PlayerAvatar : MonoBehaviour
     {
         deathCam.gameObject.SetActive(false);
         PV = GetComponent<PhotonView>();
+        PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.AllBuffered, PV.ViewID);
         if (PV.IsMine)
         {
             SpwanPlayer();
@@ -27,21 +28,13 @@ public class PlayerAvatar : MonoBehaviour
 
     public void OnDieHandler(GameObject damagesource)
     {
-        isAlive = false;
         if (PV.IsMine)
         {
+            isAlive = false;
             PhotonNetwork.Destroy(playerAvatar);
-            PlayerManager.PMinstance.OnDiedHandler(PV.ViewID);
             deathCam.gameObject.SetActive(true);
+            PlayerManager.PMinstance.OnDiedHandler(PV.ViewID);
         }
-    }
-
-    [PunRPC]
-    public void deathHandlerRPC()
-    {
-        Destroy(playerAvatar);
-        isAlive = false;
-        PlayerManager.PMinstance.OnDiedHandler(PV.ViewID);
     }
 
     public void SpwanPlayer()
@@ -51,10 +44,9 @@ public class PlayerAvatar : MonoBehaviour
         isAlive = true;
         Health playerHealth = playerAvatar.GetComponent<Health>();
         playerHealth.onDie += OnDieHandler;
-        PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.AllBuffered, PV.ViewID);
         Debug.Log("I spawned player");
 
-        if (PV.IsMine && PlayerSpawned != null)
+        if (PlayerSpawned != null)
         {
             PlayerSpawned.Invoke();
         }
