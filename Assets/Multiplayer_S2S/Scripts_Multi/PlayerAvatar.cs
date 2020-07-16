@@ -38,6 +38,7 @@ public class PlayerAvatar : MonoBehaviour
         }
     }
 
+    [PunRPC]
     public void RPC_SpawnPlayer()
     {
         deathCam.gameObject.SetActive(false);
