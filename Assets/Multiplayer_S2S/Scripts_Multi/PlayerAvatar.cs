@@ -14,6 +14,9 @@ public class PlayerAvatar : MonoBehaviour
     public UnityAction  PlayerSpawned;
     public UnityAction PlayerDied;
 
+    public Transform MyDeathPoint;
+    public Transform MyRevivalPoint;
+
 
 
     private void Awake()
@@ -29,6 +32,8 @@ public class PlayerAvatar : MonoBehaviour
     {
         if (PV.IsMine)
         {
+            MyDeathPoint = playerAvatar.transform;
+
             isAlive = false;
             PhotonNetwork.Destroy(playerAvatar);
             PlayerManager.PMinstance.OnDiedHandler(PV.ViewID);
@@ -46,7 +51,11 @@ public class PlayerAvatar : MonoBehaviour
         deathCam.gameObject.SetActive(false);
         PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.AllBuffered, PV.ViewID);
 
-        playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, GameSetup.GS.playerBirthPlace[0].rotation);
+        MyRevivalPoint = Determine_SpawnPoint(MyDeathPoint);
+        playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), MyRevivalPoint.position, MyRevivalPoint.rotation);
+
+        //playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, GameSetup.GS.playerBirthPlace[0].rotation);
+        
         Health playerHealth = playerAvatar.GetComponent<Health>();
         playerHealth.onDie += OnDieHandler;
         Debug.Log("I spawned player");
@@ -65,6 +74,19 @@ public class PlayerAvatar : MonoBehaviour
         playerAvatar = PhotonView.Find(viewID).gameObject;
         deathCam.gameObject.SetActive(false);
         isAlive = true;
+    }
+
+    public Transform Determine_SpawnPoint(Transform dealthPoint)
+    {
+        if (dealthPoint.position.y >= 8.5)
+        {
+            return GameSetup.GS.playerBirthPlace[0];
+        }
+        else
+        {
+            return GameSetup.GS.playerBirthPlace[2];
+        }
+        
     }
 
 }
