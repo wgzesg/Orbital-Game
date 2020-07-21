@@ -85,8 +85,8 @@ public class PlayerAvatar : MonoBehaviour
     {
         if (dealthPoint.position.y <= 8.5)
         {
-            Debug.Log("The height is " + dealthPoint.position.y + " and I go to 0");
-            return GameSetup.GS.playerBirthPlace[0];
+            Debug.Log("The height is " + dealthPoint.position.y + " and I go to 0 or 1");
+            return GameSetup.GS.playerBirthPlace[Random.Range(0,1)];
         }
         else
         {
