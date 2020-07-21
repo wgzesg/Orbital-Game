@@ -51,11 +51,15 @@ public class PlayerAvatar : MonoBehaviour
         deathCam.gameObject.SetActive(false);
         PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.AllBuffered, PV.ViewID);
 
-        MyRevivalPoint = Determine_SpawnPoint(MyDeathPoint);
-        playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), MyRevivalPoint.position, MyRevivalPoint.rotation);
-
-        //playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, GameSetup.GS.playerBirthPlace[0].rotation);
-        
+        if (MyDeathPoint)
+        {
+            MyRevivalPoint = Determine_SpawnPoint(MyDeathPoint);
+            playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), MyRevivalPoint.position, MyRevivalPoint.rotation);
+        }
+        else
+        {
+            playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, GameSetup.GS.playerBirthPlace[0].rotation);
+        }
         Health playerHealth = playerAvatar.GetComponent<Health>();
         playerHealth.onDie += OnDieHandler;
         Debug.Log("I spawned player");
