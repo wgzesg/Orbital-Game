@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     public List<PlayerAvatar> playerList;
     public PhotonView PV;
 
-    public int reviveTime = 3;
+    public int reviveTime;
 
     public UnityAction OnAllDied;
 
@@ -115,6 +115,6 @@ public class PlayerManager : MonoBehaviour
     {
         yield return new WaitForSeconds(reviveTime);
 
-        player.GetComponent<PlayerAvatar>().PV.RPC("RPC_SpawnPlayer", RpcTarget.All);
+        player.GetComponent<PlayerAvatar>().spawnPlayer();
     }
 }

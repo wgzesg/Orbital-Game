@@ -21,9 +21,7 @@ public class PlayerAvatar : MonoBehaviour
         PV = GetComponent<PhotonView>();
         if (PV.IsMine)
         {
-            deathCam.gameObject.SetActive(false);
-            PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.AllBuffered, PV.ViewID);
-            PV.RPC("RPC_SpawnPlayer", RpcTarget.All);
+            spawnPlayer();
         }
     }
 
@@ -38,12 +36,12 @@ public class PlayerAvatar : MonoBehaviour
         }
     }
 
-    [PunRPC]
-    public void RPC_SpawnPlayer()
+    public void spawnPlayer()
     {
         deathCam.gameObject.SetActive(false);
-        playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, Quaternion.identity);
-        isAlive = true;
+        PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.AllBuffered, PV.ViewID);
+
+        playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, GameSetup.GS.playerBirthPlace[0].rotation);
         Health playerHealth = playerAvatar.GetComponent<Health>();
         playerHealth.onDie += OnDieHandler;
         Debug.Log("I spawned player");
@@ -52,5 +50,16 @@ public class PlayerAvatar : MonoBehaviour
         {
             PlayerSpawned.Invoke();
         }
+
+        PV.RPC("RPC_SpawnPlayer", RpcTarget.All, playerAvatar.GetComponent<PhotonView>().ViewID);
     }
+
+    [PunRPC]
+    public void RPC_SpawnPlayer(int viewID)
+    {
+        playerAvatar = PhotonView.Find(viewID).gameObject;
+        deathCam.gameObject.SetActive(false);
+        isAlive = true;
+    }
+
 }
