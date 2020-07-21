@@ -34,6 +34,7 @@ public class PlayerAvatar : MonoBehaviour
         {
             MyDeathPoint = playerAvatar.transform;
             MyRevivalPoint = Determine_SpawnPoint(MyDeathPoint);
+
             isAlive = false;
             PhotonNetwork.Destroy(playerAvatar);
             PlayerManager.PMinstance.OnDiedHandler(PV.ViewID);
