@@ -33,7 +33,7 @@ public class PlayerAvatar : MonoBehaviour
         if (PV.IsMine)
         {
             MyDeathPoint = playerAvatar.transform;
-
+            MyRevivalPoint = Determine_SpawnPoint(MyDeathPoint);
             isAlive = false;
             PhotonNetwork.Destroy(playerAvatar);
             PlayerManager.PMinstance.OnDiedHandler(PV.ViewID);
@@ -53,7 +53,7 @@ public class PlayerAvatar : MonoBehaviour
 
         if (MyDeathPoint)
         {
-            MyRevivalPoint = Determine_SpawnPoint(MyDeathPoint);
+            //MyRevivalPoint = Determine_SpawnPoint(MyDeathPoint);
             playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), MyRevivalPoint.position, MyRevivalPoint.rotation);
         }
         else
@@ -82,12 +82,14 @@ public class PlayerAvatar : MonoBehaviour
 
     public Transform Determine_SpawnPoint(Transform dealthPoint)
     {
-        if (dealthPoint.position.y >= 8.5)
+        if (dealthPoint.position.y <= 8.5)
         {
+            Debug.Log("The height is " + dealthPoint.position.y + " and I go to 0");
             return GameSetup.GS.playerBirthPlace[0];
         }
         else
         {
+            Debug.Log("The height is " + dealthPoint.position.y + " and I go to 2");
             return GameSetup.GS.playerBirthPlace[2];
         }
         
