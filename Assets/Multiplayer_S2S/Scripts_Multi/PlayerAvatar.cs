@@ -51,7 +51,7 @@ public class PlayerAvatar : MonoBehaviour
             PlayerSpawned.Invoke();
         }
 
-        PV.RPC("RPC_SpawnPlayer", RpcTarget.All, playerAvatar.GetComponent<PhotonView>().ViewID);
+        PV.RPC("RPC_SpawnPlayer", RpcTarget.AllBuffered, playerAvatar.GetComponent<PhotonView>().ViewID);
     }
 
     [PunRPC]

@@ -78,7 +78,8 @@ public class PhotonRoomV2 : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
             if (MultiplayerSettingV2.multiplayerSettingV2.delayStart)
             {
-                PV.RPC("RPC_LoadedGameScene", RpcTarget.MasterClient);
+                RPC_CreatePlayer();
+                //PV.RPC("RPC_LoadedGameScene", RpcTarget.MasterClient);
             }
             else
             {
@@ -97,7 +98,7 @@ public class PhotonRoomV2 : MonoBehaviourPunCallbacks, IInRoomCallbacks
         }
     }
 
-    [PunRPC]
+    //[PunRPC]
     private void RPC_CreatePlayer()
     {
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkPlayer"), transform.position, Quaternion.identity, 0);

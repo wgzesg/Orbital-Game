@@ -191,7 +191,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
             if (MultiplayerSetting.multiplayerSetting.delayStart)
             {
-                PV.RPC("RPC_LoadedGameScene", RpcTarget.MasterClient);
+                PV.RPC("RPC_LoadedGameScene", RpcTarget.All);
             }
             else
             {
@@ -206,7 +206,8 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         playerInGame++;
         if (playerInGame == PhotonNetwork.PlayerList.Length)
         {
-            PV.RPC("RPC_CreatePlayer", RpcTarget.All);
+            RPC_CreatePlayer();
+            //PV.RPC("RPC_CreatePlayer", RpcTarget.All);
         }
     }
 

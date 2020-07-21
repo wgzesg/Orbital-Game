@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class NetFeedbackFlashHUD :FeedbackFlashHUD
 {
     public PlayerAvatar PA;
+
     public override void Start()
     {
         PA = PlayerManager.PMinstance.findLocalPlayerAvatar();
