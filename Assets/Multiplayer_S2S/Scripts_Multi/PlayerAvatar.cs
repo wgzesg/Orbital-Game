@@ -51,7 +51,7 @@ public class PlayerAvatar : MonoBehaviour
         deathCam.gameObject.SetActive(false);
         PlayerManager.PMinstance.PV.RPC("RPC_RegisterPlayers", RpcTarget.AllBuffered, PV.ViewID);
 
-        if (MyDeathPoint)
+        if (MyRevivalPoint)
         {
             //MyRevivalPoint = Determine_SpawnPoint(MyDeathPoint);
             playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), MyRevivalPoint.position, MyRevivalPoint.rotation);
