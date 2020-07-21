@@ -5,6 +5,7 @@ public class PlayerHealthBar : MonoBehaviour
 {
     [Tooltip("Image component dispplaying current health")]
     public Image healthFillImage;
+    public CanvasGroup healthBar;
     private PlayerAvatar PA;
 
     Health m_PlayerHealth;
@@ -20,12 +21,18 @@ public class PlayerHealthBar : MonoBehaviour
 
     public void OnPlayerSpawnHandler()
     {
+        Debug.Log("health event is carried out");
         m_PlayerHealth = PA.playerAvatar.GetComponent<Health>();
+        healthBar.alpha = 1;
+        Debug.Log("set to 1");
     }
 
     public void OnPlayerDiedHandler()
     {
+        Debug.Log("health event is carried out");
         m_PlayerHealth = null;
+        healthBar.alpha = 0;
+        Debug.Log("set to 0");
     }
 
     void Update()

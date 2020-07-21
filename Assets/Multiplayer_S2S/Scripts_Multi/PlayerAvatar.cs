@@ -11,7 +11,7 @@ public class PlayerAvatar : MonoBehaviour
     public Camera deathCam;
     public GameObject playerBodyAvatar;
 
-    public UnityAction PlayerSpawned;
+    public UnityAction  PlayerSpawned;
     public UnityAction PlayerDied;
 
 
@@ -33,6 +33,11 @@ public class PlayerAvatar : MonoBehaviour
             PhotonNetwork.Destroy(playerAvatar);
             PlayerManager.PMinstance.OnDiedHandler(PV.ViewID);
             deathCam.gameObject.SetActive(true);
+
+            if (PlayerDied != null)
+            {
+                PlayerDied.Invoke();
+            }
         }
     }
 
