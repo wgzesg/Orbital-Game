@@ -3,9 +3,13 @@ using UnityEngine.Events;
 
 public class Inventory : MonoBehaviour
 {
-    public int gearCount = 0;
+    public int gearCount;
     public UnityAction<int> onUpdateGearCount;
 
+    private void Start()
+    {
+        gearCount = 0;
+    }
 
     public void onPickUp()
     {

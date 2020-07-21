@@ -7,6 +7,8 @@ public class inventoryHUD : MonoBehaviour
 
     private Inventory playerInventory;
     // Start is called before the first frame update
+
+
     void Start()
     {
         Inventory[] listOfInvent = FindObjectsOfType<Inventory>();
@@ -28,6 +30,8 @@ public class inventoryHUD : MonoBehaviour
                 }
             }
         }
+
+        inventoryDisplay.text = "Gears: " + playerInventory.gearCount;
 
         playerInventory.onUpdateGearCount += OnChangedGearCount;
     }
