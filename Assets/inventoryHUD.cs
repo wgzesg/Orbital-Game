@@ -5,11 +5,11 @@ public class inventoryHUD : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI inventoryDisplay;
 
-    private Inventory playerInventory;
+    public Inventory playerInventory;
     // Start is called before the first frame update
 
 
-    void Start()
+    public virtual void Start()
     {
         Inventory[] listOfInvent = FindObjectsOfType<Inventory>();
         if (listOfInvent.Length == 1)
@@ -36,7 +36,7 @@ public class inventoryHUD : MonoBehaviour
         playerInventory.onUpdateGearCount += OnChangedGearCount;
     }
 
-    void OnChangedGearCount(int newCount)
+    public void OnChangedGearCount(int newCount)
     {
         inventoryDisplay.text = "Gears: " + playerInventory.gearCount;
     }

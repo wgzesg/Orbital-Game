@@ -7,29 +7,28 @@ public class LoadHUD : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI ammutext;
 
-    float maxLoad;
-    float currentLoad;
+    public float maxLoad;
+    public float currentLoad;
 
-    PlayerWeaponsManager m_playerWeaponsManager;
-    WeaponController curr_activeWeapon;
+    public PlayerWeaponsManager m_playerWeaponsManager;
+    public WeaponController curr_activeWeapon;
 
-    private void Start()
+    public virtual void Start()
     {
         m_playerWeaponsManager = GameObject.FindObjectOfType<PlayerWeaponsManager>();
         DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, LoadHUD>(m_playerWeaponsManager, this);
 
-        WeaponController m = m_playerWeaponsManager.GetActiveWeapon();
         curr_activeWeapon = m_playerWeaponsManager.GetActiveWeapon();
 
         m_playerWeaponsManager.onSwitchedToWeapon += OnswitchWeaponHandler;
     }
 
-    private void OnswitchWeaponHandler(WeaponController newpweaon)
+    public void OnswitchWeaponHandler(WeaponController newpweaon)
     {
         curr_activeWeapon = m_playerWeaponsManager.GetActiveWeapon();
     }
 
-    void Update()
+    public virtual void Update()
     {
 
         maxLoad = curr_activeWeapon.m_CurrentAmmoCarried;
