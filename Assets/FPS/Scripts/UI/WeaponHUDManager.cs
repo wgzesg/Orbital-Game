@@ -8,10 +8,10 @@ public class WeaponHUDManager : MonoBehaviour
     [Tooltip("Prefab for displaying weapon ammo")]
     public GameObject ammoCounterPrefab;
 
-    PlayerWeaponsManager m_PlayerWeaponsManager;
-    List<AmmoCounter> m_AmmoCounters = new List<AmmoCounter>();
+    public PlayerWeaponsManager m_PlayerWeaponsManager;
+    public List<AmmoCounter> m_AmmoCounters = new List<AmmoCounter>();
 
-    void Start()
+    public virtual void Start()
     {
         m_PlayerWeaponsManager = FindObjectOfType<PlayerWeaponsManager>();
         DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, WeaponHUDManager>(m_PlayerWeaponsManager, this);
@@ -28,7 +28,7 @@ public class WeaponHUDManager : MonoBehaviour
         m_PlayerWeaponsManager.onSwitchedToWeapon += ChangeWeapon;
     }
 
-    void AddWeapon(WeaponController newWeapon, int weaponIndex)
+    public void AddWeapon(WeaponController newWeapon, int weaponIndex)
     {
         GameObject ammoCounterInstance = Instantiate(ammoCounterPrefab, ammosPanel);
         AmmoCounter newAmmoCounter = ammoCounterInstance.GetComponent<AmmoCounter>();
@@ -39,7 +39,7 @@ public class WeaponHUDManager : MonoBehaviour
         m_AmmoCounters.Add(newAmmoCounter);
     }
 
-    void RemoveWeapon(WeaponController newWeapon, int weaponIndex)
+    public void RemoveWeapon(WeaponController newWeapon, int weaponIndex)
     {
         int foundCounterIndex = -1;
         for (int i = 0; i < m_AmmoCounters.Count; i++)
@@ -57,8 +57,19 @@ public class WeaponHUDManager : MonoBehaviour
         }
     }
 
-    void ChangeWeapon(WeaponController weapon)
+
+    public void ChangeWeapon(WeaponController weapon)
     {
         UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(ammosPanel);
+    }
+
+    public void ClearPanel()
+    {
+        for (int i = 0; i < m_AmmoCounters.Count; i++)
+        {
+            Destroy(m_AmmoCounters[i].gameObject);
+        }
+
+        m_AmmoCounters = new List<AmmoCounter>();
     }
 }
