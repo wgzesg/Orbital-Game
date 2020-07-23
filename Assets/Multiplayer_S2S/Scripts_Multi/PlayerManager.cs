@@ -83,7 +83,7 @@ public class PlayerManager : MonoBehaviour
 
     public void OnDiedHandler(int deadPlayer)
     {
-        if (CheckAllDied())
+        if (PhotonNetwork.IsMasterClient && CheckAllDied())
         {
             if (OnAllDied != null)
             {
@@ -104,6 +104,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (p.isAlive == true)
             {
+                Debug.Log(p + " is still alive!");
                 return false;
             }
         }

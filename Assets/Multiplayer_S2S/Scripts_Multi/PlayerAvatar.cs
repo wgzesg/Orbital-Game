@@ -30,14 +30,14 @@ public class PlayerAvatar : MonoBehaviour
 
     public void OnDieHandler(GameObject damagesource)
     {
-        isAlive = false;
         if (PV.IsMine)
         {
             MyDeathPoint = playerAvatar.transform;
             MyRevivalPoint = Determine_SpawnPoint(MyDeathPoint);
 
             PhotonNetwork.Destroy(playerAvatar);
-            PlayerManager.PMinstance.OnDiedHandler(PV.ViewID);
+
+            PV.RPC("RPC_DieHandler", RpcTarget.AllBuffered, PV.ViewID);
             deathCam.gameObject.SetActive(true);
 
             if (PlayerDied != null)
@@ -46,6 +46,14 @@ public class PlayerAvatar : MonoBehaviour
             }
         }
     }
+
+    [PunRPC]
+    public void RPC_DieHandler(int ID)
+    {
+        isAlive = false;
+        PlayerManager.PMinstance.OnDiedHandler(ID);
+    }
+
 
     public void spawnPlayer()
     {
