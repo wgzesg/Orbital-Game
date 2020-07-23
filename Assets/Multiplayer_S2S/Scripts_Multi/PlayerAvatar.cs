@@ -30,12 +30,12 @@ public class PlayerAvatar : MonoBehaviour
 
     public void OnDieHandler(GameObject damagesource)
     {
+        isAlive = false;
         if (PV.IsMine)
         {
             MyDeathPoint = playerAvatar.transform;
             MyRevivalPoint = Determine_SpawnPoint(MyDeathPoint);
 
-            isAlive = false;
             PhotonNetwork.Destroy(playerAvatar);
             PlayerManager.PMinstance.OnDiedHandler(PV.ViewID);
             deathCam.gameObject.SetActive(true);

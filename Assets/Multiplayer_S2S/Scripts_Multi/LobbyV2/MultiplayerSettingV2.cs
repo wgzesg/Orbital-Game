@@ -11,6 +11,8 @@ public class MultiplayerSettingV2 : MonoBehaviour
 
     public int menuScene;
     public int multiplayerScene;
+    public int winScene;
+    public int loseScene;
 
     private void Awake()
     {

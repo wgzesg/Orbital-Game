@@ -21,7 +21,6 @@ public class PlayerManager : MonoBehaviour
         if (PMinstance == null)
         {
             PMinstance = this;
-            DontDestroyOnLoad(this);
         }
         else
         {

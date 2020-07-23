@@ -33,7 +33,6 @@ public class NetLoadHUD: LoadHUD
     {
         if (curr_activeWeapon == null)
         {
-            Debug.Log("it is null");
             return;
         }
 

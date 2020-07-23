@@ -45,13 +45,12 @@ public class GameFlowManager : MonoBehaviour
         }
     }
 
-    PlayerCharacterController m_Player;
-    NotificationHUDManager m_NotificationHUDManager;
-    ObjectiveManager m_ObjectiveManager;
-    float m_TimeLoadEndGameScene;
-    string m_SceneToLoad = "WinScene";
+    public PlayerCharacterController m_Player;
+    public ObjectiveManager m_ObjectiveManager;
+    public float m_TimeLoadEndGameScene;
+    public string m_SceneToLoad = "WinScene";
     
-    void Start()
+    public void Start()
     {
         m_Player = FindObjectOfType<PlayerCharacterController>();
         DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, GameFlowManager>(m_Player, this);
@@ -65,7 +64,7 @@ public class GameFlowManager : MonoBehaviour
         AudioUtility.SetMasterVolume(1);
     }
 
-    IEnumerator fading()
+    public virtual IEnumerator fading()
     {
         while(Time.time <= m_TimeLoadEndGameScene)
         {
@@ -91,7 +90,7 @@ public class GameFlowManager : MonoBehaviour
         EndGame(false);
     }
 
-    void EndGame(bool win)
+    public virtual void EndGame(bool win)
     {
         // unlocks the cursor before leaving the scene, to be able to click buttons
         Cursor.lockState = CursorLockMode.None;
