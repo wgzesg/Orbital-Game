@@ -101,14 +101,14 @@ public class PlayerManager : MonoBehaviour
 
     public bool CheckAllDied()
     {
-        //foreach(PlayerAvatar p in playerList)
-        //{
-        //    if(p.isAlive == true)
-        //    {
-        //        return false;
-        //    }
-        //}
-        return false;
+        foreach (PlayerAvatar p in playerList)
+        {
+            if (p.isAlive == true)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     IEnumerator ReviveCoroutine(GameObject player)
