@@ -86,7 +86,38 @@ public class PhotonRoomV2 : MonoBehaviourPunCallbacks, IInRoomCallbacks
                 RPC_CreatePlayer();
             }
         }
+        else if(currentScene == MultiplayerSettingV2.multiplayerSettingV2.menuScene){
+            Debug.Log("Load to the menu scene alr");
+            //PhotonNetwork.Disconnect();
+            if(PhotonNetwork.IsConnected)
+                DisconnectLocalClient();
+            
+        }
     }
+
+
+    public void DisconnectLocalClient()
+    {
+        StartCoroutine(DisconnectFromMaster());
+    }
+
+    IEnumerator DisconnectFromMaster()
+    {
+        Debug.Log("now disconnect from server ...");
+        PhotonNetwork.Disconnect();
+        while (PhotonNetwork.IsConnected)
+            yield return null;
+        Debug.Log("local player has been disconnected");
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        base.OnPlayerLeftRoom(otherPlayer);
+        Debug.Log(otherPlayer.NickName + " has left the room");
+        playerInGame--;
+    }
+
+
 
     [PunRPC]
     private void RPC_LoadedGameScene()
