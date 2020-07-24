@@ -221,10 +221,20 @@ public class ProjectileStandard : MonoBehaviour
             {
                 if (collider.GetComponentInParent<Actor>().affiliation == m_ProjectileBase.owner.GetComponentInParent<Actor>().affiliation)
                     dmg = 0;
-                damageable.PV.RPC("RPC_InflictDamage", RpcTarget.All, dmg, false, m_ProjectileBase.owner.GetComponent<PhotonView>().ViewID);
+
+                // Account for single and multiplayer game
+                if (damageable.PV != null)
+                    damageable.PV.RPC("RPC_InflictDamage", RpcTarget.All, dmg, false, m_ProjectileBase.owner.GetComponent<PhotonView>().ViewID);
+                else
+                    damageable.InflictDamage(dmg, false, m_ProjectileBase.owner);
 
                 if(m_ProjectileBase.shotWeaponLevel >= 2) // inflict effect if the weapon is of higher level
-                    damageable.PV.RPC("RPC_InflictEffect", RpcTarget.All, m_ProjectileBase.owner.tag);
+                {
+                    if (damageable.PV != null)
+                        damageable.PV.RPC("RPC_InflictEffect", RpcTarget.All, m_ProjectileBase.owner.tag);
+                    else
+                        damageable.InflictEffect(m_ProjectileBase.owner.tag);
+                }
 
             }
         }

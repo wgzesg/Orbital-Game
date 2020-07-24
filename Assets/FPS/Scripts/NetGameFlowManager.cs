@@ -5,6 +5,23 @@ using UnityEngine;
 public class NetGameFlowManager: GameFlowManager
 {
     int nextLevel;
+
+    public override void Start()
+    {
+        m_ObjectiveManager = FindObjectOfType<ObjectiveManager>();
+        DebugUtility.HandleErrorIfNullFindObject<ObjectiveManager, GameFlowManager>(m_ObjectiveManager, this);
+        m_ObjectiveManager.OnAllCompleted += OnAllcompletedHandler;
+
+        PlayerManager.PMinstance.OnAllDied += OnAllDiedHandler;
+
+        AudioUtility.SetMasterVolume(1);
+    }
+
+    public void OnAllDiedHandler()
+    {
+        EndGame(false);
+    }
+
     public override IEnumerator fading()
     {
         while(Time.time <= m_TimeLoadEndGameScene)

@@ -45,21 +45,20 @@ public class GameFlowManager : MonoBehaviour
         }
     }
 
-    public PlayerCharacterController m_Player;
+    public Health m_Player;
     public ObjectiveManager m_ObjectiveManager;
     public float m_TimeLoadEndGameScene;
     public string m_SceneToLoad = "WinScene";
     
-    public void Start()
+    public virtual void Start()
     {
-        m_Player = FindObjectOfType<PlayerCharacterController>();
-        DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, GameFlowManager>(m_Player, this);
+        m_Player = FindObjectOfType<PlayerCharacterController>().GetComponent<Health>();
+        DebugUtility.HandleErrorIfNullFindObject<Health, GameFlowManager>(m_Player, this);
+        m_Player.onDie += OnAllDiedHandler;
 
         m_ObjectiveManager = FindObjectOfType<ObjectiveManager>();
 		DebugUtility.HandleErrorIfNullFindObject<ObjectiveManager, GameFlowManager>(m_ObjectiveManager, this);
         m_ObjectiveManager.OnAllCompleted += OnAllcompletedHandler;
-
-        PlayerManager.PMinstance.OnAllDied += OnAllDiedHandler;
 
         AudioUtility.SetMasterVolume(1);
     }
@@ -85,7 +84,7 @@ public class GameFlowManager : MonoBehaviour
         EndGame(true);
     }
 
-    public void OnAllDiedHandler()
+    public void OnAllDiedHandler(GameObject source)
     {
         EndGame(false);
     }

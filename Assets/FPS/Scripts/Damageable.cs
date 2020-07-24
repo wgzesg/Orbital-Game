@@ -121,6 +121,26 @@ public class Damageable : MonoBehaviour
         UnderEffect = StartCoroutine(ChangeBack());
     }
 
+    public void InflictEffect(string damageSource)
+    {
+        if (botRoot == null || damageSource != "Player")
+        {
+            return;
+        }
+        foreach (Renderer rend in children)
+        {
+            Debug.Log("setting color to " + slowMaterial);
+            rend.material = slowMaterial;
+        }
+        agent.speed /= 2;
+
+        if (UnderEffect != null)
+        {
+            StopCoroutine(UnderEffect);
+        }
+        UnderEffect = StartCoroutine(ChangeBack());
+    }
+
     IEnumerator ChangeBack()
     {
         yield return new WaitForSeconds(5f);

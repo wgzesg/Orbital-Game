@@ -1,21 +1,21 @@
 ﻿using System;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class StationTriggerManager : MonoBehaviour
+public class NetStationTriggerManager: StationTriggerManager
 {
-    public UnityAction OnEnteredStation;
+    PlayerAvatar localPlayer;
 
-    public UnityAction OnStayedStation;
+    private void Start()
+    {
+        localPlayer = PlayerManager.PMinstance.findLocalPlayerAvatar();
+    }
 
-    public UnityAction OnExitedStation;
-
-    public Boolean checkGButton = false;
-
-    public virtual void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
 
     {
-        if (other.tag == "Player")
+        if (other.GetComponent<PhotonView>().IsMine)
         {
             if (OnEnteredStation != null)
             {
@@ -23,9 +23,9 @@ public class StationTriggerManager : MonoBehaviour
             }
         }
     }
-    public virtual void OnTriggerStay(Collider other)
+    public override void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.GetComponent<PhotonView>().IsMine)
         {
             if (OnStayedStation != null)
             {
@@ -34,9 +34,9 @@ public class StationTriggerManager : MonoBehaviour
         }
     }
 
-    public virtual void OnTriggerExit(Collider other)
+    public override void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.GetComponent<PhotonView>().IsMine)
         {
             if (OnExitedStation != null)
             {
