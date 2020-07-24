@@ -8,6 +8,7 @@ public class NetQuit : MonoBehaviour
 {
     public void LeavePlayer()
     {
+        Destroy(PhotonRoomV2.roomV2.gameObject);
         StartCoroutine(LeaveAndLoad());
     }
 

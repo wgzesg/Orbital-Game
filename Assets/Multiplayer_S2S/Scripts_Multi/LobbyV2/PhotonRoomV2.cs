@@ -110,11 +110,17 @@ public class PhotonRoomV2 : MonoBehaviourPunCallbacks, IInRoomCallbacks
         Debug.Log("local player has been disconnected");
     }
 
-    public override void OnPlayerLeftRoom(Player otherPlayer)
+    public override void OnPlayerLeftRoom(Player otherPlayer) // for remote client
     {
         base.OnPlayerLeftRoom(otherPlayer);
         Debug.Log(otherPlayer.NickName + " has left the room");
         playerInGame--;
+    }
+
+    public override void OnLeftRoom() // for local client
+    {
+        base.OnLeftRoom();
+        Debug.Log("you have left the room");
     }
 
 
