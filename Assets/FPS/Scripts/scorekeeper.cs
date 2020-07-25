@@ -48,22 +48,28 @@ public class scorekeeper : MonoBehaviour
         checkPointTime = Time.time;
         if(checkPointTime - startTime <= criticalDuration)
         {
+            Debug.Log("within");
             killedNum++;
-            if(killedNum >= criticalKilledNum)
+            Debug.Log("kill num is " + killedNum);
+            if (multiplierIndex < multiplierIndexLimit)
             {
-                if (multiplierIndex < multiplierIndexLimit)
-                {
-                    multiplierIndex++;
-                }
+                multiplierIndex++;
+                Debug.Log("multiplx is " + multiplierIndex);
+            }
+
+            if (killedNum >= criticalKilledNum)
+            {
                 killedNum = 0;
             }
-            score += multiplierIndex;
         }
         else
         {
+            Debug.Log("outside");
             killedNum = 1;
             multiplierIndex = 1;
+            Debug.Log("multiplx is " + multiplierIndex);
         }
+        score += multiplierIndex;
         startTime = Time.time;
 
     }
