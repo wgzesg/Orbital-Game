@@ -32,7 +32,7 @@ public class GearFollowPlayer : MonoBehaviour
             }
             else
             {
-                Destroy(transform.parent.gameObject);
+                _isfollowing = false;
             }
         }
     }
