@@ -26,7 +26,14 @@ public class GearFollowPlayer : MonoBehaviour
     {
         if (_isfollowing)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, Target.position, ref _velocity, Time.deltaTime * Random.Range(MinModifier, MaxModifier));
+            if (Target.position != null)
+            {
+                transform.position = Vector3.SmoothDamp(transform.position, Target.position, ref _velocity, Time.deltaTime * Random.Range(MinModifier, MaxModifier));
+            }
+            else
+            {
+                Destroy(transform.parent.gameObject);
+            }
         }
     }
 }
