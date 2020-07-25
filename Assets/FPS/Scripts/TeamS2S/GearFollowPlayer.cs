@@ -18,12 +18,17 @@ public class GearFollowPlayer : MonoBehaviour
 
     public void StartFollowing()
     {
-        _isfollowing = true;
+        _isfollowing = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(Target == null)
+        {
+            Debug.Log("no target any more");
+            Destroy(gameObject);
+        }
         if (_isfollowing)
         {
             if (Target.position != null)
