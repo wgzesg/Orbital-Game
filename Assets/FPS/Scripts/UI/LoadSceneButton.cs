@@ -1,22 +1,36 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine.SceneManagement;
 
-public class LoadSceneButton : MonoBehaviour
+public class LoadSceneButton : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
     public string sceneName = "";
 
-    private void Update()
+    public void LoadTargetScene()
     {
-        if(EventSystem.current.currentSelectedGameObject == gameObject 
-            && Input.GetButtonDown(GameConstants.k_ButtonNameSubmit))
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void netLoadTargetScene()
+    {
+        Debug.Log("The current state is " + PhotonNetwork.NetworkClientState);
+        if (PhotonNetwork.CurrentRoom != null)
+        {
+            Debug.Log("I am in room.");
+            PhotonNetwork.LeaveRoom();
+        }
+        else
         {
             LoadTargetScene();
         }
     }
 
-    public void LoadTargetScene()
+    public override void OnLeftRoom()
     {
-        SceneManager.LoadScene(sceneName);
+        Debug.Log("The current state is " + PhotonNetwork.NetworkClientState);
+        base.OnLeftRoom();
+        LoadTargetScene();
+
     }
 }

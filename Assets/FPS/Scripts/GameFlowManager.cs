@@ -12,7 +12,7 @@ public class GameFlowManager : MonoBehaviour
 
     [Header("Win")]
     [Tooltip("This string has to be the name of the scene you want to load when winning")]
-    public string winSceneName = "WinScene";
+    public string winSceneName = "NetWinScene";
     [Tooltip("Duration of delay before the fade-to-black, if winning")]
     public float delayBeforeFadeToBlack = 4f;
     [Tooltip("Duration of delay before the win message")]

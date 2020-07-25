@@ -18,7 +18,7 @@ public class GearFollowPlayer : MonoBehaviour
 
     public void StartFollowing()
     {
-        _isfollowing = false;
+        _isfollowing = true;
     }
 
     // Update is called once per frame

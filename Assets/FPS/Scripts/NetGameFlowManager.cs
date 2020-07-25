@@ -33,7 +33,6 @@ public class NetGameFlowManager: GameFlowManager
             yield return new WaitForEndOfFrame();
         }
 
-        Debug.Log("About to load " + m_SceneToLoad);
         if(PhotonNetwork.IsMasterClient)
             PhotonNetwork.LoadLevel(nextLevel);
 

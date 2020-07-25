@@ -89,8 +89,8 @@ public class PhotonRoomV2 : MonoBehaviourPunCallbacks, IInRoomCallbacks
         else if(currentScene == MultiplayerSettingV2.multiplayerSettingV2.menuScene){
             Debug.Log("Load to the menu scene alr");
             //PhotonNetwork.Disconnect();
-            if(PhotonNetwork.IsConnected)
-                DisconnectLocalClient();
+            //if(PhotonNetwork.IsConnected)
+            //    DisconnectLocalClient();
             
         }
     }
