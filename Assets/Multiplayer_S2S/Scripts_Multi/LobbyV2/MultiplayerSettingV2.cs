@@ -11,8 +11,11 @@ public class MultiplayerSettingV2 : MonoBehaviour
 
     public int menuScene;
     public int multiplayerScene;
+    public int singlePlayerScene;
     public int winScene;
     public int loseScene;
+
+    public int mainManuScene; // the starting scene when the application runs.
 
     private void Awake()
     {
