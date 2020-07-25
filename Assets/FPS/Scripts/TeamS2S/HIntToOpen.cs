@@ -2,15 +2,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HIntToOpen : MonoBehaviour
+public class HintToOpen : MonoBehaviour
 {
     public GameObject canvasRoot;
     public Slider ReloadingBar;
-    private StationTriggerManager station;
-    private PlayerWeaponsManager m_weaponManager;
-    private Coroutine refilling;
+    public StationTriggerManager station;
+    public PlayerWeaponsManager m_weaponManager;
+    public Coroutine refilling;
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
         station = GetComponent<StationTriggerManager>();
         m_weaponManager = FindObjectOfType<PlayerWeaponsManager>();
@@ -19,7 +19,7 @@ public class HIntToOpen : MonoBehaviour
         station.OnExitedStation += OnExitHandler;
     }
 
-    private void OnEnterHandler()
+    public void OnEnterHandler()
     {
         canvasRoot.SetActive(true);
         bool isAllFull = true;
@@ -35,14 +35,14 @@ public class HIntToOpen : MonoBehaviour
             refilling = StartCoroutine(RefillCoroutine());
     }
 
-    private void OnExitHandler()
+    public void OnExitHandler()
     {
         canvasRoot.SetActive(false);
         if(refilling != null)
             StopCoroutine(refilling);
     }
 
-    private IEnumerator RefillCoroutine()
+    public IEnumerator RefillCoroutine()
     {
         ReloadingBar.gameObject.SetActive(true);
         float t = 0f;

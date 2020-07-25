@@ -2,6 +2,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class LoadSceneButton : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
@@ -9,6 +10,7 @@ public class LoadSceneButton : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     public void LoadTargetScene()
     {
+        Debug.Log("Loading to " + sceneName);
         SceneManager.LoadScene(sceneName);
     }
 
@@ -19,6 +21,7 @@ public class LoadSceneButton : MonoBehaviourPunCallbacks, IInRoomCallbacks
         {
             Debug.Log("I am in room.");
             PhotonNetwork.LeaveRoom();
+            StartCoroutine(customLeaveRoom());
         }
         else
         {
@@ -26,11 +29,14 @@ public class LoadSceneButton : MonoBehaviourPunCallbacks, IInRoomCallbacks
         }
     }
 
-    public override void OnLeftRoom()
+    IEnumerator customLeaveRoom()
     {
+        while(PhotonNetwork.NetworkClientState != ClientState.ConnectedToMasterServer)
+        {
+            Debug.Log("The current state is " + PhotonNetwork.NetworkClientState);
+            yield return new WaitForEndOfFrame();
+        }
         Debug.Log("The current state is " + PhotonNetwork.NetworkClientState);
-        base.OnLeftRoom();
         LoadTargetScene();
-
     }
 }
