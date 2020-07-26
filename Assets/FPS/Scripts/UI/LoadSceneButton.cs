@@ -8,6 +8,11 @@ public class LoadSceneButton : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
     public string sceneName = "";
 
+    private void Start()
+    {
+        PhotonNetwork.AutomaticallySyncScene = false;
+    }
+
     public void LoadTargetScene()
     {
         Debug.Log("Loading to " + sceneName);
