@@ -112,6 +112,7 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         base.OnJoinedRoom();
         Debug.Log("we are now in a room");
+        PhotonNetwork.AutomaticallySyncScene = true;
 
         lobbyGO.SetActive(false);
         roomGo.SetActive(true);
@@ -169,6 +170,12 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
                 tempText.text = player.NickName;
             }
         }
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+        PhotonNetwork.AutomaticallySyncScene = false;
     }
 
 

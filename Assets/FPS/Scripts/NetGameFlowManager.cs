@@ -50,7 +50,7 @@ public class NetGameFlowManager: GameFlowManager
         if (win)
         {
             Debug.Log("The win part of EndGame is run");
-            nextLevel = MultiplayerSettingV2.multiplayerSettingV2.winScene;
+            nextLevel = MultiplayerSettingV2.multiplayerSettingV2.NetWinScene;
             m_TimeLoadEndGameScene = Time.time + endSceneLoadDelay + delayBeforeFadeToBlack;
 
             // play a sound on win
@@ -71,7 +71,7 @@ public class NetGameFlowManager: GameFlowManager
         else
         {
             Debug.Log("The lose part of EndGame is run");
-            nextLevel = MultiplayerSettingV2.multiplayerSettingV2.loseScene;
+            nextLevel = MultiplayerSettingV2.multiplayerSettingV2.NetLoseScene;
             m_TimeLoadEndGameScene = Time.time + endSceneLoadDelay;
         }
 
