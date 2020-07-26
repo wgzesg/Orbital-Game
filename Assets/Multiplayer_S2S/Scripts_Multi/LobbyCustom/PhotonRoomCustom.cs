@@ -289,7 +289,11 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
             isGameLoaded = false;
             lobbyGO.SetActive(true);
             roomGO.SetActive(false);
-
+        }
+        else if(currentScene == MultiplayerSettingV2.multiplayerSettingV2.mainManuScene)
+        {
+            Debug.Log("Back to MainMenu Now");
+            PhotonNetwork.Disconnect();
         }
     }
 
@@ -312,12 +316,20 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        base.OnPlayerLeftRoom(otherPlayer);
-        Debug.Log(otherPlayer.NickName + " has left the game");
-        playersInRoom--;
+        Scene currentScene = SceneManager.GetActiveScene();
+        if (currentScene.buildIndex == MultiplayerSettingV2.multiplayerSettingV2.multiplayerScene)
+        {
+            SceneManager.LoadScene(MultiplayerSettingV2.multiplayerSettingV2.NetLoseScene);
+        }
+        else
+        {
+            base.OnPlayerLeftRoom(otherPlayer);
+            Debug.Log(otherPlayer.NickName + " has left the game");
+            playersInRoom--;
 
-        ClearPlayerListings();
-        ListPlayers();
+            ClearPlayerListings();
+            ListPlayers();
+        }
     }
 
 }

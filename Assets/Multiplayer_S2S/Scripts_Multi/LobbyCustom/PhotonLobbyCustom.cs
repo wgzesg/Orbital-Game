@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PhotonLobbyCustom : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
@@ -134,6 +135,23 @@ public class PhotonLobbyCustom : MonoBehaviourPunCallbacks, ILobbyCallbacks
         {
             PhotonNetwork.JoinLobby();
         }
+    }
+    public void OnCLick_leaveLobby()
+    {
+        Debug.Log("Back button is cliked");
+        if (PhotonNetwork.InLobby)
+        {
+            Debug.Log("Leaving lobby now...");
+            PhotonNetwork.LeaveLobby();
+        }
+        Debug.Log("load to the menuscene now...");
+        SceneManager.LoadScene(MultiplayerSettingV2.multiplayerSettingV2.mainManuScene);
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        base.OnDisconnected(cause);
+        Debug.Log("Disconnected from server");
     }
 }
 

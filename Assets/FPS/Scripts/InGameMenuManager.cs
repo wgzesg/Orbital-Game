@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using Photon.Realtime;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class InGameMenuManager : MonoBehaviour
+public class InGameMenuManager : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
     [Tooltip("Root GameObject of the menu used to toggle its activation")]
     public GameObject menuRoot;
@@ -132,5 +135,13 @@ public class InGameMenuManager : MonoBehaviour
     public void OnShowControlButtonClicked(bool show)
     {
         controlImage.SetActive(show);
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        if (currentScene.buildIndex == MultiplayerSettingV2.multiplayerSettingV2.multiplayerScene) {
+            SceneManager.LoadScene(MultiplayerSettingV2.multiplayerSettingV2.NetLoseScene);
+        }
     }
 }
