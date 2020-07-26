@@ -13,12 +13,11 @@ public class NetPurchaseItem: PurchaseItem
         localplayer.PlayerSpawned += OnSpawnedHandler;
         localplayer.PlayerDied += OnDiedHandler;
 
-        OnSpawnedHandler();
         m_itemDisplay = GetComponent<ItemDisplay>();
         buttonText = purchaseKey.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-
         countDown.gameObject.SetActive(false);
 
+        OnSpawnedHandler();
     }
 
     public void OnSpawnedHandler()
@@ -26,6 +25,8 @@ public class NetPurchaseItem: PurchaseItem
         m_weaponManager = localplayer.playerAvatar.GetComponent<PlayerWeaponsManager>();
         m_weaponManager.onAddedWeapon += onAddWeaponHandler;
         m_inventory = localplayer.playerAvatar.GetComponent<Inventory>();
+        thePurchasedItem.level = 0;
+        m_itemDisplay.onUpdatePrice();
     }
 
     public void OnDiedHandler()
