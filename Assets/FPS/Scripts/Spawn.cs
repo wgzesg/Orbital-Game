@@ -18,7 +18,7 @@ public class Spawn : MonoBehaviour
     StorytellingManager m_story;
 
 
-    void Start()
+    public virtual void Start()
     {
         m_enemyManager = GetComponent<EnemyManager>();
         m_enemyManager.onRemoveEnemy += removeEnemyHandler;

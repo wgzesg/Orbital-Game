@@ -8,6 +8,14 @@ using System.IO;
 
 public class NetSpawn : Spawn
 {
+    PhotonView PV;
+
+    public override void Start()
+    {
+        base.Start();
+        PV = GetComponent<PhotonView>();
+    }
+
     public override void onStartGameSpawn()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -37,11 +45,18 @@ public class NetSpawn : Spawn
             }
         }
         int totalDeployed = levelDataFile.levelsystem[numOfwaves].numberOfSpots * levelDataFile.levelsystem[numOfwaves].numToSpawnAtEachPoint;
+        PV.RPC("OnSpawnBraodCast", RpcTarget.AllBuffered, numOfwaves, totalDeployed);
+        numOfwaves++;
+    }
+
+
+    [PunRPC]
+    public void OnSpawnBraodCast(int numOfwaves, int totalDeployed)
+    {
         if (onSpawn != null)
         {
             onSpawn.Invoke(numOfwaves, totalDeployed);
         }
-        numOfwaves++;
     }
 
 

@@ -49,8 +49,6 @@ public class NetGameFlowManager: GameFlowManager
         Cursor.visible = true;
         Debug.Log("Endgame is run");
 
-        PV.RPC("scoreUpdate", RpcTarget.AllBuffered);
-
         // Remember that we need to load the appropriate end scene after a delay
         endGameFadeCanvasGroup.gameObject.SetActive(true);
         if (win)
@@ -83,12 +81,5 @@ public class NetGameFlowManager: GameFlowManager
 
         gameIsEnding = true;
     }
-
-    [PunRPC]
-    public override void scoreUpdate()
-    {
-        base.scoreUpdate();
-    }
-
 
 }
