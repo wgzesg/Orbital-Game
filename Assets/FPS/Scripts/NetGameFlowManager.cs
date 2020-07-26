@@ -5,6 +5,7 @@ using UnityEngine;
 public class NetGameFlowManager: GameFlowManager
 {
     int nextLevel;
+    public PhotonView PV;
 
     public override void Start()
     {
@@ -13,6 +14,8 @@ public class NetGameFlowManager: GameFlowManager
         m_ObjectiveManager.OnAllCompleted += OnAllcompletedHandler;
 
         PlayerManager.PMinstance.OnAllDied += OnAllDiedHandler;
+
+        PV = GetComponent<PhotonView>();
 
         AudioUtility.SetMasterVolume(1);
     }
@@ -45,7 +48,9 @@ public class NetGameFlowManager: GameFlowManager
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Debug.Log("Endgame is run");
-        scoreUpdate();
+
+        PV.RPC("scoreUpdate", RpcTarget.AllBuffered);
+
         // Remember that we need to load the appropriate end scene after a delay
         endGameFadeCanvasGroup.gameObject.SetActive(true);
         if (win)
@@ -77,6 +82,12 @@ public class NetGameFlowManager: GameFlowManager
         }
 
         gameIsEnding = true;
+    }
+
+    [PunRPC]
+    public override void scoreUpdate()
+    {
+        base.scoreUpdate();
     }
 
 
