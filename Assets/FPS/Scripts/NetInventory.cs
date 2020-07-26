@@ -10,5 +10,7 @@ public class NetInventory : Inventory
 
         gearCount = localPlayer.gearCount;
         Debug.Log("Setting to " + gearCount);
+        if (onUpdateGearCount != null)
+            onUpdateGearCount.Invoke(gearCount);
     }
 }

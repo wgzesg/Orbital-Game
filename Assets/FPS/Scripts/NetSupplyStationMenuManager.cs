@@ -1,32 +1,28 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SupplyStationMenuManager : MonoBehaviour
+public class NetSupplyStationMenuManager: SupplyStationMenuManager
 {
-    [Tooltip("Root GameObject of the menu used to toggle its activation")]
-    public CanvasGroup menuRoot;
-
-    public TMPro.TextMeshProUGUI gearCountDisplay;
-
-    public PlayerInputHandler m_PlayerInputsHandler;
-    public StationTriggerManager m_stationTriggerManager;
-    public Inventory m_inventory;
-    public bool isIn = false;
-
-    public virtual void Start()
+    PlayerAvatar localPlayer;
+    public override void Start()
     {
-        m_PlayerInputsHandler = FindObjectOfType<PlayerInputHandler>();
-        DebugUtility.HandleErrorIfNullFindObject<PlayerInputHandler, InGameMenuManager>(m_PlayerInputsHandler, this);
+        base.Start();
+        localPlayer = PlayerManager.PMinstance.findLocalPlayerAvatar();
 
-        m_stationTriggerManager = FindObjectOfType<StationTriggerManager>();
-        m_inventory = FindObjectOfType<Inventory>();
+        localPlayer.PlayerDied += OnDiedHandler;
+        localPlayer.PlayerSpawned += OnSpawnedHandler;
+        OnSpawnedHandler();
+    }
+
+    public void OnDiedHandler()
+    {
+        m_inventory = localPlayer.playerAvatar.GetComponent<Inventory>();
         m_inventory.onUpdateGearCount += onChangeGearCount;
+    }
 
-        m_stationTriggerManager.OnEnteredStation += OnEnter;
-        m_stationTriggerManager.OnExitedStation += OnExit;
-        menuRoot.alpha = 0;
-        menuRoot.interactable = false;
-        menuRoot.blocksRaycasts = false;
+    public void OnSpawnedHandler()
+    {
+        m_inventory = null;
     }
 
     private void Update()
