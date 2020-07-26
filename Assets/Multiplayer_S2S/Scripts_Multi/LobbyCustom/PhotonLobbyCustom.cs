@@ -13,6 +13,8 @@ public class PhotonLobbyCustom : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public GameObject roomListingPrefab;
     public Transform roomsPenal;
 
+    public List<RoomInfo> roomLisitngs;
+
 
     private void Awake()
     {
@@ -23,30 +25,67 @@ public class PhotonLobbyCustom : MonoBehaviourPunCallbacks, ILobbyCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings(); // connect to Master photon server.
+        roomLisitngs = new List<RoomInfo>();
     }
 
     public override void OnConnectedToMaster()
     {
         Debug.Log("Player has connected to the Photon master server");
         PhotonNetwork.AutomaticallySyncScene = true; // change scene in the same way, same time
+
+        PhotonNetwork.NickName = "Human#" + Random.Range(0, 1000);
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         base.OnRoomListUpdate(roomList);
-        RemoveRoomListings();
+        //RemoveRoomListings();
+        int tempIndex;
         foreach(RoomInfo room in roomList)
         {
-            ListRoom(room);
+            if(roomLisitngs != null)
+            {
+                tempIndex = roomLisitngs.FindIndex(ByName(room.Name));
+            }
+            else
+            {
+                tempIndex = -1;
+            }
+            if(tempIndex != -1)
+            {
+                roomLisitngs.RemoveAt(tempIndex);
+                Destroy(roomsPenal.GetChild(tempIndex).gameObject);
+            }
+            else
+            {
+                roomLisitngs.Add(room);
+                ListRoom(room);
+            }
         }
+    }
+
+    static System.Predicate<RoomInfo> ByName(string name)
+    {
+        return delegate (RoomInfo room)
+        {
+            return room.Name == name;
+        };
     }
 
     void RemoveRoomListings()
     {
+        for (int i = roomsPenal.childCount - 1; i >= 0; i--)  
+        {
+            Destroy(roomsPenal.GetChild(i).gameObject);
+        }
+
+        //alternative way:
+        /*int i = 0;
         while(roomsPenal.childCount != 0)
         {
-            Destroy(roomsPenal.GetChild(0).gameObject);// continue to remove the first childe until all children are removed
-        }
+            Destroy(roomsPenal.GetChild(i).gameObject);
+            i++;
+        }*/
     }
 
     void ListRoom(RoomInfo room)
