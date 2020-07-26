@@ -39,7 +39,6 @@ public class GameFlowManager : MonoBehaviour
             GameProgressMonitor = value;
             if (GameProgressMonitor)
             {
-                Debug.Log("The setter is working");
                 StartCoroutine(fading());
             }
         }
@@ -95,6 +94,7 @@ public class GameFlowManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Debug.Log("Endgame is run");
+        scoreUpdate();
         // Remember that we need to load the appropriate end scene after a delay
         endGameFadeCanvasGroup.gameObject.SetActive(true);
         if (win)
@@ -126,5 +126,16 @@ public class GameFlowManager : MonoBehaviour
         }
 
         gameIsEnding = true;
+    }
+
+    public void scoreUpdate()
+    {
+        int currentScore = GetComponentInChildren<scorekeeper>().score;
+        PlayerPrefs.SetInt("CurrentScore", currentScore);
+        int highestScore = PlayerPrefs.GetInt("HighestScore", 0);
+        if(currentScore > highestScore)
+        {
+            PlayerPrefs.SetInt("HighestScore", currentScore);
+        }
     }
 }

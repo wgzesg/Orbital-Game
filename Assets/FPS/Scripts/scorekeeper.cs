@@ -8,7 +8,7 @@ public class scorekeeper : MonoBehaviour
 
     private EnemyManager enemyManager;
 
-    int score = 0;
+    public int score = 0;
     float startTime = 0.0f;
     float checkPointTime = 0.0f;
     public float criticalDuration = 10.0f;

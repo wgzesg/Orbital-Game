@@ -45,6 +45,7 @@ public class NetGameFlowManager: GameFlowManager
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Debug.Log("Endgame is run");
+        scoreUpdate();
         // Remember that we need to load the appropriate end scene after a delay
         endGameFadeCanvasGroup.gameObject.SetActive(true);
         if (win)

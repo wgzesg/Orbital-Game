@@ -20,4 +20,9 @@ public class MySceneManager : MonoBehaviour
         Application.Quit();
         Debug.Log("you have really quited");
     }
+
+    public void ClearData()
+    {
+        PlayerPrefs.DeleteAll();
+    }
 }
