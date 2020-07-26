@@ -19,7 +19,7 @@ public class PlayerAvatar : MonoBehaviour
 
     #region data maintained after death
 
-    private int gearCount = 0;
+    public int gearCount = 0;
     #endregion
 
     private void Awake()
@@ -74,8 +74,6 @@ public class PlayerAvatar : MonoBehaviour
         {
             playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, GameSetup.GS.playerBirthPlace[0].rotation);
         }
-        playerAvatar.GetComponent<Inventory>().gearCount = gearCount;
-        Debug.Log("Setting to " + gearCount);
         Health playerHealth = playerAvatar.GetComponent<Health>();
         playerHealth.onDie += OnDieHandler;
         Debug.Log("I spawned player");

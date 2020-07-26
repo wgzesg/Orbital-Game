@@ -6,7 +6,7 @@ public class Inventory : MonoBehaviour
     public int gearCount;
     public UnityAction<int> onUpdateGearCount;
 
-    private void Start()
+    public virtual void Start()
     {
         gearCount = 0;
     }
