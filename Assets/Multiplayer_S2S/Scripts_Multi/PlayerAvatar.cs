@@ -17,7 +17,10 @@ public class PlayerAvatar : MonoBehaviour
     public Transform MyDeathPoint;
     public Transform MyRevivalPoint;
 
+    #region data maintained after death
 
+    private int gearCount = 0;
+    #endregion
 
     private void Awake()
     {
@@ -34,6 +37,8 @@ public class PlayerAvatar : MonoBehaviour
         {
             MyDeathPoint = playerAvatar.transform;
             MyRevivalPoint = Determine_SpawnPoint(MyDeathPoint);
+            gearCount = playerAvatar.GetComponent<Inventory>().gearCount;
+            Debug.Log("Storing " + gearCount);
 
             PhotonNetwork.Destroy(playerAvatar);
 
@@ -69,6 +74,8 @@ public class PlayerAvatar : MonoBehaviour
         {
             playerAvatar = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkAvatar"), GameSetup.GS.playerBirthPlace[0].position, GameSetup.GS.playerBirthPlace[0].rotation);
         }
+        playerAvatar.GetComponent<Inventory>().gearCount = gearCount;
+        Debug.Log("Setting to " + gearCount);
         Health playerHealth = playerAvatar.GetComponent<Health>();
         playerHealth.onDie += OnDieHandler;
         Debug.Log("I spawned player");

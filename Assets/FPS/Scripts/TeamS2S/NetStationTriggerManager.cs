@@ -15,7 +15,7 @@ public class NetStationTriggerManager: StationTriggerManager
     public override void OnTriggerEnter(Collider other)
 
     {
-        if (other.GetComponent<PhotonView>().IsMine)
+        if (other.tag == "Player" && other.GetComponent<PhotonView>().IsMine)
         {
             if (OnEnteredStation != null)
             {
@@ -25,7 +25,7 @@ public class NetStationTriggerManager: StationTriggerManager
     }
     public override void OnTriggerStay(Collider other)
     {
-        if (other.GetComponent<PhotonView>().IsMine)
+        if (other.tag == "Player" && other.GetComponent<PhotonView>().IsMine)
         {
             if (OnStayedStation != null)
             {
@@ -36,7 +36,7 @@ public class NetStationTriggerManager: StationTriggerManager
 
     public override void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<PhotonView>().IsMine)
+        if (other.tag == "Player" && other.GetComponent<PhotonView>().IsMine)
         {
             if (OnExitedStation != null)
             {

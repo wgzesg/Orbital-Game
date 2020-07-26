@@ -11,16 +11,13 @@ public class PurchaseItem : MonoBehaviour
     public TMPro.TextMeshProUGUI countDown;
     public Button purchaseKey;
 
-    WeaponController existingWeapon;
-    Inventory m_inventory;
-    PlayerWeaponsManager m_weaponManager;
-    ItemDisplay m_itemDisplay;
-    TMPro.TextMeshProUGUI buttonText;
+    protected WeaponController existingWeapon;
+    protected Inventory m_inventory;
+    protected PlayerWeaponsManager m_weaponManager;
+    protected ItemDisplay m_itemDisplay;
+    protected TMPro.TextMeshProUGUI buttonText;
 
-    private void Awake()
-    {
-    }
-    private void Start()
+    public virtual void Start()
     {
         m_weaponManager = FindObjectOfType<PlayerWeaponsManager>();
         m_weaponManager.onAddedWeapon += onAddWeaponHandler;
@@ -69,7 +66,7 @@ public class PurchaseItem : MonoBehaviour
 
     }
 
-    private IEnumerator Upgrading(shopItemscript item)
+    protected IEnumerator Upgrading(shopItemscript item)
     {
         purchaseKey.gameObject.SetActive(false);
         countDown.gameObject.SetActive(true);

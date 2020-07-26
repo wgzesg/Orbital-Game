@@ -100,6 +100,7 @@ public class PlayerManager : MonoBehaviour
 
     public bool CheckAllDied()
     {
+        return false;
         foreach (PlayerAvatar p in playerList)
         {
             if (p.isAlive == true)
