@@ -29,10 +29,12 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private float timeToStart;
 
     public GameObject lobbyGO;
-    public GameObject roomGo;
+    public GameObject roomGO;
     public Transform playersPanel;
     public GameObject playerListingPrefab;
     public GameObject startButton;
+    public GameObject leaveButton;
+    public GameObject MasterLeaveButton;
 
     private void Awake()
     {
@@ -115,10 +117,18 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
 
         lobbyGO.SetActive(false);
-        roomGo.SetActive(true);
+        roomGO.SetActive(true);
         if (PhotonNetwork.IsMasterClient)
         {
             startButton.SetActive(true);
+            leaveButton.SetActive(false);
+            MasterLeaveButton.SetActive(true);
+        }
+        else
+        {
+            startButton.SetActive(false);
+            leaveButton.SetActive(true);
+            MasterLeaveButton.SetActive(false);
         }
 
         ClearPlayerListings();
@@ -174,8 +184,20 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     public override void OnLeftRoom()
     {
-        base.OnLeftRoom();
+        Debug.Log("Left room alr");
+        //base.OnLeftRoom();
         PhotonNetwork.AutomaticallySyncScene = false;
+        if(currentScene == MultiplayerSettingV2.multiplayerSettingV2.multiplayerScene)
+        {
+            PhotonNetwork.LoadLevel(MultiplayerSettingV2.multiplayerSettingV2.menuScene);
+        }
+        else if (currentScene == MultiplayerSettingV2.multiplayerSettingV2.menuScene)
+        {
+            lobbyGO.SetActive(true);
+            roomGO.SetActive(false);
+        }
+        
+        
     }
 
 
@@ -224,6 +246,18 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         PhotonNetwork.LoadLevel(MultiplayerSettingV2.multiplayerSettingV2.multiplayerScene);
     }
 
+    public void OnClick_LeaveRoom()
+    {
+        Debug.Log("Start to leave room...");
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public void OnClick_MasterLeaveRoom()
+    {
+        Debug.Log("Master start to Leave room...");
+        PhotonNetwork.LeaveRoom();
+    }
+
     void RestartTimer()
     {
         lessThanMaxPlayers = startingTime;
@@ -248,6 +282,14 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
             {
                 RPC_CreatePlayer();
             }
+        }
+        else if(currentScene == MultiplayerSettingV2.multiplayerSettingV2.menuScene)
+        {
+            Debug.Log("loaded to the lobby(menu) scene alr");
+            isGameLoaded = false;
+            lobbyGO.SetActive(true);
+            roomGO.SetActive(false);
+
         }
     }
 
