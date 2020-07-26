@@ -128,7 +128,7 @@ public class GameFlowManager : MonoBehaviour
         gameIsEnding = true;
     }
 
-    public void scoreUpdate()
+    public virtual void scoreUpdate()
     {
         int currentScore = GetComponentInChildren<scorekeeper>().score;
         PlayerPrefs.SetInt("CurrentScore", currentScore);
