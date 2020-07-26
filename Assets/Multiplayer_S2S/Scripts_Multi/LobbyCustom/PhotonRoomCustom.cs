@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
@@ -26,6 +27,12 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private float lessThanMaxPlayers;
     private float atMaxPlayers;
     private float timeToStart;
+
+    public GameObject lobbyGO;
+    public GameObject roomGo;
+    public Transform playersPanel;
+    public GameObject playerListingPrefab;
+    public GameObject startButton;
 
     private void Awake()
     {
@@ -73,7 +80,7 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     // Update is called once per frame
     void Update()
     {
-        if (MultiplayerSetting.multiplayerSetting.delayStart)
+        if (MultiplayerSettingV2.multiplayerSettingV2.delayStart)
         {
             if (playersInRoom == 1)
             {
@@ -105,18 +112,29 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         base.OnJoinedRoom();
         Debug.Log("we are now in a room");
+
+        lobbyGO.SetActive(false);
+        roomGo.SetActive(true);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            startButton.SetActive(true);
+        }
+
+        ClearPlayerListings();
+        ListPlayers();
+
         photonPlayers = PhotonNetwork.PlayerList;
         playersInRoom = photonPlayers.Length;
         myNumberInRoom = playersInRoom;
-        PhotonNetwork.NickName = myNumberInRoom.ToString();
-        if (MultiplayerSetting.multiplayerSetting.delayStart)
+        //PhotonNetwork.NickName = myNumberInRoom.ToString(); // used in PhotonLobbyCustom.cs alr, no longer effective
+        if (MultiplayerSettingV2.multiplayerSettingV2.delayStart)
         {
-            Debug.Log("Display players in room out of max players possible (" + playersInRoom + ":" + MultiplayerSetting.multiplayerSetting.maxPlayers + ")");
+            Debug.Log("Display players in room out of max players possible (" + playersInRoom + ":" + MultiplayerSettingV2.multiplayerSettingV2.maxPlayers + ")");
             if (playersInRoom > 1)
             {
                 readyToCount = true;
             }
-            if (playersInRoom == MultiplayerSetting.multiplayerSetting.maxPlayers)
+            if (playersInRoom == MultiplayerSettingV2.multiplayerSettingV2.maxPlayers)
             {
                 readyToStart = true;
                 if (!PhotonNetwork.IsMasterClient)
@@ -126,26 +144,52 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
                 PhotonNetwork.CurrentRoom.IsOpen = false;
             }
         }
-        else
+        /*else
         {
             StartGame();
+        }*/
+    }
+
+    void ClearPlayerListings()
+    {
+        for(int i = playersPanel.childCount -1; i >= 0; i--)  
+        {
+            Destroy(playersPanel.GetChild(i).gameObject);
         }
     }
+
+    void ListPlayers()
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            foreach(Player player in PhotonNetwork.PlayerList)
+            {
+                GameObject tempListing = Instantiate(playerListingPrefab, playersPanel);
+                Text tempText = tempListing.transform.GetChild(0).GetComponent<Text>();
+                tempText.text = player.NickName;
+            }
+        }
+    }
+
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         base.OnPlayerEnteredRoom(newPlayer);
         Debug.Log("A new player has joined the room");
+        ClearPlayerListings();
+        ListPlayers();
+
+
         photonPlayers = PhotonNetwork.PlayerList;
         playersInRoom++;
-        if (MultiplayerSetting.multiplayerSetting.delayStart)
+        if (MultiplayerSettingV2.multiplayerSettingV2.delayStart)
         {
-            Debug.Log("Display player in room out of max players possible (" + playersInRoom + ":" + MultiplayerSetting.multiplayerSetting.maxPlayers + ")");
+            Debug.Log("Display player in room out of max players possible (" + playersInRoom + ":" + MultiplayerSettingV2.multiplayerSettingV2.maxPlayers + ")");
             if (playersInRoom > 1)
             {
                 readyToCount = true;
             }
-            if (playersInRoom == MultiplayerSetting.multiplayerSetting.maxPlayers)
+            if (playersInRoom == MultiplayerSettingV2.multiplayerSettingV2.maxPlayers)
             {
                 readyToStart = true;
                 if (!PhotonNetwork.IsMasterClient)
@@ -158,19 +202,19 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     }
 
 
-    void StartGame()
+    public void StartGame()
     {
         isGameLoaded = true;
         if (!PhotonNetwork.IsMasterClient)
         {
             return;
         }
-        if (MultiplayerSetting.multiplayerSetting.delayStart)
+        if (MultiplayerSettingV2.multiplayerSettingV2.delayStart)
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
 
         }
-        PhotonNetwork.LoadLevel(MultiplayerSetting.multiplayerSetting.multiplayerScene);
+        PhotonNetwork.LoadLevel(MultiplayerSettingV2.multiplayerSettingV2.multiplayerScene);
     }
 
     void RestartTimer()
@@ -185,11 +229,11 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         currentScene = scene.buildIndex;
-        if (currentScene == MultiplayerSetting.multiplayerSetting.multiplayerScene)
+        if (currentScene == MultiplayerSettingV2.multiplayerSettingV2.multiplayerScene)
         {
             isGameLoaded = true;
 
-            if (MultiplayerSetting.multiplayerSetting.delayStart)
+            if (MultiplayerSettingV2.multiplayerSettingV2.delayStart)
             {
                 PV.RPC("RPC_LoadedGameScene", RpcTarget.All);
             }
@@ -207,14 +251,24 @@ public class PhotonRoomCustom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         if (playerInGame == PhotonNetwork.PlayerList.Length)
         {
             RPC_CreatePlayer();
-            //PV.RPC("RPC_CreatePlayer", RpcTarget.All);
+            PV.RPC("RPC_CreatePlayer", RpcTarget.All);
         }
     }
 
-    //[PunRPC]
+    [PunRPC]
     private void RPC_CreatePlayer()
     {
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "NetworkPlayer"), transform.position, Quaternion.identity, 0);
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        base.OnPlayerLeftRoom(otherPlayer);
+        Debug.Log(otherPlayer.NickName + " has left the game");
+        playersInRoom--;
+
+        ClearPlayerListings();
+        ListPlayers();
     }
 
 }
