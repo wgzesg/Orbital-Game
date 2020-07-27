@@ -45,7 +45,7 @@ public class scorekeeper : MonoBehaviour
 
     public void scoreUpdate()
     {
-        int currentScore = GetComponentInChildren<scorekeeper>().score;
+        int currentScore = score;
         PlayerPrefs.SetInt("CurrentScore", currentScore);
         int highestScore = PlayerPrefs.GetInt("HighestScore", 0);
         if (currentScore > highestScore)
