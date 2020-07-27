@@ -45,13 +45,14 @@ public class NetSpawn : Spawn
             }
         }
         int totalDeployed = levelDataFile.levelsystem[numOfwaves].numberOfSpots * levelDataFile.levelsystem[numOfwaves].numToSpawnAtEachPoint;
-        PV.RPC("OnSpawnBraodCast", RpcTarget.AllBuffered, numOfwaves, totalDeployed);
+
+        PV.RPC("OnSpawnBroadCast", RpcTarget.AllBuffered, numOfwaves, totalDeployed);
         numOfwaves++;
     }
 
 
     [PunRPC]
-    public void OnSpawnBraodCast(int numOfwaves, int totalDeployed)
+    public void OnSpawnBroadCast(int numOfwaves, int totalDeployed)
     {
         if (onSpawn != null)
         {
