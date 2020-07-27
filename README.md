@@ -14,7 +14,7 @@ Progress Log can be found
 https://docs.google.com/spreadsheets/d/1lTjgkkQwkjVP8m-bWMS4AI2ne-g_-zPaOnMct65naaU/edit?usp=sharing
 
 Mac demo version can be directly downloaded from 
-https://drive.google.com/drive/folders/1hm0-tLC3fAoysNiazxo7KVOvDmkoquhf?usp=sharing
+https://drive.google.com/drive/folders/1K6nvCf_tO0j2bjhpgcK-ijlzjOEy18Hp?usp=sharing
 
 Win demo version can be directly downloaded from 
 https://drive.google.com/drive/folders/1eMMXMLk5Vr38Ztf2a7S3ey9C_GwrYIfD?usp=sharing
